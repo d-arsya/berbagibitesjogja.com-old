@@ -15,13 +15,13 @@ return new class extends Migration
             $table->integer('quota');
             $table->integer('remain');
             $table->date('take');
-            $table->integer('hour');
+            $table->integer('hour')->default(12);
             $table->integer('minute')->default(0);
-            $table->string('location');
-            $table->string('maps');
+            $table->string('location')->default('Podocarpus Cafe');
+            $table->string('maps')->default('https://maps.app.goo.gl/WedRmXKAyym9uWph8');
             $table->string('message')->nullable();
             $table->text('notes')->nullable();
-            $table->enum('status', ['aktif', 'selesai']);
+            $table->enum('status', ['aktif', 'selesai'])->default('aktif');
             $table->timestamps();
         });
     }

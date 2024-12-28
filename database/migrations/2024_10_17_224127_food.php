@@ -16,8 +16,8 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Donation::class, 'donation');
             $table->string('name');
-            $table->integer('quantity');
-            $table->integer('weight');
+            $table->integer('quantity')->default(1);
+            $table->integer('weight')->default(1);
             $table->enum('unit', ['gr', 'ml']);
             $table->string('notes')->nullable(true);
             $table->timestamps();

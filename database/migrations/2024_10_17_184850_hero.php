@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('phone')->nullable();
             $table->foreignIdFor(Faculty::class, 'faculty');
-            $table->enum('status', ['sudah', 'belum']);
+            $table->enum('status', ['sudah', 'belum'])->default('belum');
             $table->foreignIdFor(Donation::class, 'donation');
             $table->char('code', 6)->nullable();
             $table->integer('quantity')->default(1);
