@@ -33,7 +33,7 @@ class HeroController extends Controller implements HasMiddleware
     {
         $backups = Backup::orderBy('updated _at', 'desc')->paginate(30);
 
-        return view('pages.hero.backups', ['backups' => $backups]);
+        return view('pages.hero.backups', compact('backups'));
     }
 
     public function create()
@@ -173,7 +173,7 @@ class HeroController extends Controller implements HasMiddleware
     {
         $heroes = Hero::where('faculty', $faculty)->get();
 
-        return view('pages.hero.faculty', ['heroes' => $heroes]);
+        return view('pages.hero.faculty', compact('heroes'));
     }
 
     public function cancel(Request $request)

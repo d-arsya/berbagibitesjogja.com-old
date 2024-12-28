@@ -38,7 +38,7 @@ class FoodController extends Controller implements HasMiddleware
         $donation = $food->donation();
         $foods = Food::orderBy('id', 'desc')->paginate(10);
 
-        return view('pages.food.edit', ['donation' => $donation, 'foods' => $foods, 'food' => $food]);
+        return view('pages.food.edit', compact('donations', 'food', 'foods'));
     }
 
     public function update(Request $request, Food $food)

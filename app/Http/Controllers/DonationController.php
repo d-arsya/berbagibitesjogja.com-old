@@ -23,14 +23,14 @@ class DonationController extends Controller implements HasMiddleware
             ->orderBy('take')
             ->paginate(10);
 
-        return view('pages.donation.index', ['donations' => $donations]);
+        return view('pages.donation.index', compact('donations'));
     }
 
     public function create()
     {
         $sponsors = Sponsor::whereNot('status', 'done')->get();
 
-        return view('pages.donation.create', ['sponsors' => $sponsors]);
+        return view('pages.donation.create', compact('sponsors'));
     }
 
     public function store(Request $request)
@@ -50,13 +50,14 @@ class DonationController extends Controller implements HasMiddleware
 
     public function show(Donation $donation)
     {
-
-        return view('pages.donation.show', ['donation' => $donation, 'heroes' => $donation->heroes(), 'foods' => $donation->foods()]);
+        $heroes = $donation->heroes();
+        $foods = $donation->foods();
+        return view('pages.donation.show', compact('donation', 'foods', 'heroes'));
     }
 
     public function edit(Donation $donation)
     {
-        return view('pages.donation.edit', ['donation' => $donation]);
+        return view('pages.donation.edit', compact('donation'));
     }
 
     public function update(Request $request, Donation $donation)

@@ -46,12 +46,13 @@ class SponsorController extends Controller implements HasMiddleware
 
     public function show(Sponsor $sponsor)
     {
-        return view('pages.sponsor.show', ['sponsor' => $sponsor, 'donations' => $sponsor->donation()]);
+        $donations = $sponsor->donation();
+        return view('pages.sponsor.show', compact('sponsor', 'donations'));
     }
 
     public function edit(Sponsor $sponsor)
     {
-        return view('pages.sponsor.edit', ['sponsor' => $sponsor]);
+        return view('pages.sponsor.edit', compact('sponsor'));
     }
 
     public function update(Request $request, Sponsor $sponsor)
