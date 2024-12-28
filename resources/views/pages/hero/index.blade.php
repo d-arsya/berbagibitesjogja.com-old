@@ -41,7 +41,10 @@
                             {{ $item->name }}
                             <span class="md:hidden italic font-normal text-gray-500 block">
                                 <a href="{{ route('hero.faculty', $item->faculty) }}">
-                                    {{ $item->faculty }}
+                                    {{ $item->faculty()->name }}
+                                    @if ($item->quantity > 1)
+                                        ({{ $item->quantity }} Orang)
+                                    @endif
                                 </a>
                             </span>
                         </th>
@@ -50,6 +53,9 @@
                             <td class="px-2 py-4 hidden sm:table-cell">
                                 <a href="{{ route('hero.faculty', $item->faculty) }}">
                                     {{ $item->faculty()->name }}
+                                    @if ($item->quantity > 1)
+                                        ({{ $item->quantity }} Orang)
+                                    @endif
                                 </a>
 
                             </td>
@@ -96,7 +102,7 @@
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" " required />
                 <label for="name"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">name
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nama
                     Kontributor</label>
             </div>
             <div class="relative z-0 w-full mb-5 group">
@@ -104,7 +110,7 @@
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                     placeholder=" " name="quantity" required />
                 <label for="quantity"
-                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">quantity</label>
+                    class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Jumlah</label>
             </div>
 
             <button onclick="remove()"

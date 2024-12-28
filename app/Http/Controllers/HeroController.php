@@ -42,7 +42,7 @@ class HeroController extends Controller implements HasMiddleware
 
         $donations_sum = Donation::all()->count();
         $foods = round(Food::all()->sum('weight') / 1000);
-        $heroes = Hero::all()->count();
+        $heroes = Hero::all()->sum('quantity');
 
         return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes'));
     }
@@ -53,14 +53,13 @@ class HeroController extends Controller implements HasMiddleware
         if ($donation->remain < $request['quantity']) {
             return back();
         }
-        for ($i = 0; $i < $request['quantity']; $i++) {
-            Hero::create([
-                'name' => $request['name'],
-                'faculty' => Faculty::all()->where('name', 'Kontributor')->pluck('id')[0],
-                'donation' => $request['donation'],
-                'status' => 'sudah',
-            ]);
-        }
+        Hero::create([
+            'name' => $request['name'],
+            'faculty' => Faculty::all()->where('name', 'Kontributor')->pluck('id')[0],
+            'donation' => $request['donation'],
+            'quantity' => $request['quantity'],
+            'status' => 'sudah',
+        ]);
         $donation->remain = $donation->remain - $request['quantity'];
 
         $donation->save();

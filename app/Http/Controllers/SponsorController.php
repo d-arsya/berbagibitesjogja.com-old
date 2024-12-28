@@ -18,9 +18,15 @@ class SponsorController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $sponsors = Sponsor::paginate(10);
+        $sponsors = Sponsor::where('status', 'always')->paginate(10);
 
-        return view('pages.sponsor.index', ['sponsors' => $sponsors]);
+        return view('pages.sponsor.index', compact('sponsors'));
+    }
+    public function individu()
+    {
+        $sponsors = Sponsor::whereNot('status', 'always')->paginate(10);
+
+        return view('pages.sponsor.index', compact('sponsors'));
     }
 
     public function create()
@@ -31,7 +37,8 @@ class SponsorController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $data = $request->all();
-        $data["hidden"] = $request->hidden=="on";
+        $data["hidden"] = $request->hidden == "on";
+        $data["status"] = $request->status == "on" ? 'pending' : 'always';
         Sponsor::create($data);
 
         return redirect(route('sponsor.index'));
@@ -50,7 +57,7 @@ class SponsorController extends Controller implements HasMiddleware
     public function update(Request $request, Sponsor $sponsor)
     {
         $data = $request->all();
-        $data["hidden"] = $request->hidden=="on";
+        $data["hidden"] = $request->hidden == "on";
         $sponsor->update($data);
 
         return redirect(route('sponsor.index'));

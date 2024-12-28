@@ -16,7 +16,7 @@ return new class extends Migration
             $table->integer('remain');
             $table->date('take');
             $table->integer('hour');
-            $table->integer('minute');
+            $table->integer('minute')->default(0);
             $table->string('location');
             $table->string('maps');
             $table->string('message')->nullable();

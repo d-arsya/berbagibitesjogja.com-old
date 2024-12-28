@@ -12,7 +12,7 @@ Route::get('test-email', [VolunteerController::class, 'store']);
 Route::fallback(function () {
     return view('pages.coming');
 });
-Route::get('/', [VolunteerController::class,'home'])->name('volunteer.home');
+Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');
 
 
@@ -20,6 +20,7 @@ Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::post('login', 'authenticate')->name('volunteer.authenticate');
 });
+Route::get('/sponsor/individu', [SponsorController::class, 'individu'])->name('sponsor.individu');
 Route::get('/form', [HeroController::class, 'create'])->name('form.create');
 Route::post('/form', [HeroController::class, 'store'])->name('hero.store');
 Route::get('/hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel');

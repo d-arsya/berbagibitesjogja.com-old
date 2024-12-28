@@ -46,7 +46,7 @@
             </div>
             <div>
                 <p class="text-slate-600 italic text-xs md:text-sm">Total Heroes</p>
-                <p class="font-bold text-xl md:text-2xl">{{ $heroes->count() }} Orang</p>
+                <p class="font-bold text-xl md:text-2xl">{{ $heroes->sum('quantity') }} Orang</p>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('quantity');
             $table->integer('weight');
-            $table->enum('unit', ['gr', 'ltr']);
+            $table->enum('unit', ['gr', 'ml']);
             $table->string('notes')->nullable(true);
             $table->timestamps();
         });

@@ -28,7 +28,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $sponsors = Sponsor::all();
+        $sponsors = Sponsor::whereNot('status', 'done')->get();
 
         return view('pages.donation.create', ['sponsors' => $sponsors]);
     }
@@ -38,7 +38,12 @@ class DonationController extends Controller implements HasMiddleware
         $data = $request->all();
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
-        Donation::create($data);
+        $donation = Donation::create($data);
+        $sponsor = $donation->sponsor();
+        if ($sponsor->status == 'pending') {
+            $sponsor->status = 'done';
+            $sponsor->save();
+        }
 
         return redirect(route('donation.index'));
     }

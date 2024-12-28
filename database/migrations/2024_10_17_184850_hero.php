@@ -21,6 +21,7 @@ return new class extends Migration
             $table->enum('status', ['sudah', 'belum']);
             $table->foreignIdFor(Donation::class, 'donation');
             $table->char('code', 6)->nullable();
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
         Schema::create('backups', function (Blueprint $table) {
