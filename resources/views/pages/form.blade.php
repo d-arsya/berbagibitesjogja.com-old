@@ -139,5 +139,34 @@
             </div>
         @endif
     </div>
-
+    <h1 class="font-bold text-navy text-xl md:text-2xl my-12">BBJ Dalam Data</h1>
+    <div class="flex flex-row justify-center md:justify-between flex-wrap gap-6 mt-3">
+        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-80 flex gap-2">
+            <div class="bg-tosca rounded-full px-2.5 py-2 w-max flex justify-center items-center">
+                <img width="36px" src="{{ asset('assets/donate.svg') }}" alt="">
+            </div>
+            <div>
+                <p class="text-slate-600 italic text-xs md:text-sm">Total Aksi</p>
+                <p class="font-bold text-xl md:text-2xl">{{ $donations_sum }} Aksi</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-80 flex gap-2">
+            <div class="bg-tosca rounded-full px-2 pb-3 w-max flex justify-center items-center">
+                <img width="40px" src="{{ asset('assets/food.svg') }}" alt="">
+            </div>
+            <div>
+                <p class="text-slate-600 italic text-xs md:text-sm">Total Makanan</p>
+                <p class="font-bold text-xl md:text-2xl">{{ $foods }} Kg</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-80 flex gap-2">
+            <div class="bg-tosca rounded-full p-2 w-max flex justify-center items-center">
+                <img width="36px" src="{{ asset('assets/people.svg') }}" alt="">
+            </div>
+            <div>
+                <p class="text-slate-600 italic text-xs md:text-sm">Total Heroes</p>
+                <p class="font-bold text-xl md:text-2xl">{{ $heroes }} Orang</p>
+            </div>
+        </div>
+    </div>
 @endsection

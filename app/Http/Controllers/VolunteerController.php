@@ -106,9 +106,7 @@ class VolunteerController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-
-        // return redirect("https://berbagibitesjogja.site");
-        return redirect('http://bbj.test/login');
+        return redirect()->route('volunteer.home');
     }
 
     public function authenticate(Request $request)

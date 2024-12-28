@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donation\Donation;
+use App\Models\Donation\Food;
 use App\Models\Heroes\Backup;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Faculty;
@@ -39,7 +40,11 @@ class HeroController extends Controller implements HasMiddleware
     {
         $donations = Donation::where('status', 'aktif')->get();
 
-        return view('pages.form', ['donations' => $donations]);
+        $donations_sum = Donation::all()->count();
+        $foods = round(Food::all()->sum('weight') / 1000);
+        $heroes = Hero::all()->count();
+
+        return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes'));
     }
 
     public function contributor(Request $request)
@@ -51,7 +56,7 @@ class HeroController extends Controller implements HasMiddleware
         for ($i = 0; $i < $request['quantity']; $i++) {
             Hero::create([
                 'name' => $request['name'],
-                'faculty' => Faculty::all()->where('name','Kontributor')->pluck('id')[0],
+                'faculty' => Faculty::all()->where('name', 'Kontributor')->pluck('id')[0],
                 'donation' => $request['donation'],
                 'status' => 'sudah',
             ]);
@@ -72,7 +77,7 @@ class HeroController extends Controller implements HasMiddleware
         $request->validate([
             'phone' => 'regex:/^8/',
         ]);
-        $request['phone'] = '62'.$request['phone'];
+        $request['phone'] = '62' . $request['phone'];
         $code = $this->generate();
         $phone = $donation->heroes()->pluck('phone');
         if ($phone->contains($request['phone'])) {
