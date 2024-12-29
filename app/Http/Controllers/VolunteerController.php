@@ -11,6 +11,7 @@ use App\Models\Volunteer\Division;
 use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\Program;
 use App\Models\Volunteer\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
@@ -23,6 +24,28 @@ class VolunteerController extends Controller
 {
     public function home()
     {
+        $currentDate = Carbon::now();
+        $fourMonthsAgo = Carbon::now()->subMonths(5);
+
+        $donations = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['food', 'hero'])->get();
+        $groupedData = $donations->groupBy(function ($donation) {
+            return Carbon::parse($donation->take)->format('Y-m'); // Format tahun-bulan (YYYY-MM)
+        });
+        $lastData = [];
+        foreach ($groupedData as $key => $item) {
+            $hero_count = 0;
+            $food_count = 0;
+
+            foreach ($item as $data) {
+                $hero_count += $data->hero->sum('quantity');
+                $food_count += $data->food->sum('weight') / 1000;
+            }
+            $lastData[] = [
+                "bulan" => Carbon::parse($key)->format('F'),
+                "heroes" => $hero_count,
+                "foods" => $food_count
+            ];
+        }
         if (!auth()->user()) {
             return redirect()->action([HeroController::class, 'create']);
         }
@@ -32,7 +55,7 @@ class VolunteerController extends Controller
         $volunteers = User::all();
         $heroes = Hero::all();
         $faculties = Faculty::whereNotIn('name', ['Kontributor', 'Lainnya'])->with('heroes')->get();
-        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties'));
+        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData'));
     }
     public function index()
     {

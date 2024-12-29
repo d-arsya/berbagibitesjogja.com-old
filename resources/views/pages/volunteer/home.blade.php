@@ -66,12 +66,22 @@
     </div>
     <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Berdasarkan Fakultas</h1>
     <div>
-        <canvas id="myChart" class="h-max"></canvas>
+        <canvas id="facultyStatictics" class="h-max"></canvas>
+    </div>
+    <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Heroes {{ count($lastData) }} Bulan Terakhir</h1>
+    <div>
+        <canvas id="heroStatistics" class="h-max"></canvas>
+    </div>
+    <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Makanan {{ count($lastData) }} Bulan Terakhir</h1>
+    <div>
+        <canvas id="foodStatistics" class="h-max"></canvas>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        const ctx = document.getElementById('myChart');
+        const facultyStatictics = document.getElementById('facultyStatictics');
+        const heroStatistics = document.getElementById('heroStatistics');
+        const foodStatistics = document.getElementById('foodStatistics');
 
         const labels = [
             @foreach ($faculties as $item)
@@ -79,29 +89,11 @@
             @endforeach
         ];
         const backgroundColors = [
-            'rgb(255, 99, 132)', // Red
-            'rgb(54, 162, 235)', // Blue
-            'rgb(255, 205, 86)', // Yellow
-            'rgb(75, 192, 192)', // Aqua
-            'rgb(153, 102, 255)', // Purple
-            'rgb(255, 159, 64)', // Orange
-            'rgb(201, 203, 207)', // Grey
-            'rgb(0, 128, 128)', // Teal
-            'rgb(128, 0, 128)', // Dark Purple
-            'rgb(128, 128, 0)', // Olive
-            'rgb(0, 128, 0)', // Dark Green
-            'rgb(255, 0, 255)', // Magenta
-            'rgb(0, 255, 255)', // Cyan
-            'rgb(255, 128, 0)', // Bright Orange
-            'rgb(0, 255, 0)', // Bright Green
-            'rgb(255, 0, 0)', // Bright Red
-            'rgb(0, 0, 255)', // Bright Blue
-            'rgb(192, 192, 192)', // Silver
-            'rgb(128, 0, 0)', // Dark Red
-            'rgb(0, 0, 128)', // Dark Blue
-            'rgb(64, 224, 208)', // Turquoise
-            'rgb(255, 215, 0)' // Gold
-        ];
+  "rgb(255, 255, 255)", "rgb(20, 20, 20)", "rgb(255, 255, 0)", "rgb(0, 255, 255)", "rgb(255, 0, 255)",
+  "rgb(255, 128, 0)", "rgb(0, 128, 128)", "rgb(0, 255, 0)", "rgb(128, 0, 128)", "rgb(255, 0, 0)",
+  "rgb(128, 255, 0)", "rgb(0, 128, 255)", "rgb(255, 64, 0)", "rgb(255, 64, 128)", "rgb(64, 128, 255)",
+  "rgb(255, 192, 0)", "rgb(0, 192, 192)", "rgb(0, 64, 0)", "rgb(128, 0, 255)", "rgb(255, 200, 150)", "rgb(64, 64, 64)"
+];
         const data = [
             @foreach ($faculties as $item)
                 {{ $item->heroes->count() }},
@@ -120,7 +112,7 @@
         const sortedData = combinedData.map(item => item.value);
         const sortedColors = combinedData.map(item => item.color);
 
-        new Chart(ctx, {
+        new Chart(facultyStatictics, {
             type: window.innerWidth < 768 ? 'doughnut' : 'bar',
             options: {
                 indexAxis: "y",
@@ -163,11 +155,43 @@
                     data: sortedData,
                     barThickness: 20,
                     borderRadius: window.innerWidth < 768 ? 0 : 5,
-                    backgroundColor: sortedColors,
+                    backgroundColor: window.innerWidth < 768 ?sortedColors:['#21568A'],
                     borderWidth: 1,
                     hoverOffset: 4
                 }]
             },
         });
+        let monthName = `{{!! json_encode(array_column($lastData, 'bulan')) !!}}`
+        let heroSum = `{{!! json_encode(array_column($lastData, 'heroes')) !!}}`
+        let foodSum = `{{!! json_encode(array_column($lastData, 'foods')) !!}}`
+        monthName = JSON.parse(monthName.replace('{','').replace('}',''))
+        heroSum = JSON.parse(heroSum.replace('{','').replace('}',''))
+        foodSum = JSON.parse(foodSum.replace('{','').replace('}',''))
+        new Chart(foodStatistics, {
+            type: 'line',
+            data: {
+                labels: monthName,
+                datasets: [{
+                    label: 'Surplus Food (kg)',
+                    data: foodSum,
+                    fill: false,
+                    borderColor: '#21568A',
+                    tension: 0.1
+                }]
+            }
+        })
+        new Chart(heroStatistics, {
+            type: 'line',
+            data: {
+                labels: monthName,
+                datasets: [{
+                    label: 'Penerima',
+                    data: heroSum,
+                    fill: false,
+                    borderColor: '#0395AF',
+                    tension: 0.1
+                }]
+            }
+        })
     </script>
 @endsection
