@@ -174,9 +174,11 @@
                 datasets: [{
                     label: 'Surplus Food (kg)',
                     data: foodSum,
-                    fill: false,
+                    fill: true,
                     borderColor: '#21568A',
-                    tension: 0.1
+                    tension: 0.25,
+                    borderWidth:2.5,
+                    backgroundColor:'rgba(33, 86, 138, 0.1)'
                 }]
             }
         })
@@ -187,9 +189,11 @@
                 datasets: [{
                     label: 'Penerima',
                     data: heroSum,
-                    fill: false,
+                    fill: true,
                     borderColor: '#0395AF',
-                    tension: 0.1
+                    tension: 0.25,
+                    borderWidth:2.5,
+                    backgroundColor:'rgba(3, 149, 175, 0.1)'
                 }]
             }
         })
