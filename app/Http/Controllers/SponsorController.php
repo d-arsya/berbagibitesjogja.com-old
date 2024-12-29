@@ -4,17 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation\Sponsor;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 
-class SponsorController extends Controller implements HasMiddleware
+class SponsorController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth'),
-        ];
-    }
 
     public function index()
     {

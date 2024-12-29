@@ -4,6 +4,12 @@
         class="bg-lime-500 hover:bg-lime-700 px-4 py-1 text-white rounded-md shadow-md mr-3">
         + Tambah
     </a>
+    <form action="{{ route('volunteer.send') }}" method="post" class="inline">
+        @csrf
+        <button type="submit" class="bg-tosca-500 hover:bg-tosca-700 px-4 py-1 text-white rounded-md shadow-md mr-3">
+            Kirim notifikasi ({{ $pendingMails }})
+        </button>
+    </form>
     <div class="mt-6">
         <table class="mt-6 shadow-md sm:rounded-lg text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">

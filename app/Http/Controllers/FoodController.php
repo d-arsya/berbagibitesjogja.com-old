@@ -5,18 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 
-class FoodController extends Controller implements HasMiddleware
+class FoodController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth'),
-        ];
-    }
-
     public function index()
     {
         $donations = Donation::where('status', 'aktif')->get();

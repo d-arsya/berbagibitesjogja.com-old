@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendMailJob;
 use App\Mail\VolunteerRegister;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
@@ -12,6 +13,8 @@ use App\Models\Volunteer\Program;
 use App\Models\Volunteer\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
@@ -36,9 +39,10 @@ class VolunteerController extends Controller
         if (auth()->user()->role != 'super') {
             return redirect()->route('volunteer.home');
         }
+        $pendingMails = DB::table('jobs')->count();
         $users = User::all();
 
-        return view('pages.volunteer.index', compact('users'));
+        return view('pages.volunteer.index', compact('users', 'pendingMails'));
     }
 
     public function create()
@@ -54,11 +58,15 @@ class VolunteerController extends Controller
         $password = $this->uniqueString();
         $request['phone'] = str_replace('08', '628', $request->phone);
         $request['password'] = Hash::make($password);
-        $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
         $user = User::create($request->all());
-        $user->photo = $photo;
-        $user->save();
-        Mail::to(['email' => $user->email])->send(new VolunteerRegister($user, $password));
+        if ($request->hasFile('avatar')) {
+            $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
+            $user->photo = $photo;
+            $user->save();
+        }
+        Mail::to(['email' => $user->email])
+            ->bcc('kamaluddinarsyadfadllillah@mail.ugm.ac.id')
+            ->queue(new VolunteerRegister($user, $password));
 
         return redirect()->route('volunteer.index');
     }
@@ -72,6 +80,11 @@ class VolunteerController extends Controller
     }
 
     public function edit(string $id) {}
+    public function send()
+    {
+        Bus::dispatch(new SendMailJob());
+        return back();
+    }
 
     public function update(Request $request, User $volunteer)
     {
