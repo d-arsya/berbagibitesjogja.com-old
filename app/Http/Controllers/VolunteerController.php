@@ -160,7 +160,7 @@ class VolunteerController extends Controller
         $user = Socialite::driver('google')->user();
         $volunteer = User::where('email', $user->email)->first();
         if (!$volunteer) {
-            return redirect()->route('login');
+            return redirect()->route('volunteer.home');
         }
         $volunteer->name = $user->name;
         $volunteer->photo = $user->avatar;
