@@ -29,7 +29,7 @@ class FoodController extends Controller
         $donation = $food->donation();
         $foods = Food::orderBy('id', 'desc')->paginate(10);
 
-        return view('pages.food.edit', compact('donations', 'food', 'foods'));
+        return view('pages.food.edit', compact('donation', 'food', 'foods'));
     }
 
     public function update(Request $request, Food $food)
