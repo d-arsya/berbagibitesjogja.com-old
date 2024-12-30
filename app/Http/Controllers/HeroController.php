@@ -31,7 +31,7 @@ class HeroController extends Controller implements HasMiddleware
 
     public function backups()
     {
-        $backups = Backup::orderBy('updated _at', 'desc')->paginate(30);
+        $backups = Backup::orderBy('updated_at', 'desc')->paginate(30);
 
         return view('pages.hero.backups', compact('backups'));
     }
