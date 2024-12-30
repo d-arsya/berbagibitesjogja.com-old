@@ -9,6 +9,7 @@ use App\Models\Donation\Food;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Division;
 use App\Models\Volunteer\Faculty;
+use App\Models\Volunteer\Precence;
 use App\Models\Volunteer\Program;
 use App\Models\Volunteer\User;
 use Carbon\Carbon;
@@ -51,11 +52,12 @@ class VolunteerController extends Controller
         }
         $user = auth()->user();
         $donations = Donation::all();
+        $precence = Precence::where('status', 'active')->count();
         $foods = Food::all();
         $volunteers = User::all();
         $heroes = Hero::all();
         $faculties = Faculty::whereNotIn('name', ['Kontributor', 'Lainnya'])->with('heroes')->get();
-        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData'));
+        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData', 'precence'));
     }
     public function index()
     {

@@ -3,6 +3,7 @@
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
+use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
@@ -10,6 +11,7 @@ use Illuminate\Support\Facades\Route;
 Route::fallback(function () {
     return view('pages.coming');
 });
+Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');
 
@@ -20,6 +22,8 @@ Route::controller(VolunteerController::class)->group(function () {
     Route::post('volunteer/send-mails', 'send')->name('volunteer.send')->middleware('auth');
 });
 Route::middleware('auth')->group(function () {
+    Route::get('volunteer/precence/qr', [PrecenceController::class, 'getQrCode'])->name('precence.qr');
+    Route::resource('volunteer/precence', PrecenceController::class);
     Route::resource('volunteer', VolunteerController::class);
     Route::resource('food', FoodController::class)->except(['show', 'create']);
     Route::get('/sponsor/individu', [SponsorController::class, 'individu'])->name('sponsor.individu');

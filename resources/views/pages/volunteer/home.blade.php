@@ -4,7 +4,7 @@
         <div class="flex md:w-max w-full justify-start gap-2">
             <div class="text-start">
                 <p>Divisi : {{ $user->division()->name }} ({{ $user->role }})</p>
-                <p>{{ $user->point }} Aksi</p>
+                <p>{{ $user->attendances->count() }} Aksi</p>
             </div>
 
         </div>
@@ -20,6 +20,24 @@
 
         </a>
 
+    </div>
+    <div class="flex justify-start gap-x-4 flex-row gap-y-3 my-4">
+        @if ($user->role=='super' || $user->division()->name=='Friend')
+        <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
+        @endif
+        @if ($user->role=='super')
+            
+        <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('volunteer.index') }}">Volunteer</a>
+        @endif
+        @if ($precence==1)
+        <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.qr', 'scan') }}">Scan QR</a>
+     
+                <a href="{{ route('precence.qr', 'view') }}"
+                    class="bg-navy-500 hover:bg-navy-600 p-2 text-white rounded-md shadow-md ml-3">
+                    Lihat QR Code
+                </a>
+            
+        @endif
     </div>
     <div class="flex flex-row justify-center md:justify-between flex-wrap gap-6 mt-3">
         <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">
@@ -55,10 +73,7 @@
             </div>
             <div>
                 <p class="text-slate-600 italic text-xs md:text-sm">Total Volunteer
-                    @if ($user->role == 'super')
-                        <a class="bg-navy p-1 rounded-md text-white text-xs font-normal"
-                            href="{{ route('volunteer.index') }}">Kelola</a>
-                    @endif
+                    
                 </p>
                 <p class="font-bold text-xl md:text-2xl">{{ $volunteers->count() }} Orang</p>
             </div>
