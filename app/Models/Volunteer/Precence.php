@@ -28,6 +28,6 @@ class Precence extends Model
     }
     public function attendance()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class)->with('user');
     }
 }

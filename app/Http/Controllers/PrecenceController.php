@@ -78,7 +78,8 @@ class PrecenceController extends Controller
     public function show(Precence $precence)
     {
         $user = auth()->user();
-        return view('pages.precence.show', compact('precence'));
+        $attendances = $precence->attendance();
+        return view('pages.precence.show', compact('precence', 'attendances'));
     }
 
     /**
@@ -95,6 +96,12 @@ class PrecenceController extends Controller
      */
     public function update(Request $request, Precence $precence)
     {
+        if ($request->has('attendance_id')) {
+            $attendance = Attendance::find($request->attendance_id);
+            $attendance->point = $request->point;
+            $attendance->save();
+            return redirect()->back();
+        }
         $precence->update($request->all());
         return redirect()->route('precence.index');
     }

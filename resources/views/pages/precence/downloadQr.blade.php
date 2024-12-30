@@ -6,7 +6,7 @@
         <script type="module">
             import "https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js";
             const data =
-                "https://heroes.berbagibitesjogja.site/heroes/abcent/attendance?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
+                "{{ env('APP_URL', 'https://heroes.berbagibitesjogja.site') }}/heroes/abcent/attendance?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
 
             const qrCode = new QRCodeStyling({
                 width: 1000,
@@ -43,11 +43,11 @@
         <script type="module">
             import "https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js";
             const data =
-                "https://heroes.berbagibitesjogja.site/heroes/abcent/attendance?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
+                "{{ env('APP_URL', 'https://heroes.berbagibitesjogja.site') }}/heroes/abcent/attendance?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
 
             const qrCode = new QRCodeStyling({
-                width: 400,
-                height: 400,
+                width: 300,
+                height: 300,
                 type: "svg",
                 data: data,
                 image: "https://media.berbagibitesjogja.site/logo_transparan.png",
@@ -60,7 +60,7 @@
                 },
                 imageOptions: {
                     crossOrigin: "anonymous",
-                    margin: 30,
+                    margin: 10,
                 },
             });
             qrCode.append(document.getElementById("canvas"));
@@ -157,7 +157,9 @@
                     onDecodeError: (err) => {
                         console.log(err)
                     },
-                    // maxScansPerSecond: 1
+                    maxScansPerSecond: 1,
+                    highlightScanRegion: true,
+                    highlightCodeOutline: true,
                 });
             qrScanner.start()
 

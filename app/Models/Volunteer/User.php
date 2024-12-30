@@ -30,4 +30,8 @@ class User extends Authenticatable
     {
         return $this->hasMany(Attendance::class);
     }
+    public function points()
+    {
+        return $this->attendances->sum('point');
+    }
 }

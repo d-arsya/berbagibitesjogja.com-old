@@ -29,6 +29,7 @@ return new class extends Migration
             $table->foreignIdFor(Precence::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
             $table->integer('distance');
+            $table->integer('point')->nullable();
             $table->unique(['precence_id', 'user_id']);
             $table->timestamps();
         });

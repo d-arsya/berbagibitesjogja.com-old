@@ -61,11 +61,11 @@ class VolunteerController extends Controller
     }
     public function index()
     {
-        if (auth()->user()->role != 'super') {
+        if (auth()->user()->role == 'member') {
             return redirect()->route('volunteer.home');
         }
         $pendingMails = DB::table('jobs')->count();
-        $users = User::all();
+        $users = User::with('attendances')->get();
 
         return view('pages.volunteer.index', compact('users', 'pendingMails'));
     }
@@ -82,6 +82,7 @@ class VolunteerController extends Controller
     {
         $password = $this->uniqueString();
         $request['phone'] = str_replace('08', '628', $request->phone);
+        // $request['password'] = Hash::make('admin');
         $request['password'] = Hash::make($password);
         $user = User::create($request->all());
         if ($request->hasFile('avatar')) {
@@ -113,7 +114,7 @@ class VolunteerController extends Controller
 
     public function update(Request $request, User $volunteer)
     {
-        $volunteer->update($request->all());
+        $volunteer->update($request->except('password'));
         if ($request->file('photo')) {
             if ($volunteer->photo) {
                 Storage::disk('public')->delete($volunteer->photo);
@@ -121,6 +122,11 @@ class VolunteerController extends Controller
             $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
             $volunteer->photo = $photo;
             $volunteer->save();
+        }
+        if ($request->password) {
+            $volunteer->password = Hash::make($request->password);
+            $volunteer->save();
+            return redirect()->action([VolunteerController::class, 'logout']);
         }
         return redirect()->route('volunteer.home');
     }

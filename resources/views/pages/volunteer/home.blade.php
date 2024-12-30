@@ -21,11 +21,11 @@
         </a>
 
     </div>
-    <div class="flex justify-start gap-x-4 flex-row gap-y-3 my-4">
+    <div class="flex justify-start flex-row gap-y-3 my-4 gap-x-4 flex-wrap">
         @if ($user->role=='super' || $user->division()->name=='Friend')
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
         @endif
-        @if ($user->role=='super')
+        @if ($user->role!='member')
             
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('volunteer.index') }}">Volunteer</a>
         @endif
@@ -33,7 +33,7 @@
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.qr', 'scan') }}">Scan QR</a>
      
                 <a href="{{ route('precence.qr', 'view') }}"
-                    class="bg-navy-500 hover:bg-navy-600 p-2 text-white rounded-md shadow-md ml-3">
+                    class="bg-navy-500 hover:bg-navy-600 p-2 text-white rounded-md shadow-md">
                     Lihat QR Code
                 </a>
             
