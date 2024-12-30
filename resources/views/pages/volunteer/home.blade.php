@@ -14,7 +14,7 @@
                 <p>{{ $user->program()->name }}</p>
             </div>
             <div class="w-12 block rounded-full overflow-hidden">
-                <img src="{{ $user->photo ? Storage::url($user->photo) : asset('assets/default_avatar.png') }}"
+                <img src="{{ $user->photo}}"
                     alt="">
             </div>
 

@@ -7,10 +7,17 @@ use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 Route::fallback(function () {
     return view('pages.coming');
 });
+
+Route::get('/auth/google', function () {
+    return Socialite::driver('google')->redirect();
+})->name('auth.google');
+
+Route::get('/auth/google/callback', [VolunteerController::class, 'authenticate']);
 Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');

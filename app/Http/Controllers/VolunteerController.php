@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
+use Laravel\Socialite\Facades\Socialite;
 
 class VolunteerController extends Controller
 {
@@ -85,14 +86,14 @@ class VolunteerController extends Controller
         // $request['password'] = Hash::make('admin');
         $request['password'] = Hash::make($password);
         $user = User::create($request->all());
-        if ($request->hasFile('avatar')) {
-            $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
-            $user->photo = $photo;
-            $user->save();
-        }
-        Mail::to(['email' => $user->email])
-            ->bcc('kamaluddinarsyadfadllillah@mail.ugm.ac.id')
-            ->queue(new VolunteerRegister($user, $password));
+        // if ($request->hasFile('avatar')) {
+        //     $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
+        //     $user->photo = $photo;
+        //     $user->save();
+        // }
+        // Mail::to(['email' => $user->email])
+        //     ->bcc('kamaluddinarsyadfadllillah@mail.ugm.ac.id')
+        //     ->queue(new VolunteerRegister($user, $password));
 
         return redirect()->route('volunteer.index');
     }
@@ -142,7 +143,8 @@ class VolunteerController extends Controller
 
     public function login()
     {
-        return view('pages.admin');
+        return redirect()->route('auth.google');
+        // return view('pages.admin');
     }
 
     public function logout(Request $request)
@@ -155,17 +157,27 @@ class VolunteerController extends Controller
 
     public function authenticate(Request $request)
     {
-        $ceredentials = $request->validate([
-            'email' => 'required',
-            'password' => 'required',
-        ]);
-        if (Auth::attempt($ceredentials)) {
-            $request->session()->regenerate();
-
-            return redirect()->intended('/');
+        $user = Socialite::driver('google')->user();
+        $volunteer = User::where('email', $user->email)->first();
+        if (!$volunteer) {
+            return redirect()->route('login');
         }
+        $volunteer->name = $user->name;
+        $volunteer->photo = $user->avatar;
+        $volunteer->save();
+        Auth::login($volunteer);
+        return redirect()->intended('/');
+        // $ceredentials = $request->validate([
+        //     'email' => 'required',
+        //     'password' => 'required',
+        // ]);
+        // if (Auth::attempt($ceredentials)) {
+        //     $request->session()->regenerate();
 
-        return back()->withErrors(['error' => 'gagal']);
+        //     return redirect()->intended('/');
+        // }
+
+        // return back()->withErrors(['error' => 'gagal']);
     }
 
     public function uniqueString($length = 20)
