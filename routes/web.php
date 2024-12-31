@@ -12,7 +12,6 @@ use Laravel\Socialite\Facades\Socialite;
 Route::fallback(function () {
     return view('pages.coming');
 });
-
 Route::get('/auth/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('auth.google');
