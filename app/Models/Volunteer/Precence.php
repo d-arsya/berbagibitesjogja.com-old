@@ -19,7 +19,7 @@ class Precence extends Model
                 $model->longitude = '110.3778869084333';
             }
             if (is_null($model->max_distance)) {
-                $model->max_distance = 20;
+                $model->max_distance = 50;
             }
             if (is_null($model->status)) {
                 $model->status = 'active';

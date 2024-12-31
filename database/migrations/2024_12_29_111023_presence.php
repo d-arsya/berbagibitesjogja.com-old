@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('description')->nullable();
             $table->string('latitude')->nullable()->default('-7.775326279953496');
             $table->string('longitude')->nullable()->default('110.3778869084333');
-            $table->integer('max_distance')->nullable()->default(20);
+            $table->integer('max_distance')->nullable()->default(50);
             $table->char('code', 20);
             $table->enum('status', ['active', 'end'])->default('active');
             $table->timestamps();
