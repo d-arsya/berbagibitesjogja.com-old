@@ -12,12 +12,12 @@ Artisan::command('inspire', function () {
 Schedule::command('backup:clean')->everyThreeMinutes();
 Schedule::command('backup:run')->everyThreeMinutes();
 Schedule::call(function () {
-    $files = File::files(storage_path('app/private/BerbagibitesJogja'));
+    $files = File::files(storage_path('app/private/' . env('APP_NAME', '')));
 
     if (! empty($files)) {
         $file = $files[0];
         $fileName = $file->getFilename();
-        Storage::disk('google')->put('database/backups/'.$fileName, file_get_contents($file->getRealPath()));
+        Storage::disk('google')->put('database/backups/' . $fileName, file_get_contents($file->getRealPath()));
         File::delete($file->getRealPath());
 
         return true;
