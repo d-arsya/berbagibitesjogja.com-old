@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Storage;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
-Schedule::command('backup:clean')->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 5, 6, 7]);
-Schedule::command('backup:run')->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 5, 6, 7]);
+Schedule::command('backup:clean')->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 4, 5, 6, 7]);
+Schedule::command('backup:run')->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 4, 5, 6, 7]);
 Schedule::call(function () {
     $files = File::files(storage_path('app/private/'.env('APP_NAME', '')));
 
@@ -22,4 +22,4 @@ Schedule::call(function () {
 
         return true;
     }
-})->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 5, 6, 7]);
+})->timezone('Asia/Jakarta')->dailyAt('00.30')->days([1, 4, 5, 6, 7]);

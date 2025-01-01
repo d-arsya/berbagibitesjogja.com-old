@@ -9,6 +9,8 @@ use App\Http\Controllers\VolunteerController;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
+Route::view('print', 'print');
+
 Route::fallback(function () {
     return view('pages.coming');
 });

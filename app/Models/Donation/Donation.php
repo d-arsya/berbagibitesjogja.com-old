@@ -17,6 +17,11 @@ class Donation extends Model
         return $this->belongsTo(Sponsor::class, 'sponsor', 'id')->first();
     }
 
+    public function donatur()
+    {
+        return $this->belongsTo(Sponsor::class, 'sponsor', 'id');
+    }
+
     public function hero()
     {
         return $this->hasMany(Hero::class, 'donation', 'id');

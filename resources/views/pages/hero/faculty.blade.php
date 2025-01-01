@@ -35,6 +35,9 @@
                         <td class="px-6 py-4 hidden sm:table-cell">
                             <a href="{{ route('hero.faculty', $item->faculty) }}">
                                 {{ $item->faculty()->name }}
+                                @if ($item->quantity > 1)
+                                    ({{ $item->quantity }} Orang)
+                                @endif
                             </a>
 
                         </td>

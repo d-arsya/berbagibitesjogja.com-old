@@ -67,7 +67,9 @@
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->faculty()->name }}
-
+                            @if ($item->quantity > 1)
+                                ({{ $item->quantity }} Orang)
+                            @endif
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->phone }}
@@ -142,7 +144,7 @@
                         Jumlah
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Satuan
+                        Berat
                     </th>
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         Keterangan
@@ -163,7 +165,7 @@
 
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->unit }}
+                            {{ $item->weight }} {{ $item->unit }}
 
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
