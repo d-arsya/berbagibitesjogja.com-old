@@ -22,8 +22,6 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 
-use function Pest\Laravel\getJson;
-
 class VolunteerController extends Controller
 {
     public function home()
@@ -46,12 +44,12 @@ class VolunteerController extends Controller
                 $food_count += $data->food->sum('weight') / 1000;
             }
             $lastData[] = [
-                "bulan" => Carbon::parse($key)->format('F'),
-                "heroes" => $hero_count,
-                "foods" => $food_count
+                'bulan' => Carbon::parse($key)->format('F'),
+                'heroes' => $hero_count,
+                'foods' => $food_count,
             ];
         }
-        if (!auth()->user()) {
+        if (! auth()->user()) {
             return redirect()->action([HeroController::class, 'create']);
         }
         $user = auth()->user();
@@ -61,8 +59,10 @@ class VolunteerController extends Controller
         $volunteers = User::all();
         $heroes = Hero::all();
         $faculties = Faculty::whereNotIn('name', ['Kontributor', 'Lainnya'])->with('heroes')->get();
+
         return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData', 'precence'));
     }
+
     public function index()
     {
         if (auth()->user()->role == 'member') {
@@ -110,9 +110,11 @@ class VolunteerController extends Controller
     }
 
     public function edit(string $id) {}
+
     public function send()
     {
-        Bus::dispatch(new SendMailJob());
+        Bus::dispatch(new SendMailJob);
+
         return back();
     }
 
@@ -130,8 +132,10 @@ class VolunteerController extends Controller
         if ($request->password) {
             $volunteer->password = Hash::make($request->password);
             $volunteer->save();
+
             return redirect()->action([VolunteerController::class, 'logout']);
         }
+
         return redirect()->route('volunteer.home');
     }
 
@@ -141,6 +145,7 @@ class VolunteerController extends Controller
             Storage::disk('public')->delete($volunteer->photo);
         }
         $volunteer->delete();
+
         return back();
     }
 
@@ -155,6 +160,7 @@ class VolunteerController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
         return redirect()->route('volunteer.home');
     }
 
@@ -162,13 +168,14 @@ class VolunteerController extends Controller
     {
         $user = Socialite::driver('google')->user();
         $volunteer = User::where('email', $user->email)->first();
-        if (!$volunteer) {
+        if (! $volunteer) {
             return redirect()->route('volunteer.home');
         }
         $volunteer->name = $user->name;
         $volunteer->photo = $user->avatar;
         $volunteer->save();
         Auth::login($volunteer);
+
         return redirect()->intended('/');
         // $ceredentials = $request->validate([
         //     'email' => 'required',

@@ -52,6 +52,7 @@ class DonationController extends Controller implements HasMiddleware
     {
         $heroes = $donation->heroes();
         $foods = $donation->foods();
+
         return view('pages.donation.show', compact('donation', 'foods', 'heroes'));
     }
 

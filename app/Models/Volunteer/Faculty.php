@@ -11,7 +11,9 @@ class Faculty extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public function heroes(){
-        return $this->hasMany(Hero::class,'faculty');
+
+    public function heroes()
+    {
+        return $this->hasMany(Hero::class, 'faculty');
     }
 }

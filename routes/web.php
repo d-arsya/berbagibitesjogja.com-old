@@ -21,7 +21,6 @@ Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');
 
-
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::post('login', 'authenticate')->name('volunteer.authenticate');

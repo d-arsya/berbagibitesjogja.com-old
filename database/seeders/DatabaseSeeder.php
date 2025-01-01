@@ -120,14 +120,14 @@ class DatabaseSeeder extends Seeder
             'Pengelolaan Arsip dan Rekaman Informasi',
             'Perbankan',
         ]],
-        ['Lainnya',[]],
-        ['Kontributor',[]],
-        ['Pascasarjana',[
-            'Pascasarjana'
+        ['Lainnya', []],
+        ['Kontributor', []],
+        ['Pascasarjana', [
+            'Pascasarjana',
         ]],
     ];
 
-    private $division = ['Food', 'Sosmed', 'Fund', 'Operational Manager', 'Friend', 'Volunteer','Bendahara','Sekretaris'];
+    private $division = ['Food', 'Sosmed', 'Fund', 'Operational Manager', 'Friend', 'Volunteer', 'Bendahara', 'Sekretaris'];
 
     public function run(): void
     {

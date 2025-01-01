@@ -26,10 +26,12 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Division::class)->first();
     }
+
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
     }
+
     public function points()
     {
         return $this->attendances->sum('point');

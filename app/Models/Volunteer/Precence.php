@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Precence extends Model
 {
     protected $guarded = [];
+
     protected static function boot()
     {
         parent::boot();
@@ -26,6 +27,7 @@ class Precence extends Model
             }
         });
     }
+
     public function attendance()
     {
         return $this->hasMany(Attendance::class)->with('user');

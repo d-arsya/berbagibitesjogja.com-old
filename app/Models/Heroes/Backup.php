@@ -17,6 +17,7 @@ class Backup extends Model
     {
         return $this->belongsTo(Donation::class, 'donation', 'id')->first();
     }
+
     public function faculty()
     {
         return $this->hasOne(Faculty::class, 'id', 'faculty')->first();

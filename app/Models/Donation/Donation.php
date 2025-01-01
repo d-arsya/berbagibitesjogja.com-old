@@ -21,10 +21,12 @@ class Donation extends Model
     {
         return $this->hasMany(Hero::class, 'donation', 'id');
     }
+
     public function food()
     {
         return $this->hasMany(Food::class, 'donation', 'id');
     }
+
     public function heroes()
     {
         return $this->hasMany(Hero::class, 'donation', 'id')->get()->sortBy('status');
