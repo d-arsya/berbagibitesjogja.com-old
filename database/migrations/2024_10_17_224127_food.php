@@ -14,7 +14,7 @@ return new class extends Migration
     {
         Schema::create('foods', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Donation::class, 'donation');
+            $table->foreignIdFor(Donation::class)->constrained()->onDelete('cascade');
             $table->string('name');
             $table->string('quantity')->default('1');
             $table->integer('weight')->default(1);

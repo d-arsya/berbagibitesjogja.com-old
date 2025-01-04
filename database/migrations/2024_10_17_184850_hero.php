@@ -17,9 +17,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->foreignIdFor(Faculty::class, 'faculty');
+            $table->foreignIdFor(Faculty::class)->constrained()->onDelete('restrict');
             $table->enum('status', ['sudah', 'belum'])->default('belum');
-            $table->foreignIdFor(Donation::class, 'donation');
+            $table->foreignIdFor(Donation::class)->constrained()->onDelete('restrict');
             $table->char('code', 6)->nullable();
             $table->integer('quantity')->default(1);
             $table->timestamps();
@@ -28,8 +28,8 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone')->nullable();
-            $table->foreignIdFor(Faculty::class, 'faculty');
-            $table->foreignIdFor(Donation::class, 'donation');
+            $table->foreignIdFor(Faculty::class)->constrained()->onDelete('restrict');
+            $table->foreignIdFor(Donation::class)->constrained()->onDelete('restrict');
             $table->char('code', 6)->nullable();
             $table->timestamps();
         });
