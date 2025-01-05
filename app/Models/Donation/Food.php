@@ -15,7 +15,7 @@ class Food extends Model
 
     public function donation()
     {
-        return $this->belongsTo(Donation::class, 'donation', 'id')->first();
+        return $this->belongsTo(Donation::class)->with('sponsor');
     }
 
     public static function totalGram()

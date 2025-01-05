@@ -12,11 +12,11 @@
                         @csrf
                         <label for="donation" class="block mb-2 text-sm font-medium text-gray-900">Pilih Donasi
                             Aktif</label>
-                        <select id="donation" name="donation"
+                        <select id="donation" name="donation_id"
                             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                             <option value="">Donasi Aktif</option>
                             @foreach ($donations as $item)
-                                <option value="{{ $item->id }}">{{ $item->sponsor()->name }}
+                                <option value="{{ $item->id }}">{{ $item->sponsor->name }}
                                     ({{ $item->take }})
                                 </option>
                             @endforeach
@@ -106,10 +106,10 @@
                                 @endif
                                 <span class="md:hidden sm:table-cell block font-normal">
 
-                                    <a href="{{ route('donation.show', $item->donation()->id) }}">
-                                        {{ $item->donation()->sponsor()->name }}
+                                    <a href="{{ route('donation.show', $item->donation->id) }}">
+                                        {{ $item->donation->sponsor->name }}
                                         <span class="block italic">
-                                            {{ \Carbon\Carbon::parse($item->donation()->take)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
                                         </span>
                                     </a>
                                 </span>
@@ -124,10 +124,10 @@
 
                             </td>
                             <td class="px-2 py-4 hidden sm:table-cell">
-                                <a href="{{ route('donation.show', $item->donation()->id) }}">
-                                    {{ $item->donation()->sponsor()->name }}
+                                <a href="{{ route('donation.show', $item->donation->id) }}">
+                                    {{ $item->donation->sponsor->name }}
                                     <span class="block italic text-xs">
-                                        {{ \Carbon\Carbon::parse($item->donation()->take)->format('d-m-Y') }}
+                                        {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
                                     </span>
                                 </a>
 

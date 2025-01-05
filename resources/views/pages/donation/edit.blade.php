@@ -12,7 +12,7 @@
                 @method('PUT')
                 <div class="relative z-0 w-full mb-7 group">
                     <label for="quota" class="peer-focus:font-medium absolute text-sm -top-5 text-gray-500">Donatur</label>
-                    <input value="{{ $donation->sponsor()->name }}" type="text" id="disabled-input-2"
+                    <input value="{{ $donation->sponsor->name }}" type="text" id="disabled-input-2"
                         aria-label="disabled input 2"
                         class="bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed"
                         value="Disabled readonly input" disabled readonly>

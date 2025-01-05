@@ -14,31 +14,16 @@ class Donation extends Model
 
     public function sponsor()
     {
-        return $this->belongsTo(Sponsor::class, 'sponsor', 'id')->first();
-    }
-
-    public function donatur()
-    {
-        return $this->belongsTo(Sponsor::class, 'sponsor', 'id');
-    }
-
-    public function hero()
-    {
-        return $this->hasMany(Hero::class, 'donation', 'id');
-    }
-
-    public function food()
-    {
-        return $this->hasMany(Food::class, 'donation', 'id');
+        return $this->belongsTo(Sponsor::class);
     }
 
     public function heroes()
     {
-        return $this->hasMany(Hero::class, 'donation', 'id')->get()->sortBy('status');
+        return $this->hasMany(Hero::class);
     }
 
     public function foods()
     {
-        return $this->hasMany(Food::class, 'donation', 'id')->get();
+        return $this->hasMany(Food::class);
     }
 }

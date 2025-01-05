@@ -12,8 +12,10 @@ class Faculty extends Model
 
     protected $guarded = [];
 
+    protected $table = 'faculties';
+
     public function heroes()
     {
-        return $this->hasMany(Hero::class, 'faculty');
+        return $this->hasMany(Hero::class)->with(['faculty', 'donation']);
     }
 }

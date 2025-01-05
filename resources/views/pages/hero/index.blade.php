@@ -40,8 +40,8 @@
                         <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ $item->name }}
                             <span class="md:hidden italic font-normal text-gray-500 block">
-                                <a href="{{ route('hero.faculty', $item->faculty) }}">
-                                    {{ $item->faculty()->name }}
+                                <a href="{{ route('hero.faculty', $item->faculty_id) }}">
+                                    {{ $item->faculty->name }}
                                     @if ($item->quantity > 1)
                                         ({{ $item->quantity }} Orang)
                                     @endif
@@ -51,8 +51,8 @@
                         @auth
 
                             <td class="px-2 py-4 hidden sm:table-cell">
-                                <a href="{{ route('hero.faculty', $item->faculty) }}">
-                                    {{ $item->faculty()->name }}
+                                <a href="{{ route('hero.faculty', $item->faculty_id) }}">
+                                    {{ $item->faculty->name }}
                                     @if ($item->quantity > 1)
                                         ({{ $item->quantity }} Orang)
                                     @endif
@@ -67,16 +67,12 @@
                             </td>
                         @endauth
                         <td class="px-2 py-4 flex flex-col">
-                            @php
-                                $donation = $item->donation();
-                                $sponsor = $donation->sponsor();
-                            @endphp
-                            <a href="{{ route('donation.show', $donation->id) }}" class="block">
+                            <a href="{{ route('donation.show', $item->donation->id) }}" class="block">
                                 <span class="block">
-                                    {{ $sponsor->name }}
+                                    {{ $item->donation->sponsor->name }}
 
                                 </span>
-                                {{ \Carbon\Carbon::parse($donation->take)->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
                             </a>
 
                         </td>
@@ -89,12 +85,12 @@
         <form method="POST" action="{{ route('hero.contributor') }}"
             class="max-w-md mx-auto shadow-md px-10 bg-white  py-6 rounded-md">
             @csrf
-            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Pilih Sponsor</label>
-            <select id="donation" name="donation"
+            <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Pilih Donasi</label>
+            <select id="donation" name="donation_id"
                 class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
                 <option value="">Donasi</option>
                 @foreach ($donations as $item)
-                    <option value="{{ $item->id }}">{{ $item->sponsor()->name }}</option>
+                    <option value="{{ $item->id }}">{{ $item->sponsor->name }}</option>
                 @endforeach
             </select>
             <div class="relative z-0 w-full mb-5 group">

@@ -19,7 +19,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $donations = Donation::orderByRaw("CASE WHEN status = 'aktif' THEN 0 WHEN status = 'selesai' THEN 1 ELSE 2 END")
+        $donations = Donation::with('sponsor')->orderByRaw("CASE WHEN status = 'aktif' THEN 0 WHEN status = 'selesai' THEN 1 ELSE 2 END")
             ->orderBy('take')
             ->paginate(10);
 
@@ -39,7 +39,7 @@ class DonationController extends Controller implements HasMiddleware
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
         $donation = Donation::create($data);
-        $sponsor = $donation->sponsor();
+        $sponsor = $donation->sponsor;
         if ($sponsor->status == 'pending') {
             $sponsor->status = 'done';
             $sponsor->save();
@@ -50,8 +50,8 @@ class DonationController extends Controller implements HasMiddleware
 
     public function show(Donation $donation)
     {
-        $heroes = $donation->heroes();
-        $foods = $donation->foods();
+        $heroes = $donation->heroes()->with('faculty')->get();
+        $foods = $donation->foods;
 
         return view('pages.donation.show', compact('donation', 'foods', 'heroes'));
     }
@@ -90,7 +90,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function destroy(Donation $donation)
     {
-        if ($donation->heroes()->count() == 0 && $donation->foods()->count() == 0) {
+        if ($donation->heroes->count() == 0 && $donation->foods->count() == 0) {
             $donation->delete();
         }
 

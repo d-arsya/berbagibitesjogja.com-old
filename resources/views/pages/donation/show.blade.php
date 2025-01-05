@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    <h1 class="text-center text-xl font-bold">Daftar Heroes {{ $donation->sponsor()->name }}</h1>
+    <h1 class="text-center text-xl font-bold">Daftar Heroes {{ $donation->sponsor->name }}</h1>
     <h1 class="text-center text-sm italic">{{ $donation->take }}</h1>
     <div class="mt-3 flex gap-3 w-max">
         <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
@@ -56,7 +56,7 @@
                             {{ $item->name }}
 
                             <span class="md:hidden italic font-normal text-gray-500 block">
-                                {{ $item->faculty()->name }}
+                                {{ $item->faculty->name }}
                                 @if ($item->quantity > 1)
                                     ({{ $item->quantity }} Orang)
                                 @endif
@@ -66,7 +66,7 @@
                             </span>
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->faculty()->name }}
+                            {{ $item->faculty->name }}
                             @if ($item->quantity > 1)
                                 ({{ $item->quantity }} Orang)
                             @endif

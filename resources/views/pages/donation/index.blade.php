@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('container')
     @auth
-        @if (in_array(auth()->user()->role, ['core', 'super']) || auth()->user()->division()->name == 'Food')
+        @if (in_array(auth()->user()->role, ['core', 'super']) || auth()->user()->division->name == 'Food')
             <a href="{{ route('donation.create') }}" class="bg-lime-400 hover:bg-lime-600 p-2 text-white rounded-md shadow-md">
                 + Tambah
             </a>
@@ -44,13 +44,13 @@
             </thead>
             <tbody>
                 @foreach ($donations as $item)
-                    @if (auth()->user() || !$item->sponsor()->hidden)
+                    @if (auth()->user() || !$item->sponsor->hidden)
                         <tr class="odd:bg-white text-center">
                             <td class="px-2 py-4 hidden sm:table-cell">
                                 {{ $item->take }}
                             </td>
                             <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $item->sponsor()->name }}
+                                {{ $item->sponsor->name }}
                                 <span class="md:hidden italic font-normal text-gray-500 block">
                                     @auth
                                         {{ $item->quota - $item->remain }}/{{ $item->quota }}
@@ -86,7 +86,7 @@
 
 
                                     </a>
-                                    @if (in_array(auth()->user()->role, ['core', 'super']) || auth()->user()->division()->name == 'Food')
+                                    @if (in_array(auth()->user()->role, ['core', 'super']) || auth()->user()->division->name == 'Food')
                                         <a href="{{ route('donation.edit', $item->id) }}"
                                             class="p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">
                                             <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"

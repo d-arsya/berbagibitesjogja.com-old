@@ -9,14 +9,14 @@ class SponsorController extends Controller
 {
     public function index()
     {
-        $sponsors = Sponsor::where('status', 'always')->paginate(10);
+        $sponsors = Sponsor::with('donation')->where('status', 'always')->paginate(10);
 
         return view('pages.sponsor.index', compact('sponsors'));
     }
 
     public function individu()
     {
-        $sponsors = Sponsor::whereNot('status', 'always')->paginate(10);
+        $sponsors = Sponsor::with('donation')->whereNot('status', 'always')->paginate(10);
 
         return view('pages.sponsor.index', compact('sponsors'));
     }
@@ -38,7 +38,7 @@ class SponsorController extends Controller
 
     public function show(Sponsor $sponsor)
     {
-        $donations = $sponsor->donation();
+        $donations = $sponsor->donation;
 
         return view('pages.sponsor.show', compact('sponsor', 'donations'));
     }
@@ -59,7 +59,7 @@ class SponsorController extends Controller
 
     public function destroy(Sponsor $sponsor)
     {
-        if ($sponsor->donation()->count() == 0) {
+        if ($sponsor->donation->count() == 0) {
             $sponsor->delete();
         }
 

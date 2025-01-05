@@ -3,7 +3,7 @@
     <div class="flex justify-between flex-wrap-reverse flex-row gap-y-3">
         <div class="flex md:w-max w-full justify-start gap-2">
             <div class="text-start">
-                <p>Divisi : {{ $user->division()->name }} ({{ $user->role }})</p>
+                <p>Divisi : {{ $user->division->name }} ({{ $user->role }})</p>
                 <p>{{ $user->attendances->count() }} Aksi</p>
             </div>
 
@@ -11,7 +11,7 @@
         <a href="{{ route('volunteer.show', $user->id) }}" class="flex md:w-max w-full justify-end gap-2">
             <div class="text-end">
                 <p>{{ $user->name }}</p>
-                <p>{{ $user->program()->name }}</p>
+                <p>{{ $user->program->name }}</p>
             </div>
             <div class="w-12 block rounded-full overflow-hidden">
                 <img src="{{ $user->photo}}"
@@ -22,7 +22,7 @@
 
     </div>
     <div class="flex justify-start flex-row gap-y-3 my-4 gap-x-4 flex-wrap">
-        @if ($user->role=='super' || $user->division()->name=='Friend')
+        @if ($user->role=='super' || $user->division->name=='Friend')
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
         @endif
         @if ($user->role!='member')

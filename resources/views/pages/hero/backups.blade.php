@@ -34,15 +34,15 @@
                             {{ $item->name }}
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->faculty()->name }}
+                            {{ $item->faculty->name }}
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->phone }}
                         </td>
                         <td class="px-6 py-4">
                             @php
-                                $donation = $item->donation();
-                                $sponsor = $donation->sponsor();
+                                $donation = $item->donation;
+                                $sponsor = $donation->sponsor;
                             @endphp
                             <a href="{{ route('sponsor.show', $sponsor->id) }}" class="block">
                                 {{ $sponsor->name }}

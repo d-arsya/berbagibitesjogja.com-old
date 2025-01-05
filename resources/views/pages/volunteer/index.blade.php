@@ -9,13 +9,6 @@
                         class="bg-lime-500 hover:bg-lime-700 px-4 py-1 text-white rounded-md shadow-md mr-3">
                         + Tambah
                     </a>
-                    <form action="{{ route('volunteer.send') }}" method="post" class="inline">
-                        @csrf
-                        <button type="submit"
-                            class="bg-tosca-500 hover:bg-tosca-700 px-4 py-1 text-white rounded-md shadow-md mr-3">
-                            Kirim notifikasi ({{ $pendingMails }})
-                        </button>
-                    </form>
                 @endif
 
     </div>
@@ -51,12 +44,12 @@
                             <a href="https://wa.me/{{ $item->phone }}">{{ $item->phone }}</a>
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->program()->faculty()->first()->name }}
+                            {{ $item->program->faculty->name }}
                             <br>
-                            {{ $item->program()->name }}
+                            {{ $item->program->name }}
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->division()->name }} ({{ $item->role }})
+                            {{ $item->division->name }} ({{ $item->role }})
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->points() }} poin

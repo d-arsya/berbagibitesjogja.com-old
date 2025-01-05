@@ -11,7 +11,7 @@
                     $donation = $donations->find(session('donation'));
                 @endphp
 
-                <h1 class="text-center text-xl font-bold text-tosca">BBJ X {{ $donation->sponsor()->name }}</h1>
+                <h1 class="text-center text-xl font-bold text-tosca">BBJ X {{ $donation->sponsor->name }}</h1>
                 <h1 class="text-center text-tosca text-xs italic font-semibold rounded-md mt-2">
                     {{ Carbon::parse($donation->take)->isoFormat('dddd, DD MMMM Y') }}</h1>
                 <div class="w-full rounded-lg bg-tosca mt-8 py-5 px-6">
@@ -36,7 +36,7 @@
                         class="text-xs text-center block text-white font-medium text-center italic">@berbagibitesjogja</a>
                 </div>
                 <div class="w-full rounded-lg bg-tosca mt-8 py-5 px-6">
-                    <h1 class="text-md text-white font-medium text-center italic mb-4">Informasi take
+                    <h1 class="text-md text-white font-medium text-center italic mb-4">Informasi Pengambilan
                     </h1>
                     <a href="{{ $donation->maps }}"
                         class="text-center text-white text-md italic font-medium rounded-md mt-3"><svg class="inline"
@@ -56,14 +56,14 @@
                     @foreach ($donations as $id => $donation)
                         <a href="#donatur{{ $id }}"
                             class="link-tab {{ $id == 0 ? 'bg-navy text-white' : 'text-navy' }} border-2 border-navy hover:bg-navy hover:text-white text-sm  p-2 rounded-md flex-grow text-center">
-                            {{ $donation->sponsor()->name }}
+                            {{ $donation->sponsor->name }}
                         </a>
                     @endforeach
                 </div>
                 <div class="p-4">
                     @foreach ($donations as $id => $donation)
                         <div id="donatur{{ $id }}" class="tab-content {{ $id != 0 ? 'hidden' : '' }}">
-                            <h1 class="text-center text-xl font-bold text-tosca">BBJ X {{ $donation->sponsor()->name }}
+                            <h1 class="text-center text-xl font-bold text-tosca">BBJ X {{ $donation->sponsor->name }}
                             </h1>
                             <h1 class="text-center text-tosca text-xs italic font-semibold rounded-md mt-2">
                                 {{ Carbon::parse($donation->take)->isoFormat('dddd, DD MMMM Y') }}</h1>

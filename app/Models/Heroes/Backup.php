@@ -15,11 +15,11 @@ class Backup extends Model
 
     public function donation()
     {
-        return $this->belongsTo(Donation::class, 'donation', 'id')->first();
+        return $this->belongsTo(Donation::class);
     }
 
     public function faculty()
     {
-        return $this->hasOne(Faculty::class, 'id', 'faculty')->first();
+        return $this->belongsTo(Faculty::class);
     }
 }

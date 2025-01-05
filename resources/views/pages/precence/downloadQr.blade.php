@@ -131,13 +131,13 @@
                         userLong: scanned[4]
                     }
                     fetch('/abcence/distance', {
-                            method: 'POST', // HTTP method
+                            method: 'POST',
                             headers: {
-                                'Content-Type': 'application/json', // Indicate the data format
+                                'Content-Type': 'application/json',
                                 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute(
-                                    'content') // CSRF token for Laravel
+                                    'content')
                             },
-                            body: JSON.stringify(data) // Convert data to JSON format
+                            body: JSON.stringify(data)
                         })
                         .then(response => {
                             document.querySelector('#loading').classList.add('hidden')
@@ -145,7 +145,7 @@
                                 document.querySelector('#failed').classList.remove('hidden')
                             } else {
                                 document.querySelector('#success').classList.remove('hidden')
-                            } // Parse the JSON response
+                            }
                             setTimeout(() => {
                                 window.history.back()
                             }, 800)
@@ -162,12 +162,6 @@
                     highlightCodeOutline: true,
                 });
             qrScanner.start()
-
-            function toHome() {
-                setTimeout(() => {
-                    window.location.href = 'https://google.com'
-                }, 1000)
-            }
         </script>
     @endif
 @endsection

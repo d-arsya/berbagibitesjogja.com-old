@@ -42,7 +42,7 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ $item->name }}
                             <span class="md:hidden italic font-normal text-gray-500 block">
-                                {{ $item->donation()->count() }} Kontribusi
+                                {{ $item->donation->count() }} Kontribusi
                             </span>
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
@@ -55,7 +55,7 @@
                             {{ $item->email }}
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->donation()->count() }}
+                            {{ $item->donation->count() }}
                         </td>
                         @auth
 

@@ -7,7 +7,7 @@
                     Heroes : {{ $heroes->sum('quantity') }} Orang
                 </div>
     </div>
-    <h1 class="text-center mt-6 font-bold text-xl">Daftar Heroes {{ $heroes[0]->faculty()->name }}</h1>
+    <h1 class="text-center mt-6 font-bold text-xl">Daftar Heroes {{ $heroes[0]->faculty->name }}</h1>
     <div class="shadow-md sm:rounded-lg mt-3">
         <table class="text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -34,7 +34,7 @@
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             <a href="{{ route('hero.faculty', $item->faculty) }}">
-                                {{ $item->faculty()->name }}
+                                {{ $item->faculty->name }}
                                 @if ($item->quantity > 1)
                                     ({{ $item->quantity }} Orang)
                                 @endif
@@ -47,13 +47,13 @@
                         </td>
                         <td class="px-6 py-4 flex flex-col">
                             @php
-                                $donation = $item->donation();
-                                $sponsor = $donation->sponsor();
+                                $donation = $item->donation;
                             @endphp
-                            <a href="{{ route('sponsor.show', $sponsor->id) }}" class="block">
-                                {{ $sponsor->name }}
-                            </a>
                             <a href="{{ route('donation.show', $donation->id) }}" class="block">
+                                <span class="block">
+                                    {{ $donation->sponsor->name }}
+
+                                </span>
                                 {{ $donation->take }}
                             </a>
 

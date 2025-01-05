@@ -19,12 +19,12 @@ class User extends Authenticatable
 
     public function program()
     {
-        return $this->belongsTo(Program::class)->first();
+        return $this->belongsTo(Program::class);
     }
 
     public function division()
     {
-        return $this->belongsTo(Division::class)->first();
+        return $this->belongsTo(Division::class);
     }
 
     public function attendances()

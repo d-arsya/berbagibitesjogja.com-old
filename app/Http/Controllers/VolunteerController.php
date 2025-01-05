@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Jobs\SendMailJob;
-use App\Mail\VolunteerRegister;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Heroes\Hero;
@@ -16,21 +15,20 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
 
 class VolunteerController extends Controller
 {
     public function home()
     {
+        if (! Auth::user()) {
+            return redirect()->action([HeroController::class, 'create']);
+        }
 
         $currentDate = Carbon::now();
         $fourMonthsAgo = Carbon::now()->subMonths(5);
 
-        $donations = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['food', 'hero'])->get();
+        $donations = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
         $groupedData = $donations->groupBy(function ($donation) {
             return Carbon::parse($donation->take)->format('Y-m'); // Format tahun-bulan (YYYY-MM)
         });
@@ -40,8 +38,8 @@ class VolunteerController extends Controller
             $food_count = 0;
 
             foreach ($item as $data) {
-                $hero_count += $data->hero->sum('quantity');
-                $food_count += $data->food->sum('weight') / 1000;
+                $hero_count += $data->heroes->sum('quantity');
+                $food_count += $data->foods->sum('weight') / 1000;
             }
             $lastData[] = [
                 'bulan' => Carbon::parse($key)->format('F'),
@@ -49,10 +47,7 @@ class VolunteerController extends Controller
                 'foods' => $food_count,
             ];
         }
-        if (! auth()->user()) {
-            return redirect()->action([HeroController::class, 'create']);
-        }
-        $user = auth()->user();
+        $user = Auth::user();
         $donations = Donation::all();
         $precence = Precence::where('status', 'active')->count();
         $foods = Food::all();
@@ -65,13 +60,12 @@ class VolunteerController extends Controller
 
     public function index()
     {
-        if (auth()->user()->role == 'member') {
+        if (Auth::user()->role == 'member') {
             return redirect()->route('volunteer.home');
         }
-        $pendingMails = DB::table('jobs')->count();
         $users = User::with('attendances')->get();
 
-        return view('pages.volunteer.index', compact('users', 'pendingMails'));
+        return view('pages.volunteer.index', compact('users'));
     }
 
     public function create()
@@ -84,19 +78,8 @@ class VolunteerController extends Controller
 
     public function store(Request $request)
     {
-        $password = $this->uniqueString();
         $request['phone'] = str_replace('08', '628', $request->phone);
-        // $request['password'] = Hash::make('admin');
-        $request['password'] = Hash::make($password);
-        $user = User::create($request->all());
-        // if ($request->hasFile('avatar')) {
-        //     $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
-        //     $user->photo = $photo;
-        //     $user->save();
-        // }
-        // Mail::to(['email' => $user->email])
-        //     ->bcc('kamaluddinarsyadfadllillah@mail.ugm.ac.id')
-        //     ->queue(new VolunteerRegister($user, $password));
+        User::create($request->all());
 
         return redirect()->route('volunteer.index');
     }
@@ -120,30 +103,13 @@ class VolunteerController extends Controller
 
     public function update(Request $request, User $volunteer)
     {
-        $volunteer->update($request->except('password'));
-        if ($request->file('photo')) {
-            if ($volunteer->photo) {
-                Storage::disk('public')->delete($volunteer->photo);
-            }
-            $photo = Storage::disk('public')->put('avatar', $request->file('photo'));
-            $volunteer->photo = $photo;
-            $volunteer->save();
-        }
-        if ($request->password) {
-            $volunteer->password = Hash::make($request->password);
-            $volunteer->save();
+        $volunteer->update($request->all());
 
-            return redirect()->action([VolunteerController::class, 'logout']);
-        }
-
-        return redirect()->route('volunteer.home');
+        return redirect()->action([VolunteerController::class, 'logout']);
     }
 
     public function destroy(User $volunteer)
     {
-        if ($volunteer->photo) {
-            Storage::disk('public')->delete($volunteer->photo);
-        }
         $volunteer->delete();
 
         return back();
@@ -152,7 +118,6 @@ class VolunteerController extends Controller
     public function login()
     {
         return redirect()->route('auth.google');
-        // return view('pages.admin');
     }
 
     public function logout(Request $request)
@@ -177,32 +142,5 @@ class VolunteerController extends Controller
         Auth::login($volunteer);
 
         return redirect()->intended('/');
-        // $ceredentials = $request->validate([
-        //     'email' => 'required',
-        //     'password' => 'required',
-        // ]);
-        // if (Auth::attempt($ceredentials)) {
-        //     $request->session()->regenerate();
-
-        //     return redirect()->intended('/');
-        // }
-
-        // return back()->withErrors(['error' => 'gagal']);
-    }
-
-    public function uniqueString($length = 20)
-    {
-        // Karakter yang akan digunakan (angka, huruf, dan simbol)
-        // $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&()-_=+[]{}|;:,.<>?';
-        $characters = '0123456789abcdefghijklmnopqrstuvwxyz!@#$%&';
-        $charactersLength = strlen($characters);
-        $randomString = '';
-
-        // Loop untuk membangun string acak
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[random_int(0, $charactersLength - 1)];
-        }
-
-        return $randomString;
     }
 }

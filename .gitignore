@@ -4,6 +4,7 @@
 /database/*.sql
 /database/*.sqlite
 /public/storage
+/public/debugbar
 /storage/*.key
 /storage/pail
 /vendor

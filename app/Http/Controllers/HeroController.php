@@ -23,7 +23,7 @@ class HeroController extends Controller implements HasMiddleware
 
     public function index()
     {
-        $heroes = Hero::paginate(30);
+        $heroes = Hero::with(['faculty', 'donation'])->paginate(30);
         $donations = Donation::where('status', 'aktif')->get();
 
         return view('pages.hero.index', compact('donations', 'heroes'));
@@ -93,15 +93,15 @@ class HeroController extends Controller implements HasMiddleware
         ]);
         $request['phone'] = '62'.$request['phone'];
         $code = $this->generate();
-        $phone = $donation->heroes()->pluck('phone');
+        $phone = $donation->heroes->pluck('phone');
         if ($phone->contains($request['phone'])) {
             return back();
         }
         Hero::create([
             'name' => $request['name'],
             'phone' => $request['phone'],
-            'faculty' => $request['faculty'],
-            'donation' => $request['donation'],
+            'faculty_id' => $request['faculty'],
+            'donation_id' => $request['donation'],
             'code' => $code,
             'status' => 'belum',
         ]);
@@ -128,7 +128,7 @@ class HeroController extends Controller implements HasMiddleware
 
     public function restore(Backup $backup)
     {
-        $donation = $backup->donation();
+        $donation = $backup->donation;
         if ($donation->remain > 0) {
             Hero::create([
                 'name' => $backup->name,
@@ -155,14 +155,14 @@ class HeroController extends Controller implements HasMiddleware
 
     public function destroy(Hero $hero)
     {
-        $donation = $hero->donation();
+        $donation = $hero->donation;
         $donation->remain = $donation->remain + 1;
         $donation->save();
         Backup::create([
             'name' => $hero->name,
             'phone' => $hero->phone,
-            'faculty' => $hero->faculty,
-            'donation' => $hero->donation,
+            'faculty_id' => $hero->faculty_id,
+            'donation_id' => $hero->donation_id,
             'code' => $hero->code,
         ]);
         $hero->delete();
@@ -184,17 +184,17 @@ class HeroController extends Controller implements HasMiddleware
         return $uniqueString;
     }
 
-    public function faculty($faculty)
+    public function faculty(Faculty $faculty)
     {
-        $heroes = Hero::where('faculty', $faculty)->get();
+        $heroes = $faculty->heroes;
 
         return view('pages.hero.faculty', compact('heroes'));
     }
 
     public function cancel(Request $request)
     {
-        $hero = Hero::where('donation', session('donation'))->where('code', session('code'))->first();
-        $donation = $hero->donation();
+        $hero = Hero::where('donation_id', session('donation'))->where('code', session('code'))->first();
+        $donation = $hero->donation;
         $donation->remain = $donation->remain + 1;
         $donation->save();
         $hero->delete();

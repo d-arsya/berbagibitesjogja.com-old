@@ -10,7 +10,7 @@
                     @method('PUT')
                     <input type="text" id="disabled-input" aria-label="disabled input"
                         class="mb-5 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed"
-                        value="{{ $donation->sponsor()->name }} ({{ $donation->take }})" disabled>
+                        value="{{ $donation->sponsor->name }} ({{ $donation->take }})" disabled>
                     <div class="relative z-0 w-full mt-6 mb-5 group">
                         <input type="text" name="name" id="name" value="{{ $food->name }}"
                             class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -67,7 +67,7 @@
                             Name
                         </th>
                         <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                            quantity
+                            Jumlah
                         </th>
                         <th scope="col" class="hidden sm:table-cell px-6 py-3">
                             unit
@@ -87,10 +87,10 @@
                                 {{ $item->name }}
                                 <span class="md:hidden sm:table-cell block font-normal">
 
-                                    <a href="{{ route('donation.show', $item->donation()->id) }}">
-                                        {{ $item->donation()->sponsor()->name }}
+                                    <a href="{{ route('donation.show', $item->donation->id) }}">
+                                        {{ $item->donation->sponsor->name }}
                                         <span class="block italic">
-                                            {{ \Carbon\Carbon::parse($item->donation()->take)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
                                         </span>
                                     </a>
                                 </span>
@@ -105,10 +105,10 @@
 
                             </td>
                             <td class="px-2 py-4 hidden sm:table-cell">
-                                <a href="{{ route('donation.show', $item->donation()->id) }}">
-                                    {{ $item->donation()->sponsor()->name }}
+                                <a href="{{ route('donation.show', $item->donation->id) }}">
+                                    {{ $item->donation->sponsor->name }}
                                     <span class="block italic">
-                                        {{ \Carbon\Carbon::parse($item->donation()->take)->format('d-m-Y') }}
+                                        {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
                                     </span>
                                 </a>
 

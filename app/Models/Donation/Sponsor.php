@@ -13,6 +13,6 @@ class Sponsor extends Model
 
     public function donation()
     {
-        return $this->hasMany(Donation::class, 'sponsor')->get();
+        return $this->hasMany(Donation::class);
     }
 }

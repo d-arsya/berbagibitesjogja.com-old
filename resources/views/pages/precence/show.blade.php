@@ -8,7 +8,7 @@
             <div class="mt-6">
                 <h1>Tanggal : {{ $precence->created_at->isoFormat('dddd, DD MMMM YYYY') }}</h1>
                 <h1>Judul : {{ $precence->title }}</h1>
-                <h1>Hadir : {{ $attendances->count() }}</h1>
+                <h1>Hadir : {{ $precence->attendance->count() }}</h1>
             </div>
             <table class="mt-6 shadow-md sm:rounded-lg text-center w-full text-sm text-left rtl:text-right text-gray-500">
                 <thead class="text-xs text-gray-700 uppercase bg-gray-50">
@@ -28,8 +28,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {{-- {{ dd($attendances) }} --}}
-                    @foreach ($attendances->get() as $item)
+                    @foreach ($precence->attendance as $item)
                         <tr>
                             <td class="px-6 py-3">
                                 {{ $item->user->name }}
