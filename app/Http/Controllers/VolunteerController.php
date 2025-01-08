@@ -85,18 +85,17 @@ class VolunteerController extends Controller
     }
     public function fromFonnte()
     {
-        // header('Content-Type: application/json; charset=utf-8');
-        // $json = file_get_contents('php://input');
-        // $data = json_decode($json, true);
-        // $sender = $data['sender'];
-        // $message = $data['message'];
-        // if ($message == "@BOT halo") {
-        //     $reply = "Halo juga";
-        // } elseif ($message == "@BOT tes") {
-        //     $reply = "Jalan kok";
-        // }
-        return 1;
-        // $this->kirimWa($sender, $reply);
+        header('Content-Type: application/json; charset=utf-8');
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $sender = $data['sender'];
+        $message = $data['message'];
+        if ($message == "@BOT halo") {
+            $reply = "Halo juga";
+        } elseif ($message == "@BOT tes") {
+            $reply = "Jalan kok";
+        }
+        $this->kirimWa($sender, $reply);
     }
     public function sendWa()
     {
