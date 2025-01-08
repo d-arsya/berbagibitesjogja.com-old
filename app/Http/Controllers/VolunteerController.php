@@ -83,7 +83,65 @@ class VolunteerController extends Controller
 
         return redirect()->route('volunteer.index');
     }
+    public function fromFonnte()
+    {
+        // header('Content-Type: application/json; charset=utf-8');
+        // $json = file_get_contents('php://input');
+        // $data = json_decode($json, true);
+        // $sender = $data['sender'];
+        // $message = $data['message'];
+        // if ($message == "@BOT halo") {
+        //     $reply = "Halo juga";
+        // } elseif ($message == "@BOT tes") {
+        //     $reply = "Jalan kok";
+        // }
+        return 1;
+        // $this->kirimWa($sender, $reply);
+    }
+    public function sendWa()
+    {
+        $message = 'Gatau juga
+ini apaan';
+        $phone = '089636055420';
+        $this->kirimWa($phone, $message);
+    }
+    public function kirimWa($target, $message)
+    {
+        $curl = curl_init();
 
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'POST',
+            CURLOPT_POSTFIELDS => array(
+                'target' => $target,
+                'message' => $message,
+                'schedule' => 0,
+                'typing' => false,
+                'delay' => '2',
+                'countryCode' => '62',
+            ),
+            CURLOPT_HTTPHEADER => array(
+                'Authorization: ' . env('FONNTE_KEY', null)
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        if (curl_errno($curl)) {
+            $error_msg = curl_error($curl);
+        }
+        curl_close($curl);
+
+        if (isset($error_msg)) {
+            echo $error_msg;
+        }
+        echo $response;
+    }
     public function show(User $volunteer)
     {
         $divisions = Division::all();
