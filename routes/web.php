@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
@@ -10,8 +11,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::match(['get', 'post'], 'from-fonnte', [VolunteerController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
-Route::get('send-wa', [VolunteerController::class, 'sendWa']);
+Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::get('send-wa', [BotController::class, 'sendWa']);
 Route::view('print', 'print');
 
 Route::fallback(function () {
