@@ -80,12 +80,11 @@ class BotController extends Controller
     function getAllNotYetHero($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
-        $allHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
         $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'phone']);
         $message = "";
-        $message = $message . "Daftar heroes hari ini" . " \n ";
-        $message = $message . "_Jumlah : " . $allHero->count() . "_" . " \n ";
-        foreach ($allHero as $hero) {
+        $message = $message . "Daftar yang belum mengambil" . " \n ";
+        $message = $message . "_Jumlah : " . $notyetHero->count() . "_" . " \n ";
+        foreach ($notyetHero as $hero) {
             $message = $message . " \n " . $hero->name;
             $message = $message . " \n " . $hero->phone;
         }
