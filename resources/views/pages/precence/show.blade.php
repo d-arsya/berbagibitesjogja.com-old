@@ -16,10 +16,10 @@
                         <th scope="col" class="px-6 py-3">
                             Nama
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Waktu
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                        <th scope="col" class="px-6 py-3">
                             Jarak
                         </th>
                         <th scope="col" class="hidden sm:table-cell px-6 py-3">
@@ -39,7 +39,7 @@
                             <td class="px-6 py-3">
                                 {{ $item->distance }} m
                             </td>
-                            <td class="px-6 py-3">
+                            <td class="hidden sm:table-cell px-6 py-3">
                                 <form action="{{ route('precence.update', $precence->id) }}" method="post">
                                     @csrf
                                     @method('PUT')

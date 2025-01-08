@@ -11,7 +11,7 @@
     <form method="POST" action="{{ route('donation.store') }}" class="max-w-md mx-auto shadow-md px-10  py-6 rounded-b-md">
         @csrf
         <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Pilih Sponsor</label>
-        <select id="sponsor" name="sponsor"
+        <select id="sponsor" name="sponsor_id"
             class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
             <option value="">Donatur / Sponsor</option>
             @foreach ($sponsors as $item)
