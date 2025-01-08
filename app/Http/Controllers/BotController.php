@@ -100,7 +100,7 @@ class BotController extends Controller
             $message = "Halo " . $hero->name . " kami dari BBJ mengingatkan untuk bisa mengambil makanan di " . $activeDonation->location . "(" . $activeDonation->maps . "). " . "Kami tunggu hingga pukul " . $jam . " yaaa\nTerimakasih \n\n" . "_pesan ini dikirim dengan bot_";
             $this->kirimWa($hero->phone, $message);
         }
-        $message = "Berhasil mengirimkan kepada " . $allActiveHero->count() . " hero";
+        $message = "Berhasil mengirimkan kepada " . $notyetHero->count() . " hero";
         $this->kirimWa($sender, $message);
     }
     public function reminderToday($sender)
