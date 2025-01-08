@@ -15,14 +15,20 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        if ($message == "@BOT hero hari ini") {
-            $reply = $this->getAllActiveHero($sender);
-        } elseif ($message == "@BOT hero yang belum") {
-            $reply = $this->getAllNotYetHero($sender);
-        } elseif ($message == "@BOT ingatkan hero hari ini") {
-            $reply = $this->reminderToday($sender);
-        } elseif (str_contains($message, "@BOT ingatkan hero yang belum")) {
-            $reply = $this->reminderLastCall($message, $sender);
+        if (in_array($sender, ['120363387637009310@g.us', '120363350581821641@g.us', '6289636055420'])) {
+            if ($message == "@BOT help" && $sender == '6289636055420') {
+                $this->getHelp($sender);
+            } else if ($message == "@BOT donasi hari ini") {
+                $this->getActiveDonation($sender);
+            } else if ($message == "@BOT hero hari ini") {
+                $this->getAllActiveHero($sender);
+            } elseif ($message == "@BOT hero yang belum") {
+                $this->getAllNotYetHero($sender);
+            } elseif ($message == "@BOT ingatkan hero hari ini") {
+                $this->reminderToday($sender);
+            } elseif (str_contains($message, "@BOT ingatkan hero yang belum")) {
+                $this->reminderLastCall($message, $sender);
+            }
         }
     }
     public function kirimWa($target, $message)
@@ -112,6 +118,17 @@ class BotController extends Controller
             $this->kirimWa($hero->phone, $message);
         }
         $message = "Berhasil mengirimkan kepada " . $allActiveHero->count() . " hero";
+        $this->kirimWa($sender, $message);
+    }
+    public function getActiveDonation($sender)
+    {
+        $activeDonation = Donation::where('status', 'aktif')->first();
+        $message = "*[AKSI HARI INI]*\n\n" . "Donatur : " . $activeDonation->sponsor->name . "\nKuota : " . $activeDonation->quota . "\nTersisa : " . $activeDonation->remain . "\nHero terdaftar : " . $activeDonation->heroes->count() . " Orang";
+        $this->kirimWa($sender, $message);
+    }
+    public function getHelp($sender)
+    {
+        $message = "@BOT help\n" . "@BOT donasi hari ini\n" . "@BOT hero hari ini\n" . "@BOT hero yang belum\n" . "@BOT ingatkan hero hari ini\n" . "@BOT ingatkan hero yang belum";
         $this->kirimWa($sender, $message);
     }
 }
