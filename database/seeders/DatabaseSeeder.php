@@ -143,11 +143,9 @@ class DatabaseSeeder extends Seeder
                 ]);
             }
         }
-        $pass = Hash::make(env('PASS_ACC'));
         User::create([
             'name' => 'Kamaluddin Arsyad',
             'email' => env('EMAIL_ACC'),
-            'password' => $pass,
             'role' => 'super',
             'program_id' => 83,
             'phone' => '6289636055420',
