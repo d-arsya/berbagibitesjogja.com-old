@@ -20,9 +20,9 @@ class BotController extends Controller
         } elseif ($message == "@BOT hero yang belum") {
             $reply = $this->getAllNotYetHero($sender);
         } elseif ($message == "@BOT ingatkan hero hari ini") {
-            $reply = $this->reminderToday();
+            $reply = $this->reminderToday($sender);
         } elseif (str_contains($message, "@BOT ingatkan hero yang belum")) {
-            $reply = $this->reminderLastCall($message);
+            $reply = $this->reminderLastCall($message, $sender);
         }
     }
     public function kirimWa($target, $message)
@@ -91,7 +91,7 @@ class BotController extends Controller
         $this->kirimWa($sender, $message);
     }
 
-    public function reminderLastCall($jam)
+    public function reminderLastCall($jam, $sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
         $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'phone']);
@@ -100,8 +100,10 @@ class BotController extends Controller
             $message = "Halo " . $hero->name . " kami dari BBJ mengingatkan untuk bisa mengambil makanan di " . $activeDonation->location . "(" . $activeDonation->maps . "). " . "Kami tunggu hingga pukul " . $jam . " yaaa\nTerimakasih \n\n" . "_pesan ini dikirim dengan bot_";
             $this->kirimWa($hero->phone, $message);
         }
+        $message = "Berhasil mengirimkan kepada " . $allActiveHero->count() . " hero";
+        $this->kirimWa($sender, $message);
     }
-    public function reminderToday()
+    public function reminderToday($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
         $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
@@ -109,5 +111,7 @@ class BotController extends Controller
             $message = "Halo " . $hero->name . " kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul " . $activeDonation->hour . " dan bisa diambil di " . $activeDonation->location . "(" . $activeDonation->maps . ")" . "\n\nTerimakasih \n\n" . "_pesan ini dikirim dengan bot_";
             $this->kirimWa($hero->phone, $message);
         }
+        $message = "Berhasil mengirimkan kepada " . $allActiveHero->count() . " hero";
+        $this->kirimWa($sender, $message);
     }
 }
