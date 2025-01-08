@@ -6,10 +6,11 @@ use App\Http\Controllers\HeroController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::any('from-fonnte', [VolunteerController::class, 'fromFonnte']);
+Route::match(['get', 'post'], 'from-fonnte', [VolunteerController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::get('send-wa', [VolunteerController::class, 'sendWa']);
 Route::view('print', 'print');
 
