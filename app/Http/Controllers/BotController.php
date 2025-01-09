@@ -29,6 +29,19 @@ class BotController extends Controller
             } elseif (str_contains($message, "@BOT ingatkan hero yang belum")) {
                 $this->reminderLastCall($message, $sender);
             }
+        } else {
+            $this->getReplyFromHero($sender, $message);
+        }
+    }
+    public function getReplyFromHero($sender, $text)
+    {
+        $activeDonation = Donation::where('status', 'aktif')->first();
+        $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->where('phone', $sender)->get();
+
+        if ($notyetHero->count() == 1) {
+            $notyetHero = $notyetHero[0];
+            $message = "> Balasan" . " \n\n" . $notyetHero->name . "\n_Fakultas " . $notyetHero->faculty->name . "_\n" . $notyetHero->phone . "\n\n" . $text;
+            $this->kirimWa('120363387637009310@g.us', $message);
         }
     }
     public function kirimWa($target, $message)
@@ -73,7 +86,6 @@ class BotController extends Controller
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
         $allHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
-        $notyetHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
         $message = "";
         $message = $message . "Daftar heroes hari ini" . " \n ";
         $message = $message . "_Jumlah : " . $allHero->count() . "_" . " \n ";
