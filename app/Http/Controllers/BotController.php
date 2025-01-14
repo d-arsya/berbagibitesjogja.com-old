@@ -40,8 +40,8 @@ class BotController extends Controller
 
         if ($notyetHero->count() == 1) {
             $notyetHero = $notyetHero[0];
-            $message = "> Balasan" . " \n\n" . $notyetHero->name . "\n_Fakultas " . $notyetHero->faculty->name . "_\n" . $notyetHero->phone . "\n\n" . $text;
-            $this->kirimWa('120363387637009310@g.us', $message);
+            $message = "> Balasan Heroes" . " \n\n" . $notyetHero->name . "\n_Fakultas " . $notyetHero->faculty->name . "_\n\n" . $text;
+            $this->kirimWa('120363350581821641@g.us', $message);
         }
     }
     public function kirimWa($target, $message)
@@ -126,7 +126,7 @@ class BotController extends Controller
         $activeDonation = Donation::where('status', 'aktif')->first();
         $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
         foreach ($allActiveHero as $hero) {
-            $message = "Halo " . $hero->name . " kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul " . $activeDonation->hour . " dan bisa diambil di " . $activeDonation->location . "(" . $activeDonation->maps . ")" . "\n\nTerimakasih \n\n" . "_pesan ini dikirim dengan bot_";
+            $message = "Halo " . $hero->name . " kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul " . $activeDonation->hour . "." . $activeDonation->minute . " dan bisa diambil di " . $activeDonation->location . "(" . $activeDonation->maps . ")" . "\n\nTerimakasih \n\n" . "_pesan ini dikirim dengan bot_";
             $this->kirimWa($hero->phone, $message);
         }
         $message = "Berhasil mengirimkan kepada " . $allActiveHero->count() . " hero";
