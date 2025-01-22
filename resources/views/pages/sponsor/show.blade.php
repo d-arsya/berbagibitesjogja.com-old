@@ -10,7 +10,7 @@
                             <th scope="col" class="px-6 py-3">
                                 Nama Sponsor
                             </th>
-                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                            {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                 Alamat
                             </th>
                             <th scope="col" class="hidden sm:table-cell px-6 py-3">
@@ -18,7 +18,7 @@
                             </th>
                             <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                 Email
-                            </th>
+                            </th> --}}
                             <th scope="col" class="px-6 py-3">
                                 Kontribusi
                             </th>
@@ -29,7 +29,7 @@
                             <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ $sponsor->name }}
                             </th>
-                            <td class="px-6 py-4 hidden sm:table-cell">
+                            {{-- <td class="px-6 py-4 hidden sm:table-cell">
                                 {{ $sponsor->address }}
                             </td>
                             <td class="px-6 py-4 hidden sm:table-cell">
@@ -37,7 +37,7 @@
                             </td>
                             <td class="px-6 py-4 hidden sm:table-cell">
                                 {{ $sponsor->email }}
-                            </td>
+                            </td> --}}
                             <td class="px-6 py-4">
                                 {{ $sponsor->donation->count() }} Donasi
                             </td>
@@ -50,13 +50,13 @@
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
                     <thead class="text-center text-xs text-gray-700 uppercase bg-gray-50">
                         <tr>
-                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                            <th scope="col" class="px-6 py-3">
                                 Tanggal
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                 Kuota
                             </th>
-                            <th scope="col" class="px-6 py-3">
+                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
                                 Status
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
@@ -65,15 +65,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($sponsor->donation as $item)
+                        @foreach ($sponsor->donation->sortBy('take') as $item)
                             <tr class="odd:bg-white text-center even:bg-gray-50 border-b">
-                                <td class="px-6 py-4 hidden sm:table-cell">
-                                    {{ $item->take }}
-                                </td>
                                 <td class="px-6 py-4">
+                                    {{ \Carbon\Carbon::parse($item->take)->isoFormat('dddd, D MMMM Y') }}
+                                    <span class="block md:hidden">
+                                        {{ $item->quota - $item->remain }} Orang</span>
+                                </td>
+                                <td class="px-6 py-4 hidden sm:table-cell">
                                     {{ $item->quota - $item->remain }}/{{ $item->quota }}
                                 </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 hidden sm:table-cell">
                                     {{ $item->status }}
                                 </td>
                                 <td class="px-6 py-4 flex justify-center gap-2">

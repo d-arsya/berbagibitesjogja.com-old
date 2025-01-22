@@ -19,7 +19,7 @@
         <th>Total Food</th>
     </thead>
     <tbody>
-        @foreach (App\Models\Donation\Donation::with(['foods', 'heroes', 'sponsor'])->get() as $number => $item)
+        @foreach (App\Models\Donation\Donation::with(['foods', 'heroes', 'sponsor'])->orderBy('take')->get() as $number => $item)
             <tr>
                 <td align="center">{{ $number + 1 }}</td>
                 <td>

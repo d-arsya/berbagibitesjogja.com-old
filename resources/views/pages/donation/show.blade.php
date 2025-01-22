@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('container')
     <h1 class="text-center text-xl font-bold">Daftar Heroes {{ $donation->sponsor->name }}</h1>
-    <h1 class="text-center text-sm italic">{{ $donation->take }}</h1>
+    <h1 class="text-center text-sm italic">{{ \Carbon\Carbon::parse($donation->take)->isoFormat('dddd, D MMMM Y') }}</h1>
     <div class="mt-3 flex gap-3 w-max">
         <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
             < Kembali</a>
@@ -28,30 +28,33 @@
         <table class="text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         No
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="px-1 sm:px-6 py-3">
                         Nama
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Fakultas
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                    {{--
+                   <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Telepon
-                    </th>
+                    </th> --}}
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         Kode
                     </th>
-                    <th scope="col" class="px-6 py-3 text-center">
-                        Aksi
-                    </th>
+                    @if ($heroes->where('status', 'belum')->count() > 0)
+                        <th scope="col" class="px-0 sm:px-6 py-3 text-center">
+                            Aksi
+                        </th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
                 @foreach ($heroes as $number => $item)
                     <tr class="odd:bg-white">
-                        <td>{{ $number + 1 }}</td>
+                        <td class="hidden sm:table-cell">{{ $number + 1 }}</td>
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ $item->name }}
 
@@ -65,20 +68,23 @@
                                 {{ $item->code }}
                             </span>
                         </th>
-                        <td class="px-6 py-4 hidden sm:table-cell">
+                        <td class="px-1 sm:px-6 py-4 hidden sm:table-cell">
                             {{ $item->faculty->name }}
                             @if ($item->quantity > 1)
                                 ({{ $item->quantity }} Orang)
                             @endif
                         </td>
+                        {{--
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->phone }}
 
-                        </td>
+                        </td> --}}
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->code }}
                         </td>
-                        <td class="px-6 py-4 flex justify-center gap-2">
+                        @if ($heroes->where('status', 'belum')->count() > 0)
+                            <td class="px-6 py-4 flex justify-center gap-2">
+                                {{--
                             <a href="https://wa.me/{{ $item->phone }}"
                                 class="p-2 rounded-md bg-tosca-300 hover:bg-tosca-600">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
@@ -88,43 +94,44 @@
                                 </svg>
 
 
-                            </a>
-                            @if ($item->status == 'belum')
-                                <form action="{{ route('hero.update', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <button type="submit" class="p-2 rounded-md bg-lime-500 hover:bg-lime-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                            class="bi bi-bag-check" viewBox="0 0 16 16">
-                                            <path fill-rule="evenodd"
-                                                d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
-                                            <path
-                                                d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
-                                        </svg>
+                            </a> --}}
+                                @if ($item->status == 'belum')
+                                    <form action="{{ route('hero.update', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <button type="submit" class="p-2 rounded-md bg-lime-500 hover:bg-lime-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                fill="white" class="bi bi-bag-check" viewBox="0 0 16 16">
+                                                <path fill-rule="evenodd"
+                                                    d="M10.854 8.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L7.5 10.793l2.646-2.647a.5.5 0 0 1 .708 0" />
+                                                <path
+                                                    d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1m3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1z" />
+                                            </svg>
 
 
-                                    </button>
+                                        </button>
 
-                                </form>
-                                <form action="{{ route('hero.destroy', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button onclick="return confirm('Yakin ingin menghapusnya?')" type="submit"
-                                        class="p-2 rounded-md bg-red-300 hover:bg-red-600">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="white"
-                                            class="bi bi-person-walking" viewBox="0 0 16 16">
-                                            <path
-                                                d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0M6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.8 1.8 0 0 1-.088.395l-.318.906.213.242a.8.8 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921A.75.75 0 0 1 6 8.96l.138-2.613-.435.489-.464 2.786a.75.75 0 1 1-1.48-.246l.5-3a.75.75 0 0 1 .18-.375l2-2.25Z" />
-                                            <path
-                                                d="M6.25 11.745v-1.418l1.204 1.375.261.524a.8.8 0 0 1-.12.231l-2.5 3.25a.75.75 0 1 1-1.19-.914zm4.22-4.215-.494-.494.205-1.843.006-.067 1.124 1.124h1.44a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.531-.22Z" />
-                                        </svg>
+                                    </form>
+                                    <form action="{{ route('hero.destroy', $item->id) }}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button onclick="return confirm('Yakin ingin menghapusnya?')" type="submit"
+                                            class="p-2 rounded-md bg-red-300 hover:bg-red-600">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                                                fill="white" class="bi bi-person-walking" viewBox="0 0 16 16">
+                                                <path
+                                                    d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0M6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.8 1.8 0 0 1-.088.395l-.318.906.213.242a.8.8 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921A.75.75 0 0 1 6 8.96l.138-2.613-.435.489-.464 2.786a.75.75 0 1 1-1.48-.246l.5-3a.75.75 0 0 1 .18-.375l2-2.25Z" />
+                                                <path
+                                                    d="M6.25 11.745v-1.418l1.204 1.375.261.524a.8.8 0 0 1-.12.231l-2.5 3.25a.75.75 0 1 1-1.19-.914zm4.22-4.215-.494-.494.205-1.843.006-.067 1.124 1.124h1.44a.75.75 0 0 1 0 1.5H11a.75.75 0 0 1-.531-.22Z" />
+                                            </svg>
 
 
-                                    </button>
+                                        </button>
 
-                                </form>
-                            @endif
-                        </td>
+                                    </form>
+                                @endif
+                            </td>
+                        @endif
                     </tr>
                 @endforeach
             </tbody>
@@ -140,10 +147,10 @@
                     <th scope="col" class="px-6 py-3">
                         Nama
                     </th>
-                    <th scope="col" class="px-6 py-3">
+                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Jumlah
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                    <th scope="col" class="px-6 py-3">
                         Berat
                     </th>
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
@@ -160,11 +167,11 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ $item->name }}
                         </th>
-                        <td class="px-6 py-4">
+                        <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->quantity }}
 
                         </td>
-                        <td class="px-6 py-4 hidden sm:table-cell">
+                        <td class="px-6 py-4">
                             {{ $item->weight }} {{ $item->unit }}
 
                         </td>

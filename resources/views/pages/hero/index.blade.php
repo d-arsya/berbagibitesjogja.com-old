@@ -25,9 +25,9 @@
                         <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                             Fakultas
                         </th>
-                        <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                        {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                             Telepon
-                        </th>
+                        </th> --}}
                     @endauth
                     <th scope="col" class="px-6 py-3">
                         Donasi
@@ -59,12 +59,12 @@
                                 </a>
 
                             </td>
-                            <td class="px-2 py-4 hidden sm:table-cell">
+                            {{-- <td class="px-2 py-4 hidden sm:table-cell">
                                 <a href="https://wa.me/{{ $item->phone }}">
                                     {{ $item->phone }}
                                 </a>
 
-                            </td>
+                            </td> --}}
                         @endauth
                         <td class="px-2 py-4 flex flex-col">
                             <a href="{{ route('donation.show', $item->donation->id) }}" class="block">
@@ -72,7 +72,7 @@
                                     {{ $item->donation->sponsor->name }}
 
                                 </span>
-                                {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
+                                {{ \Carbon\Carbon::parse($item->donation->take)->isoFormat('dddd, DD MMMM Y') }}
                             </a>
 
                         </td>

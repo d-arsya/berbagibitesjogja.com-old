@@ -84,7 +84,7 @@
     </div>
 </nav>
 <nav class="z-10 bg-white flex sticky top-0 md:hidden justify-between px-6 pb-6">
-    <a href="" class="flex items-center text-tosca text-2xl font-bold">
+    <a href="https://berbagibitesjogja.site" class="flex items-center text-tosca text-2xl font-bold">
         <img src="{{ asset('assets/biru.png') }}" class="w-12" alt="">Berbagi Bites Jogja
     </a>
     <button onclick="openSidebar()">
@@ -145,7 +145,7 @@
     class="hidden md:flex bg-white sticky top-0 mx-auto p-4 justify-between items-center border-b-2 border-gray-200  px-44">
     <div class="flex flex-row items-center gap-2">
         <img src="{{ asset('assets/biru.png') }}" class="w-10" alt="">
-        <a href="#" class="text-3xl font-semibold text-tosca-500">Berbagi Bites Jogja</a>
+        <a href="https://berbagibitesjogja.site" class="text-2xl font-semibold text-tosca-500">Berbagi Bites Jogja</a>
     </div>
     <ul class="flex space-x-8 relative">
 

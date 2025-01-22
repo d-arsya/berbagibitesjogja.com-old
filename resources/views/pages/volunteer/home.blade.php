@@ -39,43 +39,43 @@
             
         @endif
     </div>
-    <div class="flex flex-row justify-center md:justify-between flex-wrap gap-6 mt-3">
-        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">
+    <div class="grid sm:grid-cols-2 md:grid-cols-4 grid-cols-1 gap-2 mt-3">
+        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full px-2.5 py-2 w-max flex justify-center items-center">
                 <img width="36px" src="{{ asset('assets/donate.svg') }}" alt="">
             </div>
             <div>
-                <p class="text-slate-600 italic text-xs md:text-sm">Total Aksi</p>
-                <p class="font-bold text-xl md:text-2xl">{{ $donations->count() }} Aksi</p>
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Total Aksi</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ $donations->count() }} Aksi</p>
             </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">
+        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full px-2 pb-3 w-max flex justify-center items-center">
                 <img width="40px" src="{{ asset('assets/food.svg') }}" alt="">
             </div>
             <div>
-                <p class="text-slate-600 italic text-xs md:text-sm">Total Makanan</p>
-                <p class="font-bold text-xl md:text-2xl">{{ round($foods->sum('weight') / 1000) }} Kg</p>
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Total Makanan</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ round($foods->sum('weight') / 1000) }} Kg</p>
             </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">
+        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full p-2 w-max flex justify-center items-center">
                 <img width="36px" src="{{ asset('assets/people.svg') }}" alt="">
             </div>
             <div>
-                <p class="text-slate-600 italic text-xs md:text-sm">Total Heroes</p>
-                <p class="font-bold text-xl md:text-2xl">{{ $heroes->sum('quantity') }} Orang</p>
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Total Heroes</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ $heroes->sum('quantity') }} Orang</p>
             </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 w-full md:w-60 flex gap-2">
+        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full px-2.5 py-2 w-max flex justify-center items-center">
                 <img width="36px" src="{{ asset('assets/hero.svg') }}" alt="">
             </div>
             <div>
-                <p class="text-slate-600 italic text-xs md:text-sm">Total Volunteer
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Total Volunteer
                     
                 </p>
-                <p class="font-bold text-xl md:text-2xl">{{ $volunteers->count() }} Orang</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ $volunteers->count() }} Orang</p>
             </div>
         </div>
     </div>

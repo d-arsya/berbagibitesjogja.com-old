@@ -26,7 +26,7 @@ class VolunteerController extends Controller
         }
 
         $currentDate = Carbon::now();
-        $fourMonthsAgo = Carbon::now()->subMonths(5);
+        $fourMonthsAgo = Carbon::now()->subMonths(7);
 
         $donations = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
         $groupedData = $donations->groupBy(function ($donation) {

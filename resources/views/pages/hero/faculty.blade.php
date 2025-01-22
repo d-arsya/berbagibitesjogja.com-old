@@ -18,9 +18,9 @@
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Fakultas
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                    {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Telepon
-                    </th>
+                    </th> --}}
                     <th scope="col" class="px-6 py-3">
                         Donasi
                     </th>
@@ -41,10 +41,10 @@
                             </a>
 
                         </td>
-                        <td class="px-6 py-4 hidden sm:table-cell">
+                        {{-- <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->phone }}
 
-                        </td>
+                        </td> --}}
                         <td class="px-6 py-4 flex flex-col">
                             @php
                                 $donation = $item->donation;
@@ -54,7 +54,7 @@
                                     {{ $donation->sponsor->name }}
 
                                 </span>
-                                {{ $donation->take }}
+                                {{ \Carbon\Carbon::parse($donation->take)->isoFormat('dddd, DD MMMM Y') }}
                             </a>
 
                         </td>

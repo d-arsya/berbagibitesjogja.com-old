@@ -16,7 +16,7 @@
                     <th scope="col" class="px-6 py-3">
                         Nama Sponsor
                     </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
+                    {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Alamat
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
@@ -24,7 +24,7 @@
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Email
-                    </th>
+                    </th> --}}
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         Kontribusi
                     </th>
@@ -45,7 +45,7 @@
                                 {{ $item->donation->count() }} Kontribusi
                             </span>
                         </th>
-                        <td class="px-6 py-4 hidden sm:table-cell">
+                        {{-- <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->address }}
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
@@ -53,7 +53,7 @@
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->email }}
-                        </td>
+                        </td> --}}
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->donation->count() }}
                         </td>
@@ -72,7 +72,7 @@
 
                                 </a>
                                 <a href="{{ route('sponsor.edit', $item->id) }}"
-                                    class="p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">
+                                    class="hidden md:block p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path
@@ -84,7 +84,7 @@
                                 <form action="{{ route('sponsor.destroy', $item->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="p-2 rounded-md bg-red-300 hover:bg-red-600">
+                                    <button type="submit" class="p-2 hidden md:block rounded-md bg-red-300 hover:bg-red-600">
                                         <svg width="18" height="17" viewBox="0 0 18 17" fill="none"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path

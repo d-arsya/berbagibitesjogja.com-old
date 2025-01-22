@@ -109,7 +109,7 @@
                                     <a href="{{ route('donation.show', $item->donation->id) }}">
                                         {{ $item->donation->sponsor->name }}
                                         <span class="block italic">
-                                            {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
+                                            {{ \Carbon\Carbon::parse($item->donation->take)->format('d M Y') }}
                                         </span>
                                     </a>
                                 </span>
@@ -127,7 +127,7 @@
                                 <a href="{{ route('donation.show', $item->donation->id) }}">
                                     {{ $item->donation->sponsor->name }}
                                     <span class="block italic text-xs">
-                                        {{ \Carbon\Carbon::parse($item->donation->take)->format('d-m-Y') }}
+                                        {{ \Carbon\Carbon::parse($item->donation->take)->format('d M Y') }}
                                     </span>
                                 </a>
 

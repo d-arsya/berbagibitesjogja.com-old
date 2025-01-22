@@ -7,7 +7,6 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- HTML Meta Tags -->
     <title>Berbagi Bites Jogja</title>
     <meta name="description"
         content="Berbagi Bites Jogja (BBJ) adalah Gerakan food rescue pertama di Jogja. Bergerak mengatasi Food Waste melalui Food Rescue dan Food Bank di wilayah Yogyakarta">
@@ -35,7 +34,7 @@
 
 <body>
     @include('components.header')
-    <main class="md:px-44 px-6 py-10">
+    <main class="sm:px-24 md:px-44 px-6 py-10">
         @yield('container')
     </main>
     @include('components.footer')

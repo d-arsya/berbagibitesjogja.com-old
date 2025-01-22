@@ -47,13 +47,13 @@
                     @if (auth()->user() || !$item->sponsor->hidden)
                         <tr class="odd:bg-white text-center">
                             <td class="px-2 py-4 hidden sm:table-cell">
-                                {{ $item->take }}
+                                {{ \Carbon\Carbon::parse($item->take)->isoFormat('dddd, D MMMM Y') }}
                             </td>
                             <th scope="row" class="px-2 py-4 font-medium text-gray-900 whitespace-nowrap">
                                 {{ $item->sponsor->name }}
                                 <span class="md:hidden italic font-normal text-gray-500 block">
                                     @auth
-                                        {{ $item->quota - $item->remain }}/{{ $item->quota }}
+                                        {{ \Carbon\Carbon::parse($item->take)->isoFormat('dddd, D MMMM Y') }}
                                     @else
                                         {{ $item->quota - $item->remain }} Orang
                                     @endauth
@@ -100,7 +100,7 @@
                                         <form action="{{ route('donation.destroy', $item->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="p-2 rounded-md bg-red-300 hover:bg-red-600">
+                                            <button type="submit" class="p-2 hidden rounded-md bg-red-300 hover:bg-red-600">
                                                 <svg width="18" height="17" viewBox="0 0 18 17" fill="none"
                                                     xmlns="http://www.w3.org/2000/svg">
                                                     <path

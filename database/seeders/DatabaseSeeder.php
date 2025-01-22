@@ -8,7 +8,6 @@ use App\Models\Volunteer\Program;
 use App\Models\Volunteer\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
