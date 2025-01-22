@@ -7,6 +7,11 @@ use App\Models\Heroes\Hero;
 
 class BotController extends Controller
 {
+    public function sendWa()
+    {
+        return true;
+    }
+
     public function fromFonnte()
     {
         header('Content-Type: application/json; charset=utf-8');
@@ -14,7 +19,7 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        if (in_array($sender, ['120363387637009310@g.us', '120363350581821641@g.us', '6289636055420'])) {
+        if (in_array($sender, ['120363350581821641@g.us', '6289636055420'])) {
             if ($message == '@BOT help' && $sender == '6289636055420') {
                 $this->getHelp($sender);
             } elseif ($message == '@BOT donasi hari ini') {
@@ -27,21 +32,24 @@ class BotController extends Controller
                 $this->reminderToday($sender);
             } elseif (str_contains($message, '@BOT ingatkan hero yang belum')) {
                 $this->reminderLastCall($message, $sender);
+            } elseif (str_contains($message, '@BOT balas')) {
+                $this->replyHero($sender, $message);
             }
         } else {
-            $this->getReplyFromHero($sender, $message);
+            $this->getReplyFromStranger($sender, $message);
         }
     }
 
-    public function getReplyFromHero($sender, $text)
+    public function getReplyFromStranger($sender, $text)
     {
-        $activeDonation = Donation::where('status', 'aktif')->first();
-        $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->where('phone', $sender)->get();
+        $activeDonation = Donation::where('status', 'aktif')->pluck('id');
+        $hero = Hero::where('phone', $sender)->where('status', 'belum')->whereIn('donation_id', $activeDonation)->first();
 
-        if ($notyetHero->count() == 1) {
-            $notyetHero = $notyetHero[0];
-            $message = '> Balasan Heroes'." \n\n".$notyetHero->name."\n_Fakultas ".$notyetHero->faculty->name."_\n\n".$text;
+        if ($hero) {
+            $message = '> Balasan Heroes' . " \n\n" . $hero->name . "\n_Kode : " . $hero->code . "_\n\n" . $text;
             $this->kirimWa('120363350581821641@g.us', $message);
+        } else {
+            return true;
         }
     }
 
@@ -67,7 +75,7 @@ class BotController extends Controller
                 'countryCode' => '62',
             ],
             CURLOPT_HTTPHEADER => [
-                'Authorization: '.env('FONNTE_KEY', null),
+                'Authorization: ' . env('FONNTE_KEY', null),
             ],
         ]);
 
@@ -86,13 +94,13 @@ class BotController extends Controller
     public function getAllActiveHero($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
-        $allHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
+        $allHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'code']);
         $message = '';
-        $message = $message.'Daftar heroes hari ini'." \n ";
-        $message = $message.'_Jumlah : '.$allHero->count().'_'." \n ";
+        $message = $message . 'Daftar heroes hari ini' . " \n ";
+        $message = $message . '_Jumlah : ' . $allHero->count() . '_' . " \n ";
         foreach ($allHero as $hero) {
-            $message = $message." \n ".$hero->name;
-            $message = $message." \n ".$hero->phone;
+            $message = $message . " \n " . $hero->name;
+            $message = $message . " \n " . $hero->code;
         }
         $this->kirimWa($sender, $message);
     }
@@ -100,13 +108,13 @@ class BotController extends Controller
     public function getAllNotYetHero($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
-        $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'phone']);
+        $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'code']);
         $message = '';
-        $message = $message.'Daftar yang belum mengambil'." \n ";
-        $message = $message.'_Jumlah : '.$notyetHero->count().'_'." \n ";
+        $message = $message . 'Daftar yang belum mengambil' . " \n ";
+        $message = $message . '_Jumlah : ' . $notyetHero->count() . '_' . " \n ";
         foreach ($notyetHero as $hero) {
-            $message = $message." \n ".$hero->name;
-            $message = $message." \n ".$hero->phone;
+            $message = $message . " \n " . $hero->name;
+            $message = $message . " \n " . $hero->code;
         }
         $this->kirimWa($sender, $message);
     }
@@ -117,10 +125,10 @@ class BotController extends Controller
         $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'phone']);
         $jam = str_replace('@BOT ingatkan hero yang belum ', '', $jam);
         foreach ($notyetHero as $hero) {
-            $message = 'Halo '.$hero->name.' kami dari BBJ mengingatkan untuk bisa mengambil makanan di '.$activeDonation->location.'('.$activeDonation->maps.'). '.'Kami tunggu hingga pukul '.$jam." yaaa\nTerimakasih \n\n".'_pesan ini dikirim dengan bot_';
+            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan untuk bisa mengambil makanan di ' . $activeDonation->location . '(' . $activeDonation->maps . '). ' . 'Kami tunggu hingga pukul ' . $jam . " yaaa\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
             $this->kirimWa($hero->phone, $message);
         }
-        $message = 'Berhasil mengirimkan kepada '.$notyetHero->count().' hero';
+        $message = 'Berhasil mengirimkan kepada ' . $notyetHero->count() . ' hero';
         $this->kirimWa($sender, $message);
     }
 
@@ -129,23 +137,34 @@ class BotController extends Controller
         $activeDonation = Donation::where('status', 'aktif')->first();
         $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
         foreach ($allActiveHero as $hero) {
-            $message = 'Halo '.$hero->name.' kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul '.$activeDonation->hour.'.'.$activeDonation->minute.' dan bisa diambil di '.$activeDonation->location.'('.$activeDonation->maps.')'."\n\nTerimakasih \n\n".'_pesan ini dikirim dengan bot_';
+            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul ' . $activeDonation->hour . '.' . $activeDonation->minute . ' dan bisa diambil di ' . $activeDonation->location . '(' . $activeDonation->maps . ')' . "\n\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
             $this->kirimWa($hero->phone, $message);
         }
-        $message = 'Berhasil mengirimkan kepada '.$allActiveHero->count().' hero';
+        $message = 'Berhasil mengirimkan kepada ' . $allActiveHero->count() . ' hero';
         $this->kirimWa($sender, $message);
     }
 
     public function getActiveDonation($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
-        $message = "*[AKSI HARI INI]*\n\n".'Donatur : '.$activeDonation->sponsor->name."\nKuota : ".$activeDonation->quota."\nTersisa : ".$activeDonation->remain."\nHero terdaftar : ".$activeDonation->heroes->count().' Orang';
+        $message = "*[AKSI HARI INI]*\n\n" . 'Donatur : ' . $activeDonation->sponsor->name . "\nKuota : " . $activeDonation->quota . "\nTersisa : " . $activeDonation->remain . "\nHero terdaftar : " . $activeDonation->heroes->count() . ' Orang';
         $this->kirimWa($sender, $message);
     }
 
     public function getHelp($sender)
     {
-        $message = "@BOT help\n"."@BOT donasi hari ini\n"."@BOT hero hari ini\n"."@BOT hero yang belum\n"."@BOT ingatkan hero hari ini\n".'@BOT ingatkan hero yang belum';
+        $message = "@BOT help\n" . "@BOT donasi hari ini\n" . "@BOT hero hari ini\n" . "@BOT hero yang belum\n" . "@BOT ingatkan hero hari ini\n" . "@BOT ingatkan hero yang belum <JAM> <PESAN OPSIONAL>\n" . "@BOT balas <KODE> <PESAN>";
         $this->kirimWa($sender, $message);
+    }
+    public function replyHero($sender, $message)
+    {
+        $code = substr(str_replace("@BOT balas ", "", $message), 0, 6);
+        $hero = Hero::where('code', $code)->where('status', 'belum')->first();
+        if ($hero) {
+            $message = substr(str_replace("@BOT balas ", "", $message), 7);
+            $this->kirimWa($hero->phone, $message . "\n\n_dikirim menggunakan bot_");
+            $this->kirimWa($sender, "Berhasil mengirimkan balasan kepada " . $hero->name);
+        }
+        return false;
     }
 }
