@@ -22,27 +22,36 @@
                 <div class="relative z-0 w-full mb-5 group">
                     <input value="{{ $sponsor->address }}" type="text" name="address" id="address"
                         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" " name="address" required />
+                        placeholder=" " name="address" />
                     <label for="address"
                         class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Alamat</label>
                 </div>
                 <div class="relative z-0 w-full mb-5 group">
                     <input value="{{ $sponsor->phone }}" type="text" name="phone" id="phone"
                         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" " name="phone" required />
+                        placeholder=" " name="phone" />
                     <label for="phone"
                         class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Telepon</label>
                 </div>
                 <div class="relative z-0 w-full mb-5 group">
                     <input value="{{ $sponsor->email }}" type="email" name="email" id="email"
                         class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                        placeholder=" " name="email" required />
+                        placeholder=" " name="email" />
                     <label for="email"
                         class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Email</label>
                 </div>
-                <div class="flex align-middle gap-2 my-2">
-                    <input {{ $sponsor->hidden ? 'checked' : '' }} type="checkbox" name="hidden" id="hidden">
-                    <label for="hidden" class="text-xs ">Sembunyikan</label>
+                <div class="flex gap-2 flex-row">
+                    <div class="flex align-middle gap-2 my-2">
+                        <input {{ $sponsor->hidden ? 'checked' : '' }} type="checkbox" name="hidden" id="hidden">
+                        <label for="hidden" class="text-xs ">Sembunyikan</label>
+
+                    </div>
+                    <div class="flex align-middle gap-2 my-2">
+                        <input {{ $sponsor->variant == 'individual' ? 'checked' : '' }} type="checkbox" name="variant"
+                            id="variant">
+                        <label for="variant" class="text-xs ">Individu</label>
+
+                    </div>
 
                 </div>
                 <button type="submit"

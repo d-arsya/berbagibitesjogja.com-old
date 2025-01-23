@@ -76,6 +76,14 @@
                                     <form action="{{ route('hero.store') }}" method="POST">
                                         @csrf
                                         <input type="number" name="donation" value="{{ $donation->id }}" class="hidden">
+                                        <select
+                                            class="university w-full text-slate-600 mt-8 p-2.5 bg-transparent border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
+                                            placeholder="Nomor Whatsapp" required>
+                                            <option value="">Asal</option>
+                                            @foreach (App\Models\Heroes\University::whereIn('id', json_decode($donation->beneficiaries))->get() as $item)
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                            @endforeach
+                                        </select>
                                         <div class="relative z-0 w-full mt-8 group">
                                             <input type="text" name="name" id="name"
                                                 class="block py-2.5 px-2.5 w-full text-sm text-gray-900 bg-transparent border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
@@ -100,15 +108,10 @@
                                                 telepon yang
                                                 benar</p>
                                         @enderror
+
                                         <select
-                                            class="w-full text-slate-600 mt-8 p-2.5 bg-transparent border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
+                                            class="facultyInput w-full hidden text-slate-600 mt-8 p-2.5 bg-transparent border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600"
                                             placeholder="Nomor Whatsapp" name="faculty" required>
-                                            <option value="">Fakultas</option>
-                                            @foreach (App\Models\Volunteer\Faculty::all() as $item)
-                                                @if (!in_array($item->name, ['Kontributor', 'Lainnya']))
-                                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                                @endif
-                                            @endforeach
                                         </select>
                                         <button
                                             class="w-full px-4 py-2 mt-10 text-sm font-medium text-white bg-navy rounded-md hover:bg-navy-600 focus:outline-none focus:ring-2 focus:ring-navy-500 focus:ring-opacity-50"
@@ -259,4 +262,25 @@
 
         </div>
     </main>
+    <script>
+        const university = document.querySelectorAll('.university')
+        university.forEach(function(target, index) {
+            target.addEventListener('change', function(e) {
+                const id = e.target.value
+                const faculty = document.querySelectorAll('.facultyInput')[index]
+                console.log(faculty)
+                faculty.classList.remove('hidden')
+                faculty.innerHTML = `<option value="">Fakultas/Bagian</option>`
+                fetch(`/api/university/${id}/faculty`)
+                    .then(response => response.json())
+                    .then(data => {
+                        data.forEach(function(e) {
+                            faculty.innerHTML += `<option value="${e.id}">${e.name}</option>`
+                        })
+                    })
+                    .catch(error => console.error('Error:', error));
+            })
+
+        })
+    </script>
 @endsection

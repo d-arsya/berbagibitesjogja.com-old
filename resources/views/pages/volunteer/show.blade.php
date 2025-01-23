@@ -13,13 +13,13 @@
         @csrf
         @method('PUT')
         @if (auth()->user()->role == 'super')
-            <label for="programs" class="block mb-2 text-sm font-medium text-gray-900">Pilih Program Studi</label>
-            <select id="programs" name="program_id"
+            <label for="faculties" class="block mb-2 text-sm font-medium text-gray-900">Pilih Fakultas</label>
+            <select id="faculties" name="faculty_id"
                 class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-                <option value="">Program Studi</option>
-                @foreach ($programs as $item)
-                    <option {{ $volunteer->program_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
-                        {{ $item->faculty->name }} - {{ $item->name }}</option>
+                <option value="">Fakultas</option>
+                @foreach ($faculties as $item)
+                    <option {{ $volunteer->faculty_id == $item->id ? 'selected' : '' }} value="{{ $item->id }}">
+                        {{ $item->name }}</option>
                 @endforeach
             </select>
             <label for="divisions" class="block mb-2 text-sm font-medium text-gray-900">Pilih Divisi</label>

@@ -12,14 +12,22 @@
     <form method="POST" action="{{ route('volunteer.store') }}" class="max-w-md mx-auto shadow-md px-10  py-6 rounded-b-md"
         enctype="multipart/form-data">
         @csrf
-        <label for="programs" class="block mb-2 text-sm font-medium text-gray-900">Pilih Program Studi</label>
-        <select id="programs" name="program_id"
+        <label for="university" class="block mb-2 text-sm font-medium text-gray-900">Pilih Universitas</label>
+        <select id="university"
             class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
-            <option value="">Program Studi</option>
-            @foreach ($programs as $item)
-                <option value="{{ $item->id }}">{{ $item->faculty->name }} - {{ $item->name }}</option>
+            <option value="">Universitas</option>
+            @foreach ($universities as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
             @endforeach
         </select>
+        <div class="hidden" id="facultyInput">
+            <label for="faculty" class="block mb-2 text-sm font-medium text-gray-900">Pilih Fakultas</label>
+            <select id="faculty" name="faculty_id"
+                class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <option value="">Fakultas</option>
+            </select>
+
+        </div>
         <label for="divisions" class="block mb-2 text-sm font-medium text-gray-900">Pilih Divisi</label>
         <select id="divisions" name="division_id"
             class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
@@ -63,4 +71,20 @@
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
     </form>
+    <script>
+        const university = document.querySelector('#university')
+        university.addEventListener('change', function(e) {
+            const id = e.target.value
+            const faculty = document.querySelector('#faculty')
+            fetch(`/api/university/${id}/faculty`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(function(e) {
+                        faculty.innerHTML += `<option value="${e.id}">${e.name}</option>`
+                    })
+                    document.querySelector('#facultyInput').classList.remove('hidden')
+                })
+                .catch(error => console.error('Error:', error));
+        })
+    </script>
 @endsection

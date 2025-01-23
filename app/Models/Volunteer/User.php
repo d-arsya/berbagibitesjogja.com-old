@@ -21,6 +21,10 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Program::class);
     }
+    public function faculty()
+    {
+        return $this->belongsTo(Faculty::class)->with('university');
+    }
 
     public function division()
     {

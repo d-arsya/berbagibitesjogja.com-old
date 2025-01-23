@@ -78,6 +78,20 @@
                 class="peer-focus:font-medium absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pesan
                 Khusus (opsional)</label>
         </div>
+        <p class="text-xs text-gray-900">Beneficiaries :</p>
+        <div class="flex gap-3">
+            @foreach ($universities as $item)
+                <div class="flex align-middle gap-2 my-2">
+                    <input type="checkbox" name="beneficiaries[]" value="{{ $item->id }}" id="beneficiaries">
+                    <label for="beneficiaries" class="text-xs ">{{ $item->name }}</label>
+
+                </div>
+            @endforeach
+
+        </div>
+        @session('error')
+            <p class="text-xs italic mb-6 text-red-500">Pilih satu</p>
+        @endsession
         <button type="submit"
             class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Submit</button>
     </form>

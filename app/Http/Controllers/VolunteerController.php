@@ -6,6 +6,7 @@ use App\Jobs\SendMailJob;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Heroes\Hero;
+use App\Models\Heroes\University;
 use App\Models\Volunteer\Division;
 use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\Precence;
@@ -63,7 +64,7 @@ class VolunteerController extends Controller
         if (Auth::user()->role == 'member') {
             return redirect()->route('volunteer.home');
         }
-        $users = User::with('attendances')->get();
+        $users = User::with(['attendances', 'faculty', 'division'])->get();
 
         return view('pages.volunteer.index', compact('users'));
     }
@@ -71,9 +72,9 @@ class VolunteerController extends Controller
     public function create()
     {
         $divisions = Division::all();
-        $programs = Program::with('faculty')->get();
+        $universities = University::where('variant', 'student')->get();
 
-        return view('pages.volunteer.create', compact('programs', 'divisions'));
+        return view('pages.volunteer.create', compact('divisions', 'universities'));
     }
 
     public function store(Request $request)
@@ -87,9 +88,9 @@ class VolunteerController extends Controller
     public function show(User $volunteer)
     {
         $divisions = Division::all();
-        $programs = Program::with('faculty')->get();
+        $faculties = Faculty::where('university_id', $volunteer->faculty->university->id)->get();
 
-        return view('pages.volunteer.show', compact('volunteer', 'divisions', 'programs'));
+        return view('pages.volunteer.show', compact('volunteer', 'divisions', 'faculties'));
     }
 
     public function edit(string $id) {}

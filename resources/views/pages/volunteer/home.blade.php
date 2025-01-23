@@ -11,7 +11,7 @@
         <a href="{{ route('volunteer.show', $user->id) }}" class="flex md:w-max w-full justify-end gap-2">
             <div class="text-end">
                 <p>{{ $user->name }}</p>
-                <p>{{ $user->program->name }}</p>
+                <p>{{ $user->faculty->name }} ({{ $user->faculty->university->name }})</p>
             </div>
             <div class="w-12 block rounded-full overflow-hidden">
                 <img src="{{ $user->photo}}"

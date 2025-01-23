@@ -7,7 +7,8 @@
                     Heroes : {{ $heroes->sum('quantity') }} Orang
                 </div>
     </div>
-    <h1 class="text-center mt-6 font-bold text-xl">Daftar Heroes {{ $heroes[0]->faculty->name }}</h1>
+    <h1 class="text-center mt-6 font-bold text-xl">Fakultas {{ $heroes[0]->faculty->name }}
+        {{ $heroes[0]->faculty->university->name }}</h1>
     <div class="shadow-md sm:rounded-lg mt-3">
         <table class="text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
@@ -44,6 +45,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/hero/backups', [HeroController::class, 'backups'])->name('hero.backups');
     Route::get('/hero/restore/{backup}', [HeroController::class, 'restore'])->name('hero.restore');
     Route::delete('/hero/trash/{backup}', [HeroController::class, 'trash'])->name('hero.trash');
+    Route::get('beneficiary', [BeneficiaryController::class, 'index'])->name('beneficiary.index');
 });
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');

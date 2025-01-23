@@ -35,7 +35,7 @@
                         Nama
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Fakultas
+                        Asal
                     </th>
                     {{--
                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
@@ -69,7 +69,8 @@
                             </span>
                         </th>
                         <td class="px-1 sm:px-6 py-4 hidden sm:table-cell">
-                            {{ $item->faculty->name }}
+                            {{ $item->faculty->name }}<br>
+                            ({{ $item->faculty->university->name }})
                             @if ($item->quantity > 1)
                                 ({{ $item->quantity }} Orang)
                             @endif

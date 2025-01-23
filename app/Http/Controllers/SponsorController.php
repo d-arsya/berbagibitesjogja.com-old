@@ -7,16 +7,13 @@ use Illuminate\Http\Request;
 
 class SponsorController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $sponsors = Sponsor::with('donation')->where('status', 'always')->paginate(10);
-
-        return view('pages.sponsor.index', compact('sponsors'));
-    }
-
-    public function individu()
-    {
-        $sponsors = Sponsor::with('donation')->whereNot('status', 'always')->paginate(10);
+        if ($request["variant"]) {
+            $sponsors = Sponsor::where('variant', $request["variant"])->with(['donation', 'heroes', 'foods'])->paginate(10);
+        } else {
+            $sponsors = Sponsor::with(['donation', 'heroes', 'foods'])->paginate(10);
+        }
 
         return view('pages.sponsor.index', compact('sponsors'));
     }
@@ -30,7 +27,7 @@ class SponsorController extends Controller
     {
         $data = $request->all();
         $data['hidden'] = $request->hidden == 'on';
-        $data['status'] = $request->status == 'on' ? 'pending' : 'always';
+        $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
         Sponsor::create($data);
 
         return redirect(route('sponsor.index'));
@@ -52,6 +49,7 @@ class SponsorController extends Controller
     {
         $data = $request->all();
         $data['hidden'] = $request->hidden == 'on';
+        $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
         $sponsor->update($data);
 
         return redirect(route('sponsor.index'));

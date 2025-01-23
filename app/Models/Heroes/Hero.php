@@ -20,6 +20,6 @@ class Hero extends Model
 
     public function faculty()
     {
-        return $this->belongsTo(Faculty::class);
+        return $this->belongsTo(Faculty::class)->with('university');
     }
 }

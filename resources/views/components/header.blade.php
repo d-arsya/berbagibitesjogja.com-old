@@ -1,5 +1,4 @@
 <style>
-    /* Animasi garis bawah saat hover berada tepat di batas bawah header */
     .hover-underline::after {
         content: '';
         position: absolute;
@@ -8,7 +7,6 @@
         width: 0;
         height: 1.5px;
         background-color: #3b82f6;
-        /* Sesuaikan warna garis */
         transition: width 0.3s ease;
     }
 
@@ -27,16 +25,122 @@
         @endauth
         @guest
             <li><a class="w-full block" href="{{ route('form.create') }}">Form</a></li>
+            <li><a class="w-full block" href="{{ route('donation.index') }}">Donation</a></li>
         @endguest
-
-        <li><a class="w-full block" href="{{ route('donation.index') }}">Donation</a></li>
         @auth
-            <li><a class="w-full block" href="{{ route('sponsor.index') }}">Sponsor</a></li>
-            <li><a class="w-full block" href="{{ route('hero.index') }}">Heroes</a></li>
-            <li><a class="w-full block" href="{{ route('food.index') }}">Foods</a></li>
+            <li>
+                <button type="button" class="flex items-center w-full text-base group" aria-controls="dropdown-action"
+                    data-collapse-toggle="dropdown-action">
+                    <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Action</span>
+                    <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-action" aria-expanded="false" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{{ route('donation.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Donation</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('hero.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Heroes</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('food.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Foods</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <button type="button" class="flex items-center w-full text-base group" aria-controls="dropdown-beneficiary"
+                    data-collapse-toggle="dropdown-beneficiary">
+                    <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Beneficiaries</span>
+                    <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-beneficiary" aria-expanded="false" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{{ route('beneficiary.index', ['variant' => 'student']) }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">University</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('beneficiary.index', ['variant' => 'foundation']) }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Foundation</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('beneficiary.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">All</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <button type="button" class="flex items-center w-full text-base group" aria-controls="dropdown-partner"
+                    data-collapse-toggle="dropdown-partner">
+                    <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Partner</span>
+                    <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-partner" aria-expanded="false" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{{ route('sponsor.index', ['variant' => 'company']) }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Company</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('sponsor.index', ['variant' => 'individual']) }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Individual</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('sponsor.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">All</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li><a class="w-full block" href="{{ route('logout') }}">Logout</a></li>
         @endauth
-        {{-- <li><a href="{{ route('volunteer.index') }}">Volunteer</a></li> --}}
     </ul>
     <div class="flex items-center gap-6 mt-6">
         <svg class="rishi-icon" width="15" fill="#0395AF" height="20" viewBox="0 0 511 511.9">
@@ -73,8 +177,8 @@
             berbagibitesjogja@gmail.com
         </a>
         <a class="flex items-center gap-3 text-gray-400" href="https://wa.me/628986950700">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#0395AF" class="rishi-icon" width="14" height="19.788"
-                viewBox="0 0 18.823 19.788">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#0395AF" class="rishi-icon" width="14"
+                height="19.788" viewBox="0 0 18.823 19.788">
                 <path id="Phone"
                     d="M15.925,19.741a8.537,8.537,0,0,1-3.747-1.51,20.942,20.942,0,0,1-3.524-3.094,51.918,51.918,0,0,1-3.759-4.28A13.13,13.13,0,0,1,2.75,6.867a6.3,6.3,0,0,1-.233-2.914,5.144,5.144,0,0,1,1.66-2.906A7.085,7.085,0,0,1,5.306.221,1.454,1.454,0,0,1,6.9.246a5.738,5.738,0,0,1,2.443,2.93,1.06,1.06,0,0,1-.117,1.072c-.283.382-.578.754-.863,1.136-.251.338-.512.671-.736,1.027a.946.946,0,0,0,.01,1.108c.564.791,1.11,1.607,1.723,2.36a30.024,30.024,0,0,0,3.672,3.8c.3.255.615.481.932.712a.892.892,0,0,0,.96.087,10.79,10.79,0,0,0,.989-.554c.443-.283.878-.574,1.314-.853a1.155,1.155,0,0,1,1.207-.024,5.876,5.876,0,0,1,2.612,2.572,1.583,1.583,0,0,1-.142,1.795,5.431,5.431,0,0,1-4.353,2.362A6.181,6.181,0,0,1,15.925,19.741Z"
                     transform="translate(-2.441 0.006)"></path>
@@ -88,8 +192,8 @@
         <img src="{{ asset('assets/biru.png') }}" class="w-12" alt="">Berbagi Bites Jogja
     </a>
     <button onclick="openSidebar()">
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-list"
-            viewBox="0 0 16 16">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+            class="bi bi-list" viewBox="0 0 16 16">
             <path fill-rule="evenodd"
                 d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5" />
         </svg>
@@ -108,8 +212,8 @@
             berbagibitesjogja@gmail.com
         </a>
         <a class="flex items-center gap-3 text-gray-400" href="https://wa.me/628986950700">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="#0395AF" class="rishi-icon" width="14" height="19.788"
-                viewBox="0 0 18.823 19.788">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="#0395AF" class="rishi-icon" width="14"
+                height="19.788" viewBox="0 0 18.823 19.788">
                 <path id="Phone"
                     d="M15.925,19.741a8.537,8.537,0,0,1-3.747-1.51,20.942,20.942,0,0,1-3.524-3.094,51.918,51.918,0,0,1-3.759-4.28A13.13,13.13,0,0,1,2.75,6.867a6.3,6.3,0,0,1-.233-2.914,5.144,5.144,0,0,1,1.66-2.906A7.085,7.085,0,0,1,5.306.221,1.454,1.454,0,0,1,6.9.246a5.738,5.738,0,0,1,2.443,2.93,1.06,1.06,0,0,1-.117,1.072c-.283.382-.578.754-.863,1.136-.251.338-.512.671-.736,1.027a.946.946,0,0,0,.01,1.108c.564.791,1.11,1.607,1.723,2.36a30.024,30.024,0,0,0,3.672,3.8c.3.255.615.481.932.712a.892.892,0,0,0,.96.087,10.79,10.79,0,0,0,.989-.554c.443-.283.878-.574,1.314-.853a1.155,1.155,0,0,1,1.207-.024,5.876,5.876,0,0,1,2.612,2.572,1.583,1.583,0,0,1-.142,1.795,5.431,5.431,0,0,1-4.353,2.362A6.181,6.181,0,0,1,15.925,19.741Z"
                     transform="translate(-2.441 0.006)"></path>
@@ -173,39 +277,88 @@
                     hover-underline text-gray-400 hover:text-tosca @endif
                     py-2">Form</a>
             </li>
-        @endguest
-        <li class="relative">
-            <a href="{{ route('donation.index') }}"
-                class="@if (str_contains(request()->route()->getName(), 'donation')) border-b-2 border-tosca-500 text-tosca
-                @else
-                    hover-underline text-gray-400 hover:text-tosca @endif
-                 py-2">Donation</a>
-        </li>
-        @auth
-
             <li class="relative">
-                <a href="{{ route('sponsor.index') }}"
-                    class="@if (str_contains(request()->route()->getName(), 'sponsor')) border-b-2 border-tosca-500 text-tosca
+                <a href="{{ route('donation.index') }}"
+                    class="@if (str_contains(request()->route()->getName(), 'donation')) border-b-2 border-tosca-500 text-tosca
                     @else
                     hover-underline text-gray-400 hover:text-tosca @endif
-                    py-2">Sponsor</a>
+                    py-2">Donation</a>
             </li>
-            <li class="relative">
-                <a href="{{ route('hero.index') }}"
-                    class="@if (str_contains(request()->route()->getName(), 'hero')) border-b-2 border-tosca-500 text-tosca
-                        @else
-                        hover-underline text-gray-400 hover:text-tosca @endif
-                py-2">Heroes</a>
+        @endguest
+        @auth
+
+            <li class="relative group">
+                <a
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['donation', 'food', 'hero'])) border-b-2 border-tosca-500 text-tosca
+                    @else
+                    hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
+                    py-2">Action</a>
+                <div
+                    class="absolute transition-all duration-300 ease-in-out transform translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10 bg-white divide-y mt-2 divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                            <a href="{{ route('donation.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Donation</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('food.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Foods</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('hero.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Heroes</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            <li class="relative">
-                <a href="{{ route('food.index') }}"
-                    class="@if (str_contains(request()->route()->getName(), 'food')) border-b-2 border-tosca-500 text-tosca
-                @else
-                    hover-underline text-gray-400 hover:text-tosca @endif
-                 py-2">Foods</a>
+            <li class="relative group">
+                <a href="{{ route('beneficiary.index') }}"
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['university', 'foundation', 'beneficiary'])) border-b-2 border-tosca-500 text-tosca
+                    @else
+                    hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
+                    py-2">Beneficiaries</a>
+                <div
+                    class="absolute transition-all duration-300 ease-in-out transform translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10 bg-white divide-y mt-2 divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                            <a href="{{ route('beneficiary.index', ['variant' => 'student']) }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">University</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('beneficiary.index', ['variant' => 'foundation']) }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Foundation</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('beneficiary.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                        </li>
+                    </ul>
+                </div>
             </li>
-            {{-- @if (auth()->user()->role == 'super')
-            @endif --}}
+            <li class="relative group">
+                <a href="{{ route('sponsor.index') }}"
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['sponsor'])) border-b-2 border-tosca-500 text-tosca
+                    @else
+                    hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
+                    py-2">Partner</a>
+                <div
+                    class="absolute transition-all duration-300 ease-in-out transform translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10 bg-white divide-y mt-2 divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                            <a href="{{ route('sponsor.index', ['variant' => 'company']) }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Company</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('sponsor.index', ['variant' => 'individual']) }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Individual</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('sponsor.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
             <li class="relative">
                 <a href="{{ route('logout') }}"
                     class="
@@ -223,4 +376,15 @@
     function openSidebar() {
         document.querySelector('#mobile-sidebar').classList.remove('hidden')
     }
+    const dropdownToggles = document.querySelectorAll('[data-collapse-toggle]');
+
+    dropdownToggles.forEach(function(toggle) {
+        const targetId = toggle.getAttribute('data-collapse-toggle');
+        const dropdownMenu = document.getElementById(targetId);
+
+        toggle.addEventListener('click', function() {
+            dropdownMenu.classList.toggle('hidden');
+            dropdownMenu.classList.toggle('block');
+        });
+    });
 </script>

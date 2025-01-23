@@ -23,7 +23,7 @@
                     @auth
 
                         <th scope="col" class="px-6 py-3 hidden sm:table-cell">
-                            Fakultas
+                            Asal
                         </th>
                         {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                             Telepon
@@ -52,7 +52,7 @@
 
                             <td class="px-2 py-4 hidden sm:table-cell">
                                 <a href="{{ route('hero.faculty', $item->faculty_id) }}">
-                                    {{ $item->faculty->name }}
+                                    {{ $item->faculty->name }} <br> ({{ $item->faculty->university->name }})
                                     @if ($item->quantity > 1)
                                         ({{ $item->quantity }} Orang)
                                     @endif
@@ -83,7 +83,7 @@
     </div>
     <div id="popup" class="hidden w-full h-full absolute left-0 top-0 z-50 bg-navy bg-opacity-50 pt-12">
         <form method="POST" action="{{ route('hero.contributor') }}"
-            class="max-w-md mx-auto shadow-md px-10 bg-white  py-6 rounded-md">
+            class="max-w-md mx-auto shadow-md px-10 bg-white  py-6 rounded-md transform transition-all duration-300 opacity-0 ease-in-out translate-y-[-20px] scale-95">
             @csrf
             <label for="countries" class="block mb-2 text-sm font-medium text-gray-900">Pilih Donasi</label>
             <select id="donation" name="donation_id"
@@ -120,6 +120,9 @@
     <script>
         function addHeroes() {
             document.querySelector('#popup').classList.remove('hidden')
+            document.querySelector('#popup>form').classList.remove('opacity-0', 'translate-y-[-20px]',
+                'scale-95');
+            document.querySelector('#popup>form').classList.add('opacity-100', 'translate-y-0', 'scale-100');
         }
 
         function remove() {

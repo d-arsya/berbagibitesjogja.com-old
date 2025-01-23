@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
+use App\Models\Heroes\University;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -29,8 +30,9 @@ class DonationController extends Controller implements HasMiddleware
     public function create()
     {
         $sponsors = Sponsor::whereNot('status', 'done')->get();
+        $universities = University::all();
 
-        return view('pages.donation.create', compact('sponsors'));
+        return view('pages.donation.create', compact('sponsors', 'universities'));
     }
 
     public function store(Request $request)
@@ -38,6 +40,10 @@ class DonationController extends Controller implements HasMiddleware
         $data = $request->all();
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
+        $data['beneficiaries'] = json_encode($request->beneficiaries);
+        if ($data['beneficiaries'] == "null") {
+            return back()->with('error', 'Pilih minimal satu beneficiaries');
+        }
         $donation = Donation::create($data);
         $sponsor = $donation->sponsor;
         if ($sponsor->status == 'pending') {
@@ -58,7 +64,8 @@ class DonationController extends Controller implements HasMiddleware
 
     public function edit(Donation $donation)
     {
-        return view('pages.donation.edit', compact('donation'));
+        $universities = University::all();
+        return view('pages.donation.edit', compact('donation', 'universities'));
     }
 
     public function update(Request $request, Donation $donation)
@@ -83,6 +90,7 @@ class DonationController extends Controller implements HasMiddleware
             $donation->remain = $donation->remain - $request->diff;
             $donation->quota = $donation->quota - $request->diff;
         }
+        $donation->beneficiaries = json_encode($request->beneficiaries);
         $donation->save();
 
         return redirect(route('donation.index'));

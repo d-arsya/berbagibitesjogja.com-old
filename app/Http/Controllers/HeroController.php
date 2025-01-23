@@ -52,8 +52,8 @@ class HeroController extends Controller implements HasMiddleware
     public function create()
     {
 
-        $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token='.env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
-        $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token='.env('INSTAGRAM_ACCESS_TOKEN', null)));
+        $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
+        $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null)));
         $donations = Donation::where('status', 'aktif')->get();
         $donations_sum = Donation::all()->count();
         $foods = round(Food::all()->sum('weight') / 1000);
@@ -91,7 +91,7 @@ class HeroController extends Controller implements HasMiddleware
         $request->validate([
             'phone' => 'regex:/^8/',
         ]);
-        $request['phone'] = '62'.$request['phone'];
+        $request['phone'] = '62' . $request['phone'];
         $code = $this->generate();
         $phone = $donation->heroes->pluck('phone');
         if ($phone->contains($request['phone'])) {

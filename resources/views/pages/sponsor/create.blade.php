@@ -51,8 +51,8 @@
 
             </div>
             <div class="flex align-middle gap-2 my-2">
-                <input type="checkbox" name="status" id="status">
-                <label for="status" class="text-xs ">Individu</label>
+                <input type="checkbox" name="variant" id="variant">
+                <label for="variant" class="text-xs ">Individu</label>
 
             </div>
 

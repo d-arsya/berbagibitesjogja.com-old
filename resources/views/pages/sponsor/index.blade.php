@@ -3,9 +3,6 @@
     <a href="{{ route('sponsor.create') }}" class="bg-lime-400 hover:bg-lime-600 p-2 text-white rounded-md shadow-md">
         + Tambah
     </a>
-    <a href="{{ route('sponsor.individu') }}" class="bg-navy-400 hover:bg-navy-600 p-2 text-white rounded-md shadow-md mx-3">
-        Individu
-    </a>
     <div class="mt-6">
         <div>
             {{ $sponsors->links() }}
@@ -14,7 +11,7 @@
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3">
-                        Nama Sponsor
+                        Nama Donatur
                     </th>
                     {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Alamat
@@ -26,7 +23,13 @@
                         Email
                     </th> --}}
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
-                        Kontribusi
+                        Aksi
+                    </th>
+                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                        Makanan
+                    </th>
+                    <th scope="col" class="px-6 py-3 hidden sm:table-cell">
+                        Heroes
                     </th>
                     @auth
 
@@ -56,6 +59,12 @@
                         </td> --}}
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->donation->count() }}
+                        </td>
+                        <td class="px-6 py-4 hidden sm:table-cell">
+                            {{ ceil($item->foods->sum('weight') / 1000) }} Kg
+                        </td>
+                        <td class="px-6 py-4 hidden sm:table-cell">
+                            {{ $item->heroes->sum('quantity') }} Orang
                         </td>
                         @auth
 
