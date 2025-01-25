@@ -71,7 +71,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function update(Request $request, Donation $donation)
     {
-        if ($request->notes) {
+        if ($request->notes || $request->partner_id !="") {
             $donation->notes = $request->notes;
             if ($request->partner_id != "") {
                 $donation->partner_id = $request->partner_id;
