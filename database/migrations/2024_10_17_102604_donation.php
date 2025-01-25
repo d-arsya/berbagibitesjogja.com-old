@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('message')->nullable();
             $table->text('notes')->nullable();
             $table->enum('status', ['aktif', 'selesai'])->default('aktif');
+            $table->json('beneficiaries')->nullable();
+            $table->integer('partner_id')->nullable();
             $table->timestamps();
         });
     }

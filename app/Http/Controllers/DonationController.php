@@ -41,7 +41,7 @@ class DonationController extends Controller implements HasMiddleware
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
         $data['beneficiaries'] = json_encode($request->beneficiaries);
-        if ($data['beneficiaries'] == "null") {
+        if ($data['beneficiaries'] == 'null') {
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
         Donation::create($data);
@@ -66,14 +66,15 @@ class DonationController extends Controller implements HasMiddleware
     public function edit(Donation $donation)
     {
         $universities = University::all();
+
         return view('pages.donation.edit', compact('donation', 'universities'));
     }
 
     public function update(Request $request, Donation $donation)
     {
-        if ($request->notes || $request->partner_id !="") {
+        if ($request->notes || $request->partner_id != '') {
             $donation->notes = $request->notes;
-            if ($request->partner_id != "") {
+            if ($request->partner_id != '') {
                 $donation->partner_id = $request->partner_id;
             } else {
                 $donation->partner_id = null;
@@ -102,7 +103,6 @@ class DonationController extends Controller implements HasMiddleware
         }
         $donation->beneficiaries = $beneficiaries;
 
-
         if ($donation->status == 'selesai') {
             if ($donation->partner_id == null) {
                 $foods = $donation->foods->sum('weight');
@@ -125,6 +125,7 @@ class DonationController extends Controller implements HasMiddleware
             $donation->remain = 0;
         }
         $donation->save();
+
         return redirect(route('donation.index'));
     }
 

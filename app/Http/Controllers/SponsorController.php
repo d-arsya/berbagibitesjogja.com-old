@@ -10,8 +10,8 @@ class SponsorController extends Controller
 {
     public function index(Request $request)
     {
-        if ($request["variant"]) {
-            $sponsors = Sponsor::where('variant', $request["variant"])->with(['donation', 'heroes', 'foods'])->paginate(10);
+        if ($request['variant']) {
+            $sponsors = Sponsor::where('variant', $request['variant'])->with(['donation', 'heroes', 'foods'])->paginate(10);
         } else {
             $sponsors = Sponsor::with(['donation', 'heroes', 'foods'])->paginate(10);
         }

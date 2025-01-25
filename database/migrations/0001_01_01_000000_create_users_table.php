@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Volunteer\Division;
-use App\Models\Volunteer\Program;
+use App\Models\Volunteer\Faculty;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->enum('role', ['super', 'core', 'staff', 'member']);
-            $table->foreignIdFor(Program::class);
+            $table->foreignIdFor(Faculty::class);
             $table->foreignIdFor(Division::class);
             $table->string('name');
             $table->string('email');
@@ -25,7 +25,11 @@ return new class extends Migration
             $table->integer('point')->default(0);
             $table->timestamps();
         });
-
+        Schema::create('divisions', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->timestamps();
+        });
         Schema::create('sessions', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->foreignId('user_id')->nullable()->index();
@@ -42,7 +46,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('divisions');
         Schema::dropIfExists('sessions');
     }
 };

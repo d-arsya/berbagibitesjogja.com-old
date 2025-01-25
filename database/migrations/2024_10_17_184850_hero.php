@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignIdFor(Donation::class)->constrained()->onDelete('restrict');
             $table->char('code', 6)->nullable();
             $table->integer('quantity')->default(1);
+            $table->integer('weight')->default(0);
             $table->timestamps();
         });
         Schema::create('backups', function (Blueprint $table) {
@@ -41,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('heroes');
+        Schema::dropIfExists('backups');
     }
 };

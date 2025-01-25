@@ -16,10 +16,12 @@ class Sponsor extends Model
     {
         return $this->hasMany(Donation::class);
     }
+
     public function foods()
     {
         return $this->hasManyThrough(Food::class, Donation::class);
     }
+
     public function heroes()
     {
         return $this->hasManyThrough(Hero::class, Donation::class);

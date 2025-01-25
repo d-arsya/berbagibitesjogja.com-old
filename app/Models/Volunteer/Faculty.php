@@ -19,6 +19,7 @@ class Faculty extends Model
     {
         return $this->hasMany(Hero::class)->with(['faculty', 'donation']);
     }
+
     public function university()
     {
         return $this->belongsTo(University::class);

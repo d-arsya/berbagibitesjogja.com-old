@@ -11,11 +11,11 @@ return new class extends Migration
         Schema::create('sponsors', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->enum('variant', ['company', 'individual'])->nullable();
             $table->string('address')->nullable();
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
             $table->boolean('hidden')->default(false);
-            $table->enum('status', ['done', 'always', 'pending']);
             $table->timestamps();
         });
     }
