@@ -139,11 +139,14 @@
                 </div>
             @endif
         @else
-            <div class="w-full rounded-lg bg-tosca mt-8 py-5 px-6">
-                <h1 class="text-xl text-white font-medium text-center italic">Maaf, belum ada food rescue hari ini</h1>
-                <h1 class="text-md text-white font-medium text-center italic mt-3">ikuti instagram kami</h1>
-                <a href="https://www.instagram.com/berbagibitesjogja/"
-                    class="text-sm text-center block text-white font-medium text-center italic">@berbagibitesjogja</a>
+            <div class="w-full rounded-lg bg-white shadow-lg mt-8 py-5 px-6">
+                <h1 class="text-xl text-tosca font-medium text-center italic">Maaf, belum ada food rescue hari ini</h1>
+                <a href="https://berbagibitesjogja.site/channel"
+                    class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Channel
+                    Whatsapp</a>
+                <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">ikuti channel
+                    whatsapp
+                    kami untuk mendapatkan informasi food rescue</h1>
             </div>
         @endif
     </div>
@@ -261,7 +264,17 @@
             @endforeach
 
         </div>
+        <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Heroes {{ count($lastData) }} Bulan Terakhir
+        <div>
+            <canvas id="heroStatistics" class="h-max"></canvas>
+        </div>
+        <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Makanan {{ count($lastData) }} Bulan Terakhir
+        </h1>
+        <div>
+            <canvas id="foodStatistics" class="h-max"></canvas>
+        </div>
     </main>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const university = document.querySelectorAll('.university')
         university.forEach(function(target, index) {
@@ -281,6 +294,45 @@
                     .catch(error => console.error('Error:', error));
             })
 
+        })
+        const heroStatistics = document.getElementById('heroStatistics');
+        const foodStatistics = document.getElementById('foodStatistics');
+
+        let monthName = `{{!! json_encode(array_column($lastData, 'bulan')) !!}}`
+        let heroSum = `{{!! json_encode(array_column($lastData, 'heroes')) !!}}`
+        let foodSum = `{{!! json_encode(array_column($lastData, 'foods')) !!}}`
+        monthName = JSON.parse(monthName.replace('{','').replace('}',''))
+        heroSum = JSON.parse(heroSum.replace('{','').replace('}',''))
+        foodSum = JSON.parse(foodSum.replace('{','').replace('}',''))
+        new Chart(foodStatistics, {
+            type: 'line',
+            data: {
+                labels: monthName,
+                datasets: [{
+                    label: 'Surplus Food (kg)',
+                    data: foodSum,
+                    fill: true,
+                    borderColor: '#21568A',
+                    tension: 0.25,
+                    borderWidth:2.5,
+                    backgroundColor:'rgba(33, 86, 138, 0.1)'
+                }]
+            }
+        })
+        new Chart(heroStatistics, {
+            type: 'line',
+            data: {
+                labels: monthName,
+                datasets: [{
+                    label: 'Penerima',
+                    data: heroSum,
+                    fill: true,
+                    borderColor: '#0395AF',
+                    tension: 0.25,
+                    borderWidth:2.5,
+                    backgroundColor:'rgba(3, 149, 175, 0.1)'
+                }]
+            }
         })
     </script>
 @endsection

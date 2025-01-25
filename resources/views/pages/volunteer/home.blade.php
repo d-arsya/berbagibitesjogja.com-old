@@ -121,8 +121,7 @@
             color: backgroundColors[index]
         }));
         combinedData.sort((a, b) => b.value - a.value);
-
-        // Pisahkan kembali menjadi label, data, dan warna
+        
         const sortedLabels = combinedData.map(item => item.label);
         const sortedData = combinedData.map(item => item.value);
         const sortedColors = combinedData.map(item => item.color);

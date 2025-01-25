@@ -7,6 +7,7 @@ use App\Models\Donation\Food;
 use App\Models\Heroes\Backup;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Faculty;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -60,7 +61,30 @@ class HeroController extends Controller implements HasMiddleware
         $foods = round(Food::all()->sum('weight') / 1000);
         $heroes = Hero::all()->sum('quantity');
 
-        return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user'));
+
+        $currentDate = Carbon::now();
+        $fourMonthsAgo = Carbon::now()->subMonths(7);
+
+        $donationsStat = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
+        $groupedData = $donationsStat->groupBy(function ($donation) {
+            return Carbon::parse($donation->take)->format('Y-m'); // Format tahun-bulan (YYYY-MM)
+        });
+        $lastData = [];
+        foreach ($groupedData as $key => $item) {
+            $hero_count = 0;
+            $food_count = 0;
+
+            foreach ($item as $data) {
+                $hero_count += $data->heroes->sum('quantity');
+                $food_count += $data->foods->sum('weight') / 1000;
+            }
+            $lastData[] = [
+                'bulan' => Carbon::parse($key)->format('F'),
+                'heroes' => $hero_count,
+                'foods' => $food_count,
+            ];
+        }
+        return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
     }
 
     public function contributor(Request $request)
