@@ -112,11 +112,13 @@ class DonationController extends Controller implements HasMiddleware
                         $foods += $partner->foods->sum('weight');
                     }
                 }
-                $foods = $foods / $donation->heroes->sum('quantity');
                 $heroes = $donation->heroes;
-                foreach ($heroes as $hero) {
-                    $hero->weight = $foods * $hero->quantity;
-                    $hero->save();
+                if ($heroes->count() > 0) {
+                    $foods = $foods / $heroes->sum('quantity');
+                    foreach ($heroes as $hero) {
+                        $hero->weight = $foods * $hero->quantity;
+                        $hero->save();
+                    }
                 }
             }
             $donation->quota = $donation->quota - $donation->remain;
