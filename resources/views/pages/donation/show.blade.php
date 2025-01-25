@@ -5,17 +5,48 @@
     <div class="mt-3 flex gap-3 w-max">
         <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
             < Kembali</a>
-                <div class="w-max bg-navy-500 py-2 px-4 text-white rounded-md shadow-md">
-                    Heroes : {{ $donation->quota - $donation->remain }} / {{ $donation->quota }}
-                </div>
+                @if ($donation->partner_id)
+                    <div class="w-max bg-navy-500 py-2 px-4 text-white rounded-md shadow-md">
+                        Heroes : {{ $donation->partner->quota - $donation->partner->remain }} /
+                        {{ $donation->partner->quota }}
+                    </div>
+                @else
+                    <div class="w-max bg-navy-500 py-2 px-4 text-white rounded-md shadow-md">
+                        Heroes : {{ $donation->quota - $donation->remain }} /
+                        {{ $donation->quota }}
+                    </div>
+                @endif
     </div>
-
-
     <div class="mt-10 shadow-md sm:rounded-lg p-6">
-        <h1 class="text-xl mb-3">Catatan</h1>
         <form method="POST" action="{{ route('donation.update', $donation->id) }}">
             @csrf
             @method('PUT')
+            @if ($donation->partners->count() > 0)
+                <h1 class="mb-3">Partner</h1>
+                @foreach ($donation->partners as $item)
+                    <a class="bg-navy-500 hover:bg-navy-600 shadow-md p-2 rounded-md text-white"
+                        href="{{ route('donation.show', $item->id) }}">
+                        {{ $item->sponsor->name }}</a>
+                @endforeach
+            @endif
+            @if ($donation->quota == 0)
+                <h1>Partner</h1>
+                <select id="partner" name="partner_id"
+                    class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                    <option value="">Donasi Partner</option>
+                    @foreach ($donations as $item)
+                        <option {{ $item->id == $donation->partner_id ? 'selected' : '' }} value="{{ $item->id }}">
+                            {{ $item->sponsor->name }}
+                            {{ \Carbon\Carbon::parse($item->take)->isoFormat('dddd, DD MMMM Y') }}</option>
+                    @endforeach
+                </select>
+                @if ($donation->partner_id)
+                    <a class="bg-navy-500 hover:bg-navy-600 shadow-md p-2 rounded-md text-white"
+                        href="{{ route('donation.show', $donation->partner_id) }}">
+                        Lihat Partner</a>
+                @endif
+            @endif
+            <h1 class="text-xl my-3">Catatan</h1>
             @if ($donation->notes)
                 <textarea class="focus:outline-none w-full rounded-lg" name="notes" rows="3" placeholder="Catatan....">{{ $donation->notes }}</textarea>
             @else

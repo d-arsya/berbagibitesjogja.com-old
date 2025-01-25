@@ -25,8 +25,9 @@ class HeroController extends Controller implements HasMiddleware
     {
         $heroes = Hero::with(['faculty', 'donation'])->paginate(30);
         $donations = Donation::where('status', 'aktif')->get();
+        $faculties = Faculty::all();
 
-        return view('pages.hero.index', compact('donations', 'heroes'));
+        return view('pages.hero.index', compact('donations', 'heroes', 'faculties'));
     }
 
     public function backups()
@@ -70,7 +71,7 @@ class HeroController extends Controller implements HasMiddleware
         }
         Hero::create([
             'name' => $request['name'],
-            'faculty_id' => Faculty::all()->where('name', 'Kontributor')->pluck('id')[0],
+            'faculty_id' => $request['faculty_id'],
             'donation_id' => $request['donation_id'],
             'quantity' => $request['quantity'],
             'status' => 'sudah',

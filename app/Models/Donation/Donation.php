@@ -26,4 +26,12 @@ class Donation extends Model
     {
         return $this->hasMany(Food::class);
     }
+    public function partner()
+    {
+        return $this->belongsTo(Donation::class, 'partner_id');
+    }
+    public function partners()
+    {
+        return $this->hasMany(Donation::class, 'partner_id');
+    }
 }

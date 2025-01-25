@@ -29,7 +29,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function create()
     {
-        $sponsors = Sponsor::whereNot('status', 'done')->get();
+        $sponsors = Sponsor::all();
         $universities = University::all();
 
         return view('pages.donation.create', compact('sponsors', 'universities'));
@@ -44,22 +44,23 @@ class DonationController extends Controller implements HasMiddleware
         if ($data['beneficiaries'] == "null") {
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
-        $donation = Donation::create($data);
-        $sponsor = $donation->sponsor;
-        if ($sponsor->status == 'pending') {
-            $sponsor->status = 'done';
-            $sponsor->save();
-        }
+        Donation::create($data);
 
         return redirect(route('donation.index'));
     }
 
     public function show(Donation $donation)
     {
-        $heroes = $donation->heroes()->with('faculty')->get();
+        if ($donation->partner_id) {
+            $heroes = $donation->partner->heroes()->with('faculty')->get();
+            $donations = Donation::whereNot('id', $donation->id)->where('status', 'aktif')->orWhere('id', '=', $donation->partner_id)->get();
+        } else {
+            $donations = Donation::whereNot('id', $donation->id)->where('status', 'aktif')->get();
+            $heroes = $donation->heroes()->with('faculty')->get();
+        }
         $foods = $donation->foods;
 
-        return view('pages.donation.show', compact('donation', 'foods', 'heroes'));
+        return view('pages.donation.show', compact('donation', 'foods', 'heroes', 'donations'));
     }
 
     public function edit(Donation $donation)
@@ -72,6 +73,11 @@ class DonationController extends Controller implements HasMiddleware
     {
         if ($request->notes) {
             $donation->notes = $request->notes;
+            if ($request->partner_id != "") {
+                $donation->partner_id = $request->partner_id;
+            } else {
+                $donation->partner_id = null;
+            }
             $donation->save();
 
             return back();
@@ -90,9 +96,33 @@ class DonationController extends Controller implements HasMiddleware
             $donation->remain = $donation->remain - $request->diff;
             $donation->quota = $donation->quota - $request->diff;
         }
-        $donation->beneficiaries = json_encode($request->beneficiaries);
-        $donation->save();
+        $beneficiaries = json_encode($request->beneficiaries);
+        if ($beneficiaries == 'null') {
+            $beneficiaries = null;
+        }
+        $donation->beneficiaries = $beneficiaries;
 
+
+        if ($donation->status == 'selesai') {
+            if ($donation->partner_id == null) {
+                $foods = $donation->foods->sum('weight');
+                $partners = $donation->partners;
+                if ($partners->count() > 0) {
+                    foreach ($partners as $partner) {
+                        $foods += $partner->foods->sum('weight');
+                    }
+                }
+                $foods = $foods / $donation->heroes->sum('quantity');
+                $heroes = $donation->heroes;
+                foreach ($heroes as $hero) {
+                    $hero->weight = $foods * $hero->quantity;
+                    $hero->save();
+                }
+            }
+            $donation->quota = $donation->quota - $donation->remain;
+            $donation->remain = 0;
+        }
+        $donation->save();
         return redirect(route('donation.index'));
     }
 

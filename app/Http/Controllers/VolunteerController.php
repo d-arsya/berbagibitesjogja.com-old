@@ -54,7 +54,7 @@ class VolunteerController extends Controller
         $foods = Food::all();
         $volunteers = User::all();
         $heroes = Hero::all();
-        $faculties = Faculty::whereNotIn('name', ['Kontributor', 'Lainnya'])->with('heroes')->get();
+        $faculties = Faculty::where('university_id', 1)->whereNotIn('name', ['Volunteer', 'RZIS', 'Lainnya'])->with('heroes')->get();
 
         return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData', 'precence'));
     }

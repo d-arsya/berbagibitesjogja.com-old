@@ -93,6 +93,14 @@
                         </a>
                     </li>
                     <li>
+                        <a href="{{ route('beneficiary.index', ['variant' => 'society']) }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Society</span>
+                        </a>
+                    </li>
+                    <li>
                         <a href="{{ route('beneficiary.index') }}"
                             class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
                             <span class="w-2 h-2 rounded-full
@@ -246,7 +254,7 @@
     </div>
 </nav>
 <nav
-    class="hidden md:flex bg-white sticky top-0 mx-auto p-4 justify-between items-center border-b-2 border-gray-200  px-44">
+    class="z-40 hidden md:flex bg-white sticky top-0 mx-auto p-4 justify-between items-center border-b-2 border-gray-200  px-44">
     <div class="flex flex-row items-center gap-2">
         <img src="{{ asset('assets/biru.png') }}" class="w-10" alt="">
         <a href="https://berbagibitesjogja.site" class="text-2xl font-semibold text-tosca-500">Berbagi Bites Jogja</a>
@@ -313,7 +321,7 @@
             </li>
             <li class="relative group">
                 <a href="{{ route('beneficiary.index') }}"
-                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['university', 'foundation', 'beneficiary'])) border-b-2 border-tosca-500 text-tosca
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['university', 'foundation', 'society', 'beneficiary'])) border-b-2 border-tosca-500 text-tosca
                     @else
                     hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
                     py-2">Beneficiaries</a>
@@ -327,6 +335,10 @@
                         <li>
                             <a href="{{ route('beneficiary.index', ['variant' => 'foundation']) }}"
                                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Foundation</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('beneficiary.index', ['variant' => 'society']) }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Society</a>
                         </li>
                         <li>
                             <a href="{{ route('beneficiary.index') }}"

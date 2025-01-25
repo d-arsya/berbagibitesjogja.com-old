@@ -93,6 +93,14 @@
                     <option value="{{ $item->id }}">{{ $item->sponsor->name }}</option>
                 @endforeach
             </select>
+            <label for="faculties" class="block mb-2 text-sm font-medium text-gray-900">Asal Kontributor</label>
+            <select id="faculty" name="faculty_id"
+                class="mb-5 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5">
+                <option value="">Asal</option>
+                @foreach ($faculties as $item)
+                    <option value="{{ $item->id }}">{{ $item->name }}</option>
+                @endforeach
+            </select>
             <div class="relative z-0 w-full mb-5 group">
                 <input type="text" name="name" id="name"
                     class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"

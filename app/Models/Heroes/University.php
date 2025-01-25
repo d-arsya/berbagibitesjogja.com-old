@@ -21,8 +21,7 @@ class University extends Model
     }
     public function foods()
     {
-        $foods = $this->heroes->pluck('donation_id')->unique();
-        $foods = Food::whereIn('donation_id', $foods);
+        $foods = $this->heroes->sum('weight');
         return $foods;
     }
 }

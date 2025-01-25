@@ -111,7 +111,7 @@
 ];
         const data = [
             @foreach ($faculties as $item)
-                {{ $item->heroes->count() }},
+                {{ $item->heroes->sum('quantity') }},
             @endforeach
         ];
 

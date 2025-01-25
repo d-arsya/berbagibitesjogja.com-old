@@ -80,21 +80,21 @@
                         class="peer-focus:font-medium absolute text-sm text-gray-500  duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Pesan
                         Khusus (opsional)</label>
                 </div>
-                @php
-                    $beneficiaries = json_decode($donation->beneficiaries);
-                @endphp
-                <p class="text-xs text-gray-900">Beneficiaries :</p>
-                <div class="flex gap-3">
-                    @foreach ($universities as $item)
-                        <div class="flex align-middle gap-2 my-2">
-                            <input type="checkbox" name="beneficiaries[]" value="{{ $item->id }}"
-                                {{ in_array($item->id, $beneficiaries) ? 'checked' : '' }} id="beneficiaries">
-                            <label for="beneficiaries" class="text-xs ">{{ $item->name }}</label>
+                @if ($donation->beneficiaries)
+                    <p class="text-xs text-gray-900">Beneficiaries :</p>
+                    <div class="flex gap-3 flex-wrap flex-row">
+                        @foreach ($universities as $item)
+                            <div class="flex align-middle gap-2 my-2">
+                                <input type="checkbox" name="beneficiaries[]" value="{{ $item->id }}"
+                                    {{ in_array($item->id, json_decode($donation->beneficiaries)) ? 'checked' : '' }}
+                                    id="beneficiaries">
+                                <label for="beneficiaries" class="text-xs ">{{ $item->name }}</label>
 
-                        </div>
-                    @endforeach
+                            </div>
+                        @endforeach
 
-                </div>
+                    </div>
+                @endif
                 <fieldset class="grid grid-cols-2">
                     <div class="flex items-center mb-4">
                         <input id="country-option-1" type="radio" name="status" value="aktif"

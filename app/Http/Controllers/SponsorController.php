@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
 use Illuminate\Http\Request;
 
@@ -35,7 +36,8 @@ class SponsorController extends Controller
 
     public function show(Sponsor $sponsor)
     {
-        $donations = $sponsor->donation;
+        $sponsor = Sponsor::find($sponsor->id)->with('foods')->first();
+        $donations = Donation::where('sponsor_id', $sponsor->id)->with('foods')->paginate(10);
 
         return view('pages.sponsor.show', compact('sponsor', 'donations'));
     }

@@ -7,21 +7,13 @@
         <div>
             {{ $sponsors->links() }}
         </div>
+
         <table class="mt-6 shadow-md sm:rounded-lg text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Nama Donatur
                     </th>
-                    {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Alamat
-                    </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Telepon
-                    </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Email
-                    </th> --}}
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         Aksi
                     </th>
@@ -47,21 +39,15 @@
                             <span class="md:hidden italic font-normal text-gray-500 block">
                                 {{ $item->donation->count() }} Kontribusi
                             </span>
+                            <span class="md:hidden italic font-normal text-gray-500 block">
+                                {{ round($item->foods->sum('weight') / 1000) }} Kg
+                            </span>
                         </th>
-                        {{-- <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->address }}
-                        </td>
-                        <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->phone }}
-                        </td>
-                        <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->email }}
-                        </td> --}}
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->donation->count() }}
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ ceil($item->foods->sum('weight') / 1000) }} Kg
+                            {{ round($item->foods->sum('weight') / 1000) }} Kg
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->heroes->sum('quantity') }} Orang

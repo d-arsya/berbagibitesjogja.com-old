@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    <a href="{{ route('sponsor.create') }}" class="bg-lime-400 hover:bg-lime-600 p-2 text-white rounded-md shadow-md">
+    <a href="{{ route('beneficiary.create') }}" class="bg-lime-400 hover:bg-lime-600 p-2 text-white rounded-md shadow-md">
         + Tambah
     </a>
     <div class="mt-6">
@@ -36,7 +36,10 @@
                         <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
                             {{ $item->name }}
                             <span class="md:hidden italic font-normal text-gray-500 block">
-                                {{ $item->name }} Kontribusi
+                                {{ $item->heroes->sum('quantity') }} Orang
+                            </span>
+                            <span class="md:hidden italic font-normal text-gray-500 block">
+                                {{ round($item->foods() / 1000) }} Kg
                             </span>
                         </th>
                         <td class="px-6 py-4 hidden sm:table-cell">
@@ -46,12 +49,12 @@
                             {{ $item->heroes->sum('quantity') }} Orang
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ ceil($item->foods()->sum('weight') / 1000) }} Kg
+                            {{ round($item->foods() / 1000) }} Kg
                         </td>
                         @auth
 
                             <td class="px-6 py-4 flex justify-center gap-2">
-                                <a href="{{ route('sponsor.show', $item->id) }}"
+                                <a href="{{ route('beneficiary.show', $item->id) }}"
                                     class="p-2 rounded-md bg-tosca-300 hover:bg-tosca-600">
                                     <svg width="20" height="15" viewBox="0 0 20 15" fill="none"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -62,7 +65,7 @@
 
 
                                 </a>
-                                <a href="{{ route('sponsor.edit', $item->id) }}"
+                                <a href="{{ route('beneficiary.edit', $item->id) }}"
                                     class="hidden md:block p-2 rounded-md bg-yellow-300 hover:bg-yellow-600">
                                     <svg width="18" height="18" viewBox="0 0 18 18" fill="currentColor"
                                         xmlns="http://www.w3.org/2000/svg">
@@ -72,21 +75,6 @@
                                     </svg>
 
                                 </a>
-                                <form action="{{ route('sponsor.destroy', $item->id) }}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="p-2 hidden md:block rounded-md bg-red-300 hover:bg-red-600">
-                                        <svg width="18" height="17" viewBox="0 0 18 17" fill="none"
-                                            xmlns="http://www.w3.org/2000/svg">
-                                            <path
-                                                d="M13.1665 3.50008H17.3332V5.16675H15.6665V16.0001C15.6665 16.2211 15.5787 16.4331 15.4224 16.5893C15.2661 16.7456 15.0542 16.8334 14.8332 16.8334H3.1665C2.94549 16.8334 2.73353 16.7456 2.57725 16.5893C2.42097 16.4331 2.33317 16.2211 2.33317 16.0001V5.16675H0.666504V3.50008H4.83317V1.00008C4.83317 0.779068 4.92097 0.567106 5.07725 0.410826C5.23353 0.254545 5.44549 0.166748 5.6665 0.166748H12.3332C12.5542 0.166748 12.7661 0.254545 12.9224 0.410826C13.0787 0.567106 13.1665 0.779068 13.1665 1.00008V3.50008ZM13.9998 5.16675H3.99984V15.1667H13.9998V5.16675ZM6.49984 1.83341V3.50008H11.4998V1.83341H6.49984Z"
-                                                fill="white" />
-                                        </svg>
-
-
-                                    </button>
-
-                                </form>
                             </td>
                         @endauth
                     </tr>

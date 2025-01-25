@@ -3,48 +3,10 @@
     <a class="bg-orange-300 hover:bg-orange-500 shadow-md px-5 py-2.5 rounded-md text-white"
         href="{{ route('sponsor.index') }}">
         < Kembali</a>
-            <div class="mt-6 shadow-md sm:rounded-lg">
-                <table class="w-full text-sm text-left rtl:text-right text-gray-500">
-                    <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">
-                                Nama Sponsor
-                            </th>
-                            {{-- <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                                Alamat
-                            </th>
-                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                                Telepon
-                            </th>
-                            <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                                Email
-                            </th> --}}
-                            <th scope="col" class="px-6 py-3">
-                                Kontribusi
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="odd:bg-white even:bg-gray-50 border-b">
-                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">
-                                {{ $sponsor->name }}
-                            </th>
-                            {{-- <td class="px-6 py-4 hidden sm:table-cell">
-                                {{ $sponsor->address }}
-                            </td>
-                            <td class="px-6 py-4 hidden sm:table-cell">
-                                {{ $sponsor->phone }}
-                            </td>
-                            <td class="px-6 py-4 hidden sm:table-cell">
-                                {{ $sponsor->email }}
-                            </td> --}}
-                            <td class="px-6 py-4">
-                                {{ $sponsor->donation->count() }} Donasi
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+            <h1 class="mt-6">Nama : {{ $sponsor->name }}</h1>
+            <h1>Penerima : {{ $sponsor->heroes->sum('quantity') }} Orang</h1>
+            <h1>Makanan : {{ round($sponsor->foods->sum('weight') / 1000) }} kg</h1>
+            <h1>Aksi : {{ $sponsor->donation->count() }} Aksi</h1>
             <h1 class="text-center text-xl font-bold my-10">Donasi Oleh {{ $sponsor->name }}</h1>
             <div class="mt-6 shadow-md sm:rounded-lg">
                 <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -57,7 +19,7 @@
                                 Kuota
                             </th>
                             <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                                Status
+                                Makanan
                             </th>
                             <th scope="col" class="px-6 py-3 text-center">
                                 Aksi
@@ -65,7 +27,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($sponsor->donation->sortBy('take') as $item)
+                        @foreach ($donations->sortBy('take') as $item)
                             <tr class="odd:bg-white text-center even:bg-gray-50 border-b">
                                 <td class="px-6 py-4">
                                     {{ \Carbon\Carbon::parse($item->take)->isoFormat('dddd, D MMMM Y') }}
@@ -73,10 +35,10 @@
                                         {{ $item->quota - $item->remain }} Orang</span>
                                 </td>
                                 <td class="px-6 py-4 hidden sm:table-cell">
-                                    {{ $item->quota - $item->remain }}/{{ $item->quota }}
+                                    {{ $item->quota - $item->remain }} Orang
                                 </td>
                                 <td class="px-6 py-4 hidden sm:table-cell">
-                                    {{ $item->status }}
+                                    {{ round($item->foods->sum('weight') / 1000) }} kg
                                 </td>
                                 <td class="px-6 py-4 flex justify-center gap-2">
                                     <a href="{{ route('donation.show', $item->id) }}"
@@ -95,5 +57,8 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+            <div class="mt-6">
+                {{ $donations->links() }}
             </div>
         @endsection

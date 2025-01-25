@@ -64,9 +64,17 @@
                             </th>
                             <td class="px-2 py-4 hidden sm:table-cell">
                                 @auth
-                                    {{ $item->quota - $item->remain }}/{{ $item->quota }}
+                                    @if ($item->partner_id)
+                                        {{ $item->partner->quota - $item->partner->remain }}/{{ $item->partner->quota }}
+                                    @else
+                                        {{ $item->quota - $item->remain }}/{{ $item->quota }}
+                                    @endif
                                 @else
-                                    {{ $item->quota - $item->remain }} Orang
+                                    @if ($item->partner_id)
+                                        {{ $item->partner->quota - $item->partner->remain }} Orang
+                                    @else
+                                        {{ $item->quota - $item->remain }} Orang
+                                    @endif
                                 @endauth
                             </td>
                             <td class="px-2 py-4 hidden sm:table-cell">

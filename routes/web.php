@@ -8,6 +8,8 @@ use App\Http\Controllers\HeroController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
+use App\Models\Donation\Donation;
+use App\Models\Heroes\Hero;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
@@ -45,7 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/hero/backups', [HeroController::class, 'backups'])->name('hero.backups');
     Route::get('/hero/restore/{backup}', [HeroController::class, 'restore'])->name('hero.restore');
     Route::delete('/hero/trash/{backup}', [HeroController::class, 'trash'])->name('hero.trash');
-    Route::get('beneficiary', [BeneficiaryController::class, 'index'])->name('beneficiary.index');
+    Route::resource('beneficiary', BeneficiaryController::class);
 });
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');
