@@ -2,10 +2,10 @@
 @section('container')
     @auth
 
-        <a href="{{ route('hero.backups') }}" class="bg-orange-400 hover:bg-orange-600 p-2 text-white rounded-md shadow-md">
+        {{-- <a href="{{ route('hero.backups') }}" class="bg-orange-400 hover:bg-orange-600 p-2 text-white rounded-md shadow-md">
             Backups
-        </a>
-        <button onclick="addHeroes()" class="bg-navy hover:bg-navy-700 ml-3 p-2 text-white rounded-md shadow-md">
+        </a> --}}
+        <button onclick="addHeroes()" class="bg-navy hover:bg-navy-700 p-2 text-white rounded-md shadow-md">
             + Kontributor
         </button>
     @endauth

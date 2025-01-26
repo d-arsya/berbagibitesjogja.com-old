@@ -1,14 +1,17 @@
 @extends('layouts.main')
 @section('container')
     <div class="flex gap-3 w-max">
-        <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white" href="{{ route('hero.index') }}">
+        <a class="bg-orange-400 hover:bg-orange-600 shadow-md p-2 rounded-md text-white" href="{{ route('hero.index') }}">
             < Kembali</a>
                 <div class="w-max bg-navy-500 py-2 px-4 text-white rounded-md shadow-md">
-                    Heroes : {{ $heroes->sum('quantity') }} Orang
+                    Heroes : {{ $heroes->total() }} Orang
                 </div>
     </div>
-    <h1 class="text-center mt-6 font-bold text-xl">Fakultas {{ $heroes[0]->faculty->name }}
+    <h1 class="text-center mt-6 font-bold text-xl">{{ $heroes[0]->faculty->name }}
         {{ $heroes[0]->faculty->university->name }}</h1>
+    <div class="my-6">
+        {{ $heroes->links() }}
+    </div>
     <div class="shadow-md sm:rounded-lg mt-3">
         <table class="text-center w-full text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">

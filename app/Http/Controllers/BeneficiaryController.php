@@ -60,4 +60,12 @@ class BeneficiaryController extends Controller
 
         return redirect()->route('beneficiary.index');
     }
+    public function destroy(University $beneficiary)
+    {
+        if ($beneficiary->faculties->count() == 0) {
+            $beneficiary->delete();
+        }
+
+        return redirect()->route('beneficiary.index');
+    }
 }

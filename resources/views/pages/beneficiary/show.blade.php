@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    <a class="bg-orange-300 hover:bg-orange-500 shadow-md px-5 py-2.5 rounded-md text-white"
+    <a class="bg-orange-400 hover:bg-orange-600 shadow-md px-5 py-2.5 rounded-md text-white"
         href="{{ route('beneficiary.index') }}">
         < Kembali</a>
 
@@ -68,10 +68,12 @@
                 {{ $donations->links() }}
             </div>
             @if ($beneficiary->variant != 'foundation')
-                <button onclick="addSector()"
-                    class="bg-lime-400 hover:bg-lime-600 p-2 my-10 text-white rounded-md shadow-md">
-                    + Tambah
-                </button>
+                @if (auth()->user()->role == 'super')
+                    <button onclick="addSector()"
+                        class="bg-lime-600 hover:bg-lime-800 p-2 my-10 text-white rounded-md shadow-md">
+                        + Tambah
+                    </button>
+                @endif
                 <h1 class="text-center text-xl font-bold">Persebaran Di {{ $beneficiary->name }}</h1>
                 <div class="mt-6 shadow-md sm:rounded-lg">
                     <table class="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -83,6 +85,7 @@
                                 <th scope="col" class="px-6 py-3 text-center">
                                     Jumlah
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>

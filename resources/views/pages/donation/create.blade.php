@@ -79,7 +79,7 @@
                 Khusus (opsional)</label>
         </div>
         <p class="text-xs text-gray-900">Beneficiaries :</p>
-        <div class="flex gap-3 flex-row flex-wrap">
+        <div class="flex gap-x-3 flex-row flex-wrap">
             @foreach ($universities as $item)
                 <div class="flex align-middle gap-2 my-2">
                     <input type="checkbox" name="beneficiaries[]" value="{{ $item->id }}" id="beneficiaries">

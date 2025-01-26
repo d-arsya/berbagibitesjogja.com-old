@@ -3,7 +3,7 @@
     <h1 class="text-center text-xl font-bold">Daftar Heroes {{ $donation->sponsor->name }}</h1>
     <h1 class="text-center text-sm italic">{{ \Carbon\Carbon::parse($donation->take)->isoFormat('dddd, D MMMM Y') }}</h1>
     <div class="mt-3 flex gap-3 w-max">
-        <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
+        <a class="bg-orange-400 hover:bg-orange-600 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
             < Kembali</a>
                 @if ($donation->partner_id)
                     <div class="w-max bg-navy-500 py-2 px-4 text-white rounded-md shadow-md">
@@ -52,7 +52,7 @@
             @else
                 <textarea class="focus:outline-none w-full rounded-lg" name="notes" rows="3" placeholder="Catatan...."></textarea>
             @endif
-            <button type="submit" class="bg-yellow-300 hover:bg-yellow rounded-md p-2 text-white">Submit</button>
+            <button type="submit" class="bg-navy-500 hover:bg-navy-700 rounded-md p-2 text-white">Submit</button>
         </form>
     </div>
     <div class="mt-10 shadow-md sm:rounded-lg">
@@ -68,16 +68,12 @@
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Asal
                     </th>
-                    {{--
-                   <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Telepon
-                    </th> --}}
                     <th scope="col" class="px-6 py-3 hidden sm:table-cell">
                         Kode
                     </th>
                     @if ($heroes->where('status', 'belum')->count() > 0)
                         <th scope="col" class="px-0 sm:px-6 py-3 text-center">
-                            Aksi
+
                         </th>
                     @endif
                 </tr>
@@ -171,7 +167,7 @@
     </div>
     <div class="w-full mt-5">
         <h1 class="text-center font-bold text-lg">Daftar Surplus Food</h1>
-        <a class="bg-lime-400 hover:bg-lime-600 shadow-md p-2 rounded-md text-white" href="{{ route('food.index') }}">+
+        <a class="bg-lime-600 hover:bg-lime-800 shadow-md p-2 rounded-md text-white" href="{{ route('food.index') }}">+
             Tambah</a>
         <table class="mt-5 shadow-md sm:rounded-lg w-full text-center text-sm text-left rtl:text-right text-gray-500">
             <thead class="text-xs text-gray-700 uppercase bg-gray-50">

@@ -3,7 +3,7 @@
     <div class="flex justify-between flex-wrap-reverse flex-row gap-y-3">
         <div class="flex md:w-max w-full justify-start gap-2">
             <div class="text-start">
-                <p>Divisi : {{ $user->division->name }} ({{ $user->role }})</p>
+                <p>Divisi : {{ $user->division->name }}</p>
                 <p>{{ $user->attendances->count() }} Aksi</p>
             </div>
 
@@ -22,7 +22,7 @@
 
     </div>
     <div class="flex justify-start flex-row gap-y-3 my-4 gap-x-4 flex-wrap">
-        @if ($user->role=='super' || $user->division->name=='Friend')
+        @if ($user->role=='super' || $user->division->name=='PSDM')
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
         @endif
         @if ($user->role!='member')

@@ -59,7 +59,8 @@
                         <textarea name="notes" id="notes" rows="4"
                             class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
                             placeholder="Catatan makanan..."></textarea>
-                        <button type="submit" class="bg-tosca mt-3 rounded-md p-2 text-white w-full">Simpan</button>
+                        <button type="submit"
+                            class="bg-navy hover:bg-navy-700 mt-3 rounded-md p-2 text-white w-full">Simpan</button>
 
                     </form>
                 </div>

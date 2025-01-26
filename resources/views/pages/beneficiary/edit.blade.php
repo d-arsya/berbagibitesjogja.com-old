@@ -1,7 +1,7 @@
 @extends('layouts.main')
 @section('container')
     <div class="mt-3 flex gap-3 w-max">
-        <a class="bg-orange-300 hover:bg-orange-500 shadow-md p-2 rounded-md text-white"
+        <a class="bg-orange-400 hover:bg-orange-600 shadow-md p-2 rounded-md text-white"
             href="{{ route('beneficiary.index') }}">
             < Kembali</a>
     </div>

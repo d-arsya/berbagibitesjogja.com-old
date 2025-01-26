@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    <a class="bg-orange-300 hover:bg-orange-500 shadow-md px-5 py-2.5 rounded-md text-white"
+    <a class="bg-orange-400 hover:bg-orange-600 shadow-md px-5 py-2.5 rounded-md text-white"
         href="{{ route('donation.index') }}">
         < Kembali</a>
             <div class="max-w-md mx-auto mt-6 bg-navy p-5 text-center text-white font-bold rounded-t-md">
@@ -82,7 +82,7 @@
                 </div>
                 @if ($donation->beneficiaries)
                     <p class="text-xs text-gray-900">Beneficiaries :</p>
-                    <div class="flex gap-3 flex-wrap flex-row">
+                    <div class="flex gap-x-3 flex-wrap flex-row">
                         @foreach ($universities as $item)
                             <div class="flex align-middle gap-2 my-2">
                                 <input type="checkbox" name="beneficiaries[]" value="{{ $item->id }}"
@@ -95,7 +95,7 @@
 
                     </div>
                 @endif
-                <fieldset class="grid grid-cols-2">
+                <fieldset class="grid grid-cols-2 mt-3">
                     <div class="flex items-center mb-4">
                         <input id="country-option-1" type="radio" name="status" value="aktif"
                             class="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300"
