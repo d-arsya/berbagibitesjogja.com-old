@@ -41,31 +41,42 @@ class BeneficiaryController extends Controller
 
     public function store(Request $request)
     {
-        if ($request->university_id) {
-            Faculty::create(['name' => $request->name, 'university_id' => $request->university_id]);
+        try {
+            if ($request->university_id) {
+                Faculty::create(['name' => $request->name, 'university_id' => $request->university_id]);
 
-            return redirect()->back();
-        }
-        $university = University::create($request->all());
-        if ($university->variant == 'foundation') {
-            Faculty::create(['name' => $university->name, 'university_id' => $university->id]);
-        }
+                return redirect()->back()->with('success', 'Berhasil menambahkan fakultas atau sektor');
+            }
+            $university = University::create($request->all());
+            if ($university->variant == 'foundation') {
+                Faculty::create(['name' => $university->name, 'university_id' => $university->id]);
+            }
 
-        return redirect()->route('beneficiary.index');
+            return redirect()->route('beneficiary.index')->with('success', 'Berhasil menambahkan beneficiary');
+        } catch (\Throwable $th) {
+            return redirect()->route('beneficiary.index')->with('error', 'Gagal menambahkan beneficiary');
+        }
     }
 
     public function update(Request $request, University $beneficiary)
     {
-        $beneficiary->update($request->all());
+        try {
+            $beneficiary->update($request->all());
 
-        return redirect()->route('beneficiary.index');
+            return redirect()->route('beneficiary.index')->with('success', 'Berhasil mengubah beneficiary');
+        } catch (\Throwable $th) {
+            return redirect()->route('beneficiary.index')->with('error', 'Gagal mengubah beneficiary');
+        }
     }
     public function destroy(University $beneficiary)
     {
         if ($beneficiary->faculties->count() == 0) {
             $beneficiary->delete();
+        } else {
+
+            return redirect()->route('beneficiary.index')->with('error', 'Gagal menghapus beneficiary');
         }
 
-        return redirect()->route('beneficiary.index');
+        return redirect()->route('beneficiary.index')->with('success', 'Berhasil menghapus beneficiary');
     }
 }

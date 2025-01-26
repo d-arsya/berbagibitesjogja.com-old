@@ -26,12 +26,16 @@ class SponsorController extends Controller
 
     public function store(Request $request)
     {
-        $data = $request->all();
-        $data['hidden'] = $request->hidden == 'on';
-        $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
-        Sponsor::create($data);
+        try {
+            $data = $request->all();
+            $data['hidden'] = $request->hidden == 'on';
+            $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
+            Sponsor::create($data);
 
-        return redirect(route('sponsor.index'));
+            return redirect()->route('sponsor.index')->with('success', 'Berhasil menambahkan partner');
+        } catch (\Throwable $th) {
+            return redirect()->route('sponsor.index')->with('error', 'Gagal menambahkan partner');
+        }
     }
 
     public function show(Sponsor $sponsor)
@@ -49,20 +53,28 @@ class SponsorController extends Controller
 
     public function update(Request $request, Sponsor $sponsor)
     {
-        $data = $request->all();
-        $data['hidden'] = $request->hidden == 'on';
-        $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
-        $sponsor->update($data);
-
-        return redirect(route('sponsor.index'));
+        try {
+            $data = $request->all();
+            $data['hidden'] = $request->hidden == 'on';
+            $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
+            $sponsor->update($data);
+            return redirect()->route('sponsor.index')->with('success', 'Berhasil mengubah data partner');
+        } catch (\Throwable $th) {
+            return redirect()->route('sponsor.index')->with('error', 'Gagal mengubah data partner');
+        }
     }
 
     public function destroy(Sponsor $sponsor)
     {
-        if ($sponsor->donation->count() == 0) {
-            $sponsor->delete();
-        }
+        try {
+            //code...
+            if ($sponsor->donation->count() == 0) {
+                $sponsor->delete();
+            }
 
-        return redirect(route('sponsor.index'));
+            return redirect()->route('sponsor.index')->with('success', 'Berhasil menghapus data partner');
+        } catch (\Throwable $th) {
+            return redirect()->route('sponsor.index')->with('error', 'Gagal menghapus data partner');
+        }
     }
 }

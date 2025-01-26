@@ -38,6 +38,12 @@
         @yield('container')
     </main>
     @include('components.footer')
+    @session('success')
+        @include('components.toast_success')
+    @endsession
+    @session('error')
+        @include('components.toast_error')
+    @endsession
 
 </body>
 

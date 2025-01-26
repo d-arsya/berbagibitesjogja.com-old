@@ -78,10 +78,14 @@ class VolunteerController extends Controller
 
     public function store(Request $request)
     {
-        $request['phone'] = str_replace('08', '628', $request->phone);
-        User::create($request->all());
+        try {
+            $request['phone'] = str_replace('08', '628', $request->phone);
+            User::create($request->all());
 
-        return redirect()->route('volunteer.index');
+            return redirect()->route('volunteer.index')->with('success', 'Berhasil menambahkan volunteer');
+        } catch (\Throwable $th) {
+            return redirect()->route('volunteer.index')->with('error', 'Gagal menambahkan volunteer');
+        }
     }
 
     public function show(User $volunteer)
@@ -103,16 +107,24 @@ class VolunteerController extends Controller
 
     public function update(Request $request, User $volunteer)
     {
-        $volunteer->update($request->all());
+        try {
+            $volunteer->update($request->all());
 
-        return redirect()->action([VolunteerController::class, 'logout']);
+            return redirect()->action([VolunteerController::class, 'logout'])->with('success', 'Berhasil mengubah data user');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Gagal mengubah data user');
+        }
     }
 
     public function destroy(User $volunteer)
     {
-        $volunteer->delete();
+        try {
+            $volunteer->delete();
 
-        return back();
+            return back()->with('success', 'Berhasil menghapus user');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal menghapus user');
+        }
     }
 
     public function login()
@@ -134,13 +146,13 @@ class VolunteerController extends Controller
         $user = Socialite::driver('google')->user();
         $volunteer = User::where('email', $user->email)->first();
         if (! $volunteer) {
-            return redirect()->route('volunteer.home');
+            return redirect()->route('volunteer.home')->with('error', 'Anda tidak terdaftar');
         }
         $volunteer->name = $user->name;
         $volunteer->photo = $user->avatar;
         $volunteer->save();
         Auth::login($volunteer);
 
-        return redirect()->intended('/');
+        return redirect()->intended('/')->with('success', 'Berhasil login');
     }
 }

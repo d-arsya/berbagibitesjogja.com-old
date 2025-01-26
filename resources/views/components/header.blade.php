@@ -200,7 +200,7 @@
         </a>
     </div>
 </nav>
-<nav class="z-10 bg-white flex sticky top-0 md:hidden justify-between px-6 pb-6">
+<nav class="z-10 bg-white flex sticky top-0 md:hidden justify-between px-6 pb-6 pt-6">
     <a href="https://berbagibitesjogja.site" class="flex items-center text-tosca text-2xl font-bold">
         <img src="{{ asset('assets/biru.png') }}" class="w-12" alt="">Berbagi Bites Jogja
     </a>

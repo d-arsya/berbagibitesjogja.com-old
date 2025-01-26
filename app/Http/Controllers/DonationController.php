@@ -46,7 +46,7 @@ class DonationController extends Controller implements HasMiddleware
         }
         Donation::create($data);
 
-        return redirect(route('donation.index'));
+        return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');
     }
 
     public function show(Donation $donation)
@@ -81,7 +81,7 @@ class DonationController extends Controller implements HasMiddleware
             }
             $donation->save();
 
-            return back();
+            return back()->with('success', 'Berhasil mengubah data partner');
         }
         $donation->take = $request->take;
         $donation->status = $request->status;
@@ -126,15 +126,18 @@ class DonationController extends Controller implements HasMiddleware
         }
         $donation->save();
 
-        return redirect(route('donation.index'));
+        return redirect()->route('donation.index')->with('success', 'Berhasil mengubah data donasi');
     }
 
     public function destroy(Donation $donation)
     {
         if ($donation->heroes->count() == 0 && $donation->foods->count() == 0) {
             $donation->delete();
+        } else {
+
+            return redirect()->route('donation.index')->with('error', 'Gagal menghapus donasi');
         }
 
-        return redirect(route('donation.index'));
+        return redirect()->route('donation.index')->with('success', 'Berhasil menghapus donasi');
     }
 }

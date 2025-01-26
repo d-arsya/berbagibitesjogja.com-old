@@ -68,7 +68,7 @@ class PrecenceController extends Controller
         $data['code'] = $this->uniqueString();
         Precence::create($data);
 
-        return redirect()->route('precence.index');
+        return redirect()->route('precence.index')->with('success', 'Berhasil membuat presensi baru');
     }
 
     public function show(Precence $precence)
@@ -97,7 +97,7 @@ class PrecenceController extends Controller
         }
         $precence->update($request->all());
 
-        return redirect()->route('precence.index');
+        return redirect()->route('precence.index')->with('success', 'Berhasil mengubah data presensi');
     }
 
     public function destroy(string $id)

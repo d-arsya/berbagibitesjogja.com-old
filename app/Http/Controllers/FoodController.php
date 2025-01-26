@@ -19,9 +19,13 @@ class FoodController extends Controller
 
     public function store(Request $request)
     {
-        Food::create($request->all());
+        try {
+            Food::create($request->all());
 
-        return back();
+            return redirect()->back()->with('success', 'Berhasil menambahkan makanan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Gagal menambahkan makanan');
+        }
     }
 
     public function edit(Food $food)
@@ -34,15 +38,23 @@ class FoodController extends Controller
 
     public function update(Request $request, Food $food)
     {
-        $food->update($request->all());
+        try {
+            $food->update($request->all());
 
-        return redirect(route('food.index'));
+            return redirect()->route('food.index')->with('success', 'Berhasil menambahkan makanan');
+        } catch (\Throwable $th) {
+            return redirect()->route('food.index')->with('error', 'Gagal menambahkan makanan');
+        }
     }
 
     public function destroy(Food $food)
     {
-        $food->delete();
+        try {
+            $food->delete();
 
-        return back();
+            return back()->with('success', 'Berhasil menghapus makanan');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal menghapus makanan');
+        }
     }
 }

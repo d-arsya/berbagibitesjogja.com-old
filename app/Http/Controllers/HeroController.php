@@ -89,29 +89,33 @@ class HeroController extends Controller implements HasMiddleware
 
     public function contributor(Request $request)
     {
-        $donation = Donation::find($request['donation_id']);
-        if ($donation->remain < $request['quantity']) {
-            return back();
+        try {
+            $donation = Donation::find($request['donation_id']);
+            if ($donation->remain < $request['quantity']) {
+                return back();
+            }
+            Hero::create([
+                'name' => $request['name'],
+                'faculty_id' => $request['faculty_id'],
+                'donation_id' => $request['donation_id'],
+                'quantity' => $request['quantity'],
+                'status' => 'sudah',
+            ]);
+            $donation->remain = $donation->remain - $request['quantity'];
+
+            $donation->save();
+
+            return back()->with('success', 'Berhasil menambahkan kontributor');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal menambahkan kontributor');
         }
-        Hero::create([
-            'name' => $request['name'],
-            'faculty_id' => $request['faculty_id'],
-            'donation_id' => $request['donation_id'],
-            'quantity' => $request['quantity'],
-            'status' => 'sudah',
-        ]);
-        $donation->remain = $donation->remain - $request['quantity'];
-
-        $donation->save();
-
-        return back();
     }
 
     public function store(Request $request)
     {
         $donation = Donation::find($request['donation']);
         if ($donation->remain == 0) {
-            return back();
+            return back()->with('error', 'Gagal mendaftar');
         }
         $request->validate([
             'phone' => 'regex:/^8/',
@@ -120,7 +124,7 @@ class HeroController extends Controller implements HasMiddleware
         $code = $this->generate();
         $phone = $donation->heroes->pluck('phone');
         if ($phone->contains($request['phone'])) {
-            return back();
+            return back()->with('error', 'Gagal mendaftar');
         }
         Hero::create([
             'name' => $request['name'],
@@ -135,7 +139,7 @@ class HeroController extends Controller implements HasMiddleware
         session(['donation' => $donation->id]);
         session(['code' => $code]);
 
-        return back();
+        return back()->with('success', 'Berhasil mendaftar');
     }
 
     public function show(Hero $hero)
@@ -148,7 +152,7 @@ class HeroController extends Controller implements HasMiddleware
         $hero->status = 'sudah';
         $hero->save();
 
-        return back();
+        return back()->with('success', 'Hero telah datang');
     }
 
     public function restore(Backup $backup)
@@ -192,7 +196,7 @@ class HeroController extends Controller implements HasMiddleware
         ]);
         $hero->delete();
 
-        return back();
+        return back()->with('success', 'Hero batal mengambil');
     }
 
     public function generate()
@@ -226,6 +230,6 @@ class HeroController extends Controller implements HasMiddleware
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Terimakasih telah membatalkan');
     }
 }
