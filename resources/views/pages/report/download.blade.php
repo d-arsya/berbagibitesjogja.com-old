@@ -9,7 +9,7 @@
             <div class="flex flex-row flex-wrap gap-2 mt-12">
                 @foreach ($reportFiles as $item)
                     <a class="text-white bg-tosca rounded-md py-2 px-3 hover:bg-tosca-700" download="{{ $item }}"
-                        href="/reports/{{ $item }}">{{ $item }}</a>
+                        href="/storage/reports/{{ $item }}">{{ $item }}</a>
                 @endforeach
 
             </div>

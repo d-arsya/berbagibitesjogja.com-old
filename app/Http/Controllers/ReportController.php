@@ -55,14 +55,14 @@ class ReportController extends Controller
                 $templateProcessor->setValue("foodName#$i", $foods[$i - 1]->name);
                 $templateProcessor->setValue("foodWeight#$i", round($foods[$i - 1]->weight / 100) / 10);
             }
-            $filename = public_path('reports/') . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y');
+            $filename = storage_path().'/app/public/reports/' . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y');
             $templateProcessor->saveAs($filename . '.docx');
             // $reader = IOFactory::createReader('Word2007');
             // $phpWord = $reader->load($filename . '.docx'); // Load dokumen Word
             // $pdfWriter = IOFactory::createWriter($phpWord, 'PDF');
             // $pdfWriter->save($filename . '.pdf');
         }
-        $path = public_path('reports/'); // Ganti 'your-directory' dengan direktori yang ingin di-scan
+        $path = storage_path().'/app/public/reports'; // Ganti 'your-directory' dengan direktori yang ingin di-scan
         $files = File::allFiles($path);
         $reportFiles = [];
         foreach ($files as $file) {
