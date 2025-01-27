@@ -18,10 +18,10 @@ class ReportController extends Controller
     }
     public function clean()
     {
-        $path = public_path('reports/'); // Ganti 'your-directory' dengan direktori yang ingin di-scan
+        $path = storage_path().'/app/public/reports/'; // Ganti 'your-directory' dengan direktori yang ingin di-scan
         $files = File::allFiles($path);
         foreach ($files as $file) {
-            unlink(public_path('reports/') . $file->getFilename());
+            unlink(storage_path().'/app/public/reports/' . $file->getFilename());
         }
         return redirect()->route('report.index')->with('success', 'Berhasil menghapus semua file');
     }
