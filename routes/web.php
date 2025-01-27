@@ -6,6 +6,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\PrecenceController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -46,6 +47,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/hero/restore/{backup}', [HeroController::class, 'restore'])->name('hero.restore');
     Route::delete('/hero/trash/{backup}', [HeroController::class, 'trash'])->name('hero.trash');
     Route::resource('beneficiary', BeneficiaryController::class);
+    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
+    Route::post('/report/download', [ReportController::class, 'download'])->name('report.download');
+    Route::get('/report/clean', [ReportController::class, 'clean'])->name('report.clean');
 });
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');

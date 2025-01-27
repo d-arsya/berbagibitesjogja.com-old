@@ -40,7 +40,7 @@ class SponsorController extends Controller
 
     public function show(Sponsor $sponsor)
     {
-        $sponsor = Sponsor::find($sponsor->id)->with('foods')->first();
+        $sponsor = Sponsor::where('id', $sponsor->id)->with('foods')->first();
         $donations = Donation::where('sponsor_id', $sponsor->id)->with('foods')->paginate(10);
 
         return view('pages.sponsor.show', compact('sponsor', 'donations'));

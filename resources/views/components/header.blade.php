@@ -145,6 +145,14 @@
                             <span class="text-sm">All</span>
                         </a>
                     </li>
+                    <li>
+                        <a href="{{ route('report.index') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">Create Report</span>
+                        </a>
+                    </li>
                 </ul>
             </li>
             <li><a class="w-full block" href="{{ route('logout') }}">Logout</a></li>
@@ -360,7 +368,7 @@
             </li>
             <li class="relative group">
                 <a href="{{ route('sponsor.index') }}"
-                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['sponsor'])) border-b-2 border-tosca-500 text-tosca
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['sponsor', 'report'])) border-b-2 border-tosca-500 text-tosca
                     @else
                     hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
                     py-2">Partner</a>
@@ -378,6 +386,11 @@
                         <li>
                             <a href="{{ route('sponsor.index') }}"
                                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">All</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('report.index') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Create
+                                Report</a>
                         </li>
                     </ul>
                 </div>
