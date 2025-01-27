@@ -55,7 +55,7 @@ class ReportController extends Controller
                 $templateProcessor->setValue("foodName#$i", $foods[$i - 1]->name);
                 $templateProcessor->setValue("foodWeight#$i", round($foods[$i - 1]->weight / 100) / 10);
             }
-            $filename = 'reports/Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y');
+            $filename = public_path('reports/') . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y');
             $templateProcessor->saveAs($filename . '.docx');
             // $reader = IOFactory::createReader('Word2007');
             // $phpWord = $reader->load($filename . '.docx'); // Load dokumen Word
