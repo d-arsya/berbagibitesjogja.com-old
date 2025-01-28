@@ -201,10 +201,5 @@ class BotController extends Controller
             $error_msg = curl_error($curl);
         }
         curl_close($curl);
-
-        if (isset($error_msg)) {
-            echo $error_msg;
-        }
-        echo $response;
     }
 }

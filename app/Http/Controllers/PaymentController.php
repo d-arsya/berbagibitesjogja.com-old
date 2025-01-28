@@ -28,25 +28,32 @@ class PaymentController extends Controller
     }
     public function waiting(Payment $payment)
     {
-        \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
-        \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
-        \Midtrans\Config::$isSanitized = true;
-        \Midtrans\Config::$is3ds = false;
+        if ($payment->snap_token) {
+            $snapToken = $payment->snap_token;
+        } else {
+            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            \Midtrans\Config::$isProduction = env('MIDTRANS_IS_PRODUCTION');
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = false;
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => $payment->order_id,
-                'gross_amount' => $payment->amount,
-            ),
-            'customer_details' => array(
-                'first_name' => $payment->name,
-                'last_name' => $payment->name,
-                'email' => $payment->email,
-                'phone' => $payment->phone,
-            ),
-        );
-        // $snapToken = 1;
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $params = array(
+                'transaction_details' => array(
+                    'order_id' => $payment->order_id,
+                    'gross_amount' => $payment->amount,
+                ),
+                'customer_details' => array(
+                    'first_name' => $payment->name,
+                    'last_name' => $payment->name,
+                    'email' => $payment->email,
+                    'phone' => $payment->phone,
+                ),
+            );
+            // $snapToken = 1;
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $payment->snap_token = $snapToken;
+            $payment->save();
+        }
+
         return view('pages.payment.waiting', compact('payment', 'snapToken'));
     }
     public function callback()
@@ -64,6 +71,7 @@ class PaymentController extends Controller
                     BotController::sendForPublic("6289523043433", "*[NOTIFIKASI PAYMENT]*\n\nNominal : " . $data["currency"] . " " . number_format($payment->amount, 0, ',', '.') . "\nDari : " . $payment->name);
                 } elseif ($data["transaction_status"] == "pending") {
                     $payment->status = "waiting";
+                    BotController::sendForPublic($payment->phone, "Silahkan buka link berikut apabila pembayaran anda tertunda\n\n" . route('payment.waiting', $payment->order_id) . "\n\n*berlaku hingga " . Carbon::parse($data["expiry_time"])->isoFormat('D MMMM hh:mm WIB'));
                 } else {
                     $payment->status = "cancel";
                 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('phone');
             $table->integer('amount');
+            $table->string('snap_token')->nullable();
             $table->enum('variant', ['company', 'individual']);
             $table->enum('status', ['waiting', 'cancel', 'done'])->default("waiting");
             $table->timestamps();

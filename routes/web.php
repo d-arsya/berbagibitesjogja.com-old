@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
@@ -34,6 +35,7 @@ Route::redirect('/home', '/');
 Route::controller(PaymentController::class)->group(function () {
     Route::get('kontribusi/biaya-operasional', 'create')->name('payment.create');
     Route::post('kontribusi/biaya-operasional', 'store')->name('payment.store');
+    Route::redirect('kontribusi', 'https://berbagibitesjogja.site/beri-kontribusi');
     Route::get('kontribusi/biaya-operasional/{payment:order_id}', 'waiting')->name('payment.waiting');
 });
 
@@ -58,6 +60,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/report', [ReportController::class, 'index'])->name('report.index');
     Route::post('/report/download', [ReportController::class, 'download'])->name('report.download');
     Route::get('/report/clean', [ReportController::class, 'clean'])->name('report.clean');
+    Route::controller(ContributorController::class)->group(function () {
+        Route::get('contributor/wealth', 'wealth')->name('contributor.wealth');
+        Route::get('contributor/food', 'food')->name('contributor.food');
+        Route::get('contributor/people', 'people')->name('contributor.people');
+    });
 });
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');
