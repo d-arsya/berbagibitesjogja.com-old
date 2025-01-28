@@ -5,6 +5,7 @@ use App\Http\Controllers\BotController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
+use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
@@ -14,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::match(['get', 'post'], 'midtrans-callback', [PaymentController::class, 'callback'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::get('send-wa', [BotController::class, 'sendWa']);
 Route::view('print', 'print');
 
@@ -28,6 +30,12 @@ Route::get('/auth/google/callback', [VolunteerController::class, 'authenticate']
 Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');
+
+Route::controller(PaymentController::class)->group(function () {
+    Route::get('kontribusi/biaya-operasional', 'create')->name('payment.create');
+    Route::post('kontribusi/biaya-operasional', 'store')->name('payment.store');
+    Route::get('kontribusi/biaya-operasional/{payment:order_id}', 'waiting')->name('payment.waiting');
+});
 
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');

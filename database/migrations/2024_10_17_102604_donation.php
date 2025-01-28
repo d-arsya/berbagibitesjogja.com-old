@@ -24,6 +24,7 @@ return new class extends Migration
             $table->enum('status', ['aktif', 'selesai'])->default('aktif');
             $table->json('beneficiaries')->nullable();
             $table->integer('partner_id')->nullable();
+            $table->enum('reported', ['sudah'])->after('partner_id')->nullable();
             $table->timestamps();
         });
     }
