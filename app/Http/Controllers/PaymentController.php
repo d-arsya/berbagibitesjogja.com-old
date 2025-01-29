@@ -48,7 +48,6 @@ class PaymentController extends Controller
                     'phone' => $payment->phone,
                 ),
             );
-            // $snapToken = 1;
             $snapToken = \Midtrans\Snap::getSnapToken($params);
             $payment->snap_token = $snapToken;
             $payment->save();
