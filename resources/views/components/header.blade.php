@@ -156,8 +156,8 @@
                 </ul>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full text-base group" aria-controls="dropdown-action"
-                    data-collapse-toggle="dropdown-action">
+                <button type="button" class="flex items-center w-full text-base group"
+                    aria-controls="dropdown-contributor" data-collapse-toggle="dropdown-contributor">
                     <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Contributors</span>
                     <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -165,7 +165,7 @@
                             d="m1 1 4 4 4-4" />
                     </svg>
                 </button>
-                <ul id="dropdown-action" aria-expanded="false" class="hidden py-2 space-y-2">
+                <ul id="dropdown-contributor" aria-expanded="false" class="hidden py-2 space-y-2">
                     <li>
                         <a href="{{ route('contributor.wealth') }}"
                             class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
