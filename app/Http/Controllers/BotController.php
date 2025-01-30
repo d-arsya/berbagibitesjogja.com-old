@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
 
@@ -44,13 +45,26 @@ class BotController extends Controller
     {
         $activeDonation = Donation::where('status', 'aktif')->pluck('id');
         $hero = Hero::where('phone', $sender)->where('status', 'belum')->whereIn('donation_id', $activeDonation)->first();
+        $foodDonator = Booking::where('phone', $sender)->where('status', 'waiting')->first();
 
         if ($hero) {
-            $message = '> Balasan Heroes' . " \n\n" . $hero->name . "\n_Kode : " . $hero->code . "_\n\n" . $text;
-            $this->kirimWa('120363350581821641@g.us', $message);
-        } else {
-            return true;
+            $this->getReplyFromHeroes($hero, $text);
         }
+        if ($foodDonator) {
+            $this->getReplyFromFoodDonator($foodDonator, $text);
+        }
+        return true;
+    }
+
+    public function getReplyFromHeroes($hero, $text)
+    {
+        $message = '> Balasan Heroes' . " \n\n" . $hero->name . "\n_Kode : " . $hero->code . "_\n\n" . $text;
+        $this->kirimWa('120363350581821641@g.us', $message);
+    }
+    public function getReplyFromFoodDonator($foodDonator, $text)
+    {
+        $message = '> Balasan Donasi Surplus Food' . " \n\n" . $foodDonator->name . "\n" . $foodDonator->ticket . "\n\n" . $text;
+        $this->kirimWa('120363301975705765@g.us', $message);
     }
 
     public function kirimWa($target, $message)

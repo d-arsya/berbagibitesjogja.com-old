@@ -35,10 +35,11 @@ Route::redirect('/home', '/');
 Route::controller(PaymentController::class)->group(function () {
     Route::get('kontribusi/biaya-operasional', 'create')->name('payment.create');
     Route::post('kontribusi/biaya-operasional', 'store')->name('payment.store');
+    Route::get('kontribusi/food-surplus', 'foodCreate')->name('payment.foodCreate');
+    Route::post('kontribusi/food-surplus', 'foodStore')->name('payment.foodStore');
     Route::redirect('kontribusi', 'https://berbagibitesjogja.site/beri-kontribusi');
     Route::get('kontribusi/biaya-operasional/{payment:order_id}', 'waiting')->name('payment.waiting');
 });
-
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::post('login', 'authenticate')->name('volunteer.authenticate');
@@ -62,7 +63,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/report/clean', [ReportController::class, 'clean'])->name('report.clean');
     Route::controller(ContributorController::class)->group(function () {
         Route::get('contributor/wealth', 'wealth')->name('contributor.wealth');
-        Route::get('contributor/food', 'food')->name('contributor.food');
+        Route::get('contributor/foods', 'food')->name('contributor.food');
+        Route::delete('contributor/foods/{booking}', 'foodCancel')->name('contributor.food.destroy');
+        Route::put('contributor/foods/{booking}', 'foodDone')->name('contributor.food.update');
         Route::get('contributor/people', 'people')->name('contributor.people');
     });
 });
