@@ -26,6 +26,7 @@
         @guest
             <li><a class="w-full block" href="{{ route('form.create') }}">Form</a></li>
             <li><a class="w-full block" href="{{ route('donation.index') }}">Donation</a></li>
+            <li><a class="w-full block" href="https://berbagibitesjogja.site/beri-kontribusi">Beri Kontribusi</a></li>
         @endguest
         @auth
             <li>
@@ -347,6 +348,14 @@
                     @else
                     hover-underline text-gray-400 hover:text-tosca @endif
                     py-2">Donation</a>
+            </li>
+            <li class="relative">
+                <a href="https://berbagibitesjogja.site/beri-kontribusi"
+                    class="@if (str_contains(request()->route()->getName(), 'form')) border-b-2 border-tosca-500 text-tosca
+                    @else
+                    hover-underline text-gray-400 hover:text-tosca @endif
+                    py-2">Beri
+                    Kontribusi</a>
             </li>
         @endguest
         @auth
