@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
+use Illuminate\Support\Facades\Bus;
 
 class BotController extends Controller
 {
     public function sendWa()
     {
-        return true;
+        $this->reminderToday('6289636055420');
     }
 
     public function fromFonnte()
@@ -85,24 +87,15 @@ class BotController extends Controller
                 'message' => $message,
                 'schedule' => 0,
                 'typing' => false,
-                'delay' => '2',
+                'delay' => '5',
                 'countryCode' => '62',
             ],
             CURLOPT_HTTPHEADER => [
-                'Authorization: ' . env('FONNTE_KEY', null),
+                'Authorization: ' . env("WHATSAPP_FONNTE_" . AppConfiguration::useWhatsapp()),
             ],
         ]);
-
-        $response = curl_exec($curl);
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
-        }
+        curl_exec($curl);
         curl_close($curl);
-
-        if (isset($error_msg)) {
-            echo $error_msg;
-        }
-        echo $response;
     }
 
     public function getAllActiveHero($sender)
@@ -138,24 +131,42 @@ class BotController extends Controller
         $activeDonation = Donation::where('status', 'aktif')->first();
         $notyetHero = Hero::where('donation_id', $activeDonation->id)->where('status', 'belum')->get(['name', 'phone']);
         $jam = str_replace('@BOT ingatkan hero yang belum ', '', $jam);
+        $delay = 10;
         foreach ($notyetHero as $hero) {
             $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan untuk bisa mengambil makanan di ' . $activeDonation->location . '(' . $activeDonation->maps . '). ' . 'Kami tunggu hingga pukul ' . $jam . " yaaa\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
-            $this->kirimWa($hero->phone, $message);
+            $phone = $hero->phone;
+            dispatch(function () use ($phone, $message) {
+                $this->kirimWa($phone, $message);
+            })->delay(now()->addSeconds($delay));
+            $delay += 10;
         }
-        $message = 'Berhasil mengirimkan kepada ' . $notyetHero->count() . ' hero';
+        $message = 'Akan mengirimkan kepada ' . $notyetHero->count() . ' hero secara bertahap';
         $this->kirimWa($sender, $message);
+        $message = 'Berhasil mengirimkan kepada ' . $notyetHero->count() . ' hero';
+        dispatch(function () use ($sender, $message) {
+            $this->kirimWa($sender, $message);
+        })->delay(now()->addSeconds($delay));
     }
 
     public function reminderToday($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
         $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
+        $delay = 30;
         foreach ($allActiveHero as $hero) {
-            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul ' . $activeDonation->hour . '.' . $activeDonation->minute . ' dan bisa diambil di ' . $activeDonation->location . '(' . $activeDonation->maps . ')' . "\n\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
-            $this->kirimWa($hero->phone, $message);
+            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul ' . str_pad($activeDonation->hour, 2, '0', STR_PAD_LEFT) . '.' . str_pad($activeDonation->minute, 2, '0', STR_PAD_LEFT) . ' dan bisa diambil di ' . $activeDonation->location . '(' . $activeDonation->maps . ')' . "\n\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
+            $phone = $hero->phone;
+            dispatch(function () use ($phone, $message) {
+                $this->kirimWa($phone, $message);
+            })->delay(now()->addSeconds($delay));
+            $delay += 30;
         }
-        $message = 'Berhasil mengirimkan kepada ' . $allActiveHero->count() . ' hero';
+        $message = 'Akan mengirimkan kepada ' . $allActiveHero->count() . ' hero secara bertahap';
         $this->kirimWa($sender, $message);
+        $message = 'Berhasil mengirimkan kepada ' . $allActiveHero->count() . ' hero';
+        dispatch(function () use ($sender, $message) {
+            $this->kirimWa($sender, $message);
+        })->delay(now()->addSeconds($delay));
     }
 
     public function getActiveDonation($sender)
@@ -206,14 +217,11 @@ class BotController extends Controller
                 'countryCode' => '62',
             ],
             CURLOPT_HTTPHEADER => [
-                'Authorization: ' . env('FONNTE_KEY', null),
+                'Authorization: ' . env("WHATSAPP_FONNTE_" . AppConfiguration::useWhatsapp()),
             ],
         ]);
 
-        $response = curl_exec($curl);
-        if (curl_errno($curl)) {
-            $error_msg = curl_error($curl);
-        }
+        curl_exec($curl);
         curl_close($curl);
     }
 }

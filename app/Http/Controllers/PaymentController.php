@@ -70,7 +70,7 @@ class PaymentController extends Controller
                     BotController::sendForPublic("120363301975705765@g.us", "*[NOTIFIKASI PAYMENT]*\n\nNominal : " . $data["currency"] . " " . number_format($payment->amount, 0, ',', '.') . "\nDari : " . $payment->name);
                 } elseif ($data["transaction_status"] == "pending") {
                     $payment->status = "waiting";
-                    BotController::sendForPublic($payment->phone, "Silahkan buka link berikut apabila pembayaran anda tertunda\n\n" . route('payment.waiting', $payment->order_id) . "\n\n*berlaku hingga " . Carbon::parse($data["expiry_time"])->isoFormat('D MMMM hh:mm WIB'));
+                    BotController::sendForPublic($payment->phone, "Silahkan buka link berikut apabila pembayaran anda tertunda\n\n" . route('payment.waiting', $payment->order_id) . "\n\n*berlaku hingga " . Carbon::parse($data["expiry_time"])->isoFormat('D MMMM hh:mm') . " WIB");
                 } else {
                     $payment->status = "cancel";
                 }
