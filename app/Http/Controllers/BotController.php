@@ -6,7 +6,6 @@ use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
-use Illuminate\Support\Facades\Bus;
 
 class BotController extends Controller
 {
@@ -61,12 +60,12 @@ class BotController extends Controller
     public function getReplyFromHeroes($hero, $text)
     {
         $message = '> Balasan Heroes' . " \n\n" . $hero->name . "\n_Kode : " . $hero->code . "_\n\n" . $text;
-        $this->kirimWa('120363350581821641@g.us', $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa('120363350581821641@g.us', $message, 'SECOND');
     }
     public function getReplyFromFoodDonator($foodDonator, $text)
     {
         $message = '> Balasan Donasi Surplus Food' . " \n\n" . $foodDonator->name . "\n" . $foodDonator->ticket . "\n\n" . $text;
-        $this->kirimWa('120363301975705765@g.us', $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa('120363301975705765@g.us', $message, 'SECOND');
     }
 
     public function kirimWa($target, $message, $from)
@@ -109,7 +108,7 @@ class BotController extends Controller
             $message = $message . " \n " . $hero->name;
             $message = $message . " \n " . $hero->code;
         }
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
     }
 
     public function getAllNotYetHero($sender)
@@ -123,7 +122,7 @@ class BotController extends Controller
             $message = $message . " \n " . $hero->name;
             $message = $message . " \n " . $hero->code;
         }
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
     }
 
     public function reminderLastCall($jam, $sender)
@@ -141,10 +140,10 @@ class BotController extends Controller
             $delay += 10;
         }
         $message = 'Akan mengirimkan kepada ' . $notyetHero->count() . ' hero secara bertahap';
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
         $message = 'Berhasil mengirimkan kepada ' . $notyetHero->count() . ' hero';
         dispatch(function () use ($sender, $message) {
-            $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+            $this->kirimWa($sender, $message, 'SECOND');
         })->delay(now()->addSeconds($delay));
     }
 
@@ -162,10 +161,10 @@ class BotController extends Controller
             $delay += 30;
         }
         $message = 'Akan mengirimkan kepada ' . $allActiveHero->count() . ' hero secara bertahap';
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
         $message = 'Berhasil mengirimkan kepada ' . $allActiveHero->count() . ' hero';
         dispatch(function () use ($sender, $message) {
-            $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+            $this->kirimWa($sender, $message, 'SECOND');
         })->delay(now()->addSeconds($delay));
     }
 
@@ -173,13 +172,13 @@ class BotController extends Controller
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
         $message = "*[AKSI HARI INI]*\n\n" . 'Donatur : ' . $activeDonation->sponsor->name . "\nKuota : " . $activeDonation->quota . "\nTersisa : " . $activeDonation->remain . "\nHero terdaftar : " . $activeDonation->heroes->count() . ' Orang';
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
     }
 
     public function getHelp($sender)
     {
         $message = "@BOT help\n" . "@BOT donasi hari ini\n" . "@BOT hero hari ini\n" . "@BOT hero yang belum\n" . "@BOT ingatkan hero hari ini\n" . "@BOT ingatkan hero yang belum <JAM> <PESAN OPSIONAL>\n" . '@BOT balas <KODE> <PESAN>';
-        $this->kirimWa($sender, $message, AppConfiguration::useWhatsapp());
+        $this->kirimWa($sender, $message, 'SECOND');
     }
 
     public function replyHero($sender, $message)
@@ -189,7 +188,7 @@ class BotController extends Controller
         if ($hero) {
             $message = substr(str_replace('@BOT balas ', '', $message), 7);
             $this->kirimWa($hero->phone, $message . "\n\n_dikirim menggunakan bot_", AppConfiguration::useWhatsapp());
-            $this->kirimWa($sender, 'Berhasil mengirimkan balasan kepada ' . $hero->name, AppConfiguration::useWhatsapp());
+            $this->kirimWa($sender, 'Berhasil mengirimkan balasan kepada ' . $hero->name, 'SECOND');
         }
 
         return false;
