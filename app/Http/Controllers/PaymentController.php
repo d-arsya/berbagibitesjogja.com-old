@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
@@ -66,11 +67,11 @@ class PaymentController extends Controller
             if ($payment) {
                 if ($data["transaction_status"] == "settlement") {
                     $payment->status = "done";
-                    BotController::sendForPublic($payment->phone, "*[PENYALURAN KONTRIBUSI]*\n\nTerimakasih atas kontribusi anda kepada Berbagi Bites Jogja" . "\n\n🌱 Empowering sustainability through collective action\n🍽 Partnering with local businesses & communities\n📍 Yogyakarta-based food rescue initiative\n\n📷 Instagram: @berbagibitesjogja\n🌐 Website: https://berbagibitesjogja.site");
-                    BotController::sendForPublic("120363301975705765@g.us", "*[NOTIFIKASI PAYMENT]*\n\nNominal : " . $data["currency"] . " " . number_format($payment->amount, 0, ',', '.') . "\nDari : " . $payment->name);
+                    BotController::sendForPublic($payment->phone, "*[PENYALURAN KONTRIBUSI]*\n\nTerimakasih atas kontribusi anda kepada Berbagi Bites Jogja" . "\n\n🌱 Empowering sustainability through collective action\n🍽 Partnering with local businesses & communities\n📍 Yogyakarta-based food rescue initiative\n\n📷 Instagram: @berbagibitesjogja\n🌐 Website: https://berbagibitesjogja.site", AppConfiguration::useWhatsapp());
+                    BotController::sendForPublic("120363301975705765@g.us", "*[NOTIFIKASI PAYMENT]*\n\nNominal : " . $data["currency"] . " " . number_format($payment->amount, 0, ',', '.') . "\nDari : " . $payment->name, AppConfiguration::useWhatsapp());
                 } elseif ($data["transaction_status"] == "pending") {
                     $payment->status = "waiting";
-                    BotController::sendForPublic($payment->phone, "Silahkan buka link berikut apabila pembayaran anda tertunda\n\n" . route('payment.waiting', $payment->order_id) . "\n\n*berlaku hingga " . Carbon::parse($data["expiry_time"])->isoFormat('D MMMM hh:mm') . " WIB");
+                    BotController::sendForPublic($payment->phone, "Silahkan buka link berikut apabila pembayaran anda tertunda\n\n" . route('payment.waiting', $payment->order_id) . "\n\n*berlaku hingga " . Carbon::parse($data["expiry_time"])->isoFormat('D MMMM hh:mm') . " WIB", AppConfiguration::useWhatsapp());
                 } else {
                     $payment->status = "cancel";
                 }
@@ -164,8 +165,8 @@ class PaymentController extends Controller
             $data["ticket"] = $this->createFoodTicket();
         } while (Booking::where('ticket', $data["ticket"])->first());
         $booking = Booking::create($data);
-        BotController::sendForPublic($booking->phone, "*[" . $booking->ticket . "]*\n\nSilahkan tunggu admin mengonfirmasi donasi anda. Terimakasih atas kontribusinya" . "\n\n🌱 Empowering sustainability through collective action\n🍽 Partnering with local businesses & communities\n📍 Yogyakarta-based food rescue initiative\n\n📷 Instagram: @berbagibitesjogja\n🌐 Website: https://berbagibitesjogja.site");
-        BotController::sendForPublic("120363301975705765@g.us", "*[DONASI MAKANAN]*\n\nNomor Tiket : " . $booking->ticket . "\nNama : " . $booking->name . "\nPorsi : " . $booking->quota . " Orang\nDeskripsi : " . $booking->description . "\nAlamat Pengambilan : " . $booking->location . "\nNomor Telepon : " . "wa.me/" . $booking->phone . "\n\nMohon MinJe untuk melakukan follow up");
+        BotController::sendForPublic($booking->phone, "*[" . $booking->ticket . "]*\n\nSilahkan tunggu admin mengonfirmasi donasi anda. Terimakasih atas kontribusinya" . "\n\n🌱 Empowering sustainability through collective action\n🍽 Partnering with local businesses & communities\n📍 Yogyakarta-based food rescue initiative\n\n📷 Instagram: @berbagibitesjogja\n🌐 Website: https://berbagibitesjogja.site", AppConfiguration::useWhatsapp());
+        BotController::sendForPublic("120363301975705765@g.us", "*[DONASI MAKANAN]*\n\nNomor Tiket : " . $booking->ticket . "\nNama : " . $booking->name . "\nPorsi : " . $booking->quota . " Orang\nDeskripsi : " . $booking->description . "\nAlamat Pengambilan : " . $booking->location . "\nNomor Telepon : " . "wa.me/" . $booking->phone . "\n\nMohon MinJe untuk melakukan follow up", AppConfiguration::useWhatsapp());
         return redirect()->route('form.create')->with('success', 'Berhasil mendonasikan makanan');
     }
     private function createFoodTicket()
