@@ -11,7 +11,7 @@ class BotController extends Controller
 {
     public function sendWa()
     {
-        $this->reminderToday('6289636055420');
+        return 1;
     }
 
     public function fromFonnte()

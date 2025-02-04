@@ -29,7 +29,7 @@ Schedule::call(function () {
         $fileName = ReportController::createReport($donation);
         $relativePath = storage_path('app/public/reports/') . $fileName[1];
         Storage::disk('google')->put('foods/Arsip Berita Acara/' . $fileName[0] . "/" . $fileName[1], File::get($relativePath));
-        BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan donasi hari ini\n\n" . "Nama File : " . $fileName[1] . "\nUkuran file : " . round(filesize($relativePath) / 1024) . " kb", AppConfiguration::useWhatsapp());
+        BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan donasi hari ini\n\n" . "Nama File : " . $fileName[1] . "\nUkuran file : " . round(filesize($relativePath) / 1024) . " kb", 'SECOND');
         File::delete($relativePath);
         $donation->reported = "sudah";
         $donation->save();
