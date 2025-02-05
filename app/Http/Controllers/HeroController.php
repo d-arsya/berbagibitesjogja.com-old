@@ -62,7 +62,7 @@ class HeroController extends Controller implements HasMiddleware
         $heroes = Hero::all()->sum('quantity');
 
         $currentDate = Carbon::now();
-        $fourMonthsAgo = Carbon::now()->subMonths(7);
+        $fourMonthsAgo = Carbon::parse(Carbon::now()->format('Y-m'))->subMonths(5);
 
         $donationsStat = Donation::whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
         $groupedData = $donationsStat->groupBy(function ($donation) {
