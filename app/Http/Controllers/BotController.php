@@ -35,7 +35,7 @@ class BotController extends Controller
             } elseif (str_starts_with($message, '@BOT balas')) {
                 $this->replyHero($sender, $message);
             }elseif (str_starts_with($message, '@BOT dokumentasi')) {
-                $this->giveDocumentation($sender, $message);
+                $this->giveDocumentation($message);
             }
         } else {
             $this->getReplyFromStranger($sender, $message);
@@ -72,8 +72,7 @@ class BotController extends Controller
         $message = str_replace('@BOT dokumentasi ','',$message);
         $message = explode(' ',$message);
         $donation = Donation::find(str_replace('#','',$message[0]));
-        $donation->media = $message[1];
-        $donation->save();
+        $donation->update(["media"=>$message[1]]);
         BotController::sendForPublic('120363313399113112@g.us','Terimakasih dokumentasinya','SECOND'); 
     }
 
