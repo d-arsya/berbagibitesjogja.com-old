@@ -11,7 +11,7 @@ class BotController extends Controller
 {
     public function sendWa()
     {
-        return 1;
+        $this->notificationForDocumentation(Donation::find(54));
     }
 
     public function fromFonnte()
@@ -21,10 +21,8 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        if (in_array($sender, ['120363350581821641@g.us', '6289636055420'])) {
-            if ($message == '@BOT help' && $sender == '6289636055420') {
-                $this->getHelp($sender);
-            } elseif ($message == '@BOT donasi hari ini') {
+        if (in_array($sender, ['120363350581821641@g.us', '120363313399113112@g.us'])) {
+            if ($message == '@BOT donasi hari ini') {
                 $this->getActiveDonation($sender);
             } elseif ($message == '@BOT hero hari ini') {
                 $this->getAllActiveHero($sender);
@@ -32,10 +30,12 @@ class BotController extends Controller
                 $this->getAllNotYetHero($sender);
             } elseif ($message == '@BOT ingatkan hero hari ini') {
                 $this->reminderToday($sender);
-            } elseif (str_contains($message, '@BOT ingatkan hero yang belum')) {
+            } elseif (str_starts_with($message, '@BOT ingatkan hero yang belum')) {
                 $this->reminderLastCall($message, $sender);
-            } elseif (str_contains($message, '@BOT balas')) {
+            } elseif (str_starts_with($message, '@BOT balas')) {
                 $this->replyHero($sender, $message);
+            }elseif (str_starts_with($message, '@BOT dokumentasi')) {
+                $this->giveDocumentation($sender, $message);
             }
         } else {
             $this->getReplyFromStranger($sender, $message);
@@ -66,6 +66,19 @@ class BotController extends Controller
     {
         $message = '> Balasan Donasi Surplus Food' . " \n\n" . $foodDonator->name . "\n" . $foodDonator->ticket . "\n\n" . $text;
         $this->kirimWa('120363301975705765@g.us', $message, 'SECOND');
+    }
+
+    public function giveDocumentation($message){
+        $message = str_replace('@BOT dokumentasi ','',$message);
+        $message = explode(' ',$message);
+        $donation = Donation::find(str_replace('#','',$message[0]));
+        $donation->update(["media"=>$message[1]]);
+        BotController::sendForPublic('120363313399113112@g.us','Terimakasih dokumentasinya','SECOND'); 
+    }
+
+    public static function notificationForDocumentation(Donation $donation){
+        $message = "*[NEED FOR DOCUMENTATION]*\n\nKode : #".$donation->id."\n\nHalo tim medinfo, kita ada aksi dari ". $donation->sponsor->name . " nih. Minta bantuannya buat kirimin link dokumentasi yaa biar tim Food lebih mudah dalam mencari dokumentasinya. Caranya ketik *@BOT dokumentasi <KODE> <LINK>*\n\nContoh : @BOT dokumentasi #35 https://drive/com";   
+        BotController::sendForPublic('120363313399113112@g.us',$message,'SECOND'); 
     }
 
     public function kirimWa($target, $message, $from)

@@ -2,7 +2,7 @@
 @section('container')
     <h1 class="text-center text-xl font-bold">Daftar Heroes {{ $donation->sponsor->name }}</h1>
     <h1 class="text-center text-sm italic">{{ \Carbon\Carbon::parse($donation->take)->isoFormat('dddd, D MMMM Y') }}</h1>
-    <div class="mt-3 flex gap-3 w-max">
+    <div class="mt-3 flex gap-3 w-full flex-row flex-wrap">
         <a class="bg-orange-400 hover:bg-orange-600 shadow-md p-2 rounded-md text-white" href="{{ route('donation.index') }}">
             < Kembali</a>
                 @if ($donation->partner_id)
@@ -15,6 +15,11 @@
                         Heroes : {{ $donation->quota - $donation->remain }} /
                         {{ $donation->quota }}
                     </div>
+                @endif
+                @if ($donation->media)
+                <a class="bg-navy-500 hover:bg-navy-600 shadow-md p-2 rounded-md text-white" href="{{ $donation->media }}">
+                    Dokumentasi</a>
+                    
                 @endif
     </div>
     <div class="mt-10 shadow-md sm:rounded-lg p-6">
