@@ -11,7 +11,7 @@ class BotController extends Controller
 {
     public function sendWa()
     {
-        $this->notificationForDocumentation(Donation::find(54));
+        return 1;
     }
 
     public function fromFonnte()
@@ -72,7 +72,8 @@ class BotController extends Controller
         $message = str_replace('@BOT dokumentasi ','',$message);
         $message = explode(' ',$message);
         $donation = Donation::find(str_replace('#','',$message[0]));
-        $donation->update(["media"=>$message[1]]);
+        $donation->media = $message[1];
+        $donation->save();
         BotController::sendForPublic('120363313399113112@g.us','Terimakasih dokumentasinya','SECOND'); 
     }
 
