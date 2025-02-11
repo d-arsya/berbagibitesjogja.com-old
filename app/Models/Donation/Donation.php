@@ -5,12 +5,20 @@ namespace App\Models\Donation;
 use App\Models\Heroes\Hero;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Donation extends Model
 {
-    use HasFactory;
+    use HasFactory, LogsActivity;
 
-    protected $guarded = [];
+    protected $guarded = ['id','created_at','updated_at'];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+        ->logUnguarded();
+    }
 
     public function sponsor()
     {

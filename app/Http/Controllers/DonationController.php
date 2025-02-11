@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
 use App\Models\Heroes\University;
+use App\Models\Volunteer\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
+use Illuminate\Support\Facades\Auth;
 
 class DonationController extends Controller implements HasMiddleware
 {
@@ -37,7 +39,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
-        $data = $request->all();
+        $data = $request->except('_token');
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
         $data['beneficiaries'] = json_encode($request->beneficiaries);
@@ -45,7 +47,7 @@ class DonationController extends Controller implements HasMiddleware
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
         $donation = Donation::create($data);
-        BotController::notificationForDocumentation($donation);
+        // BotController::notificationForDocumentation($donation);
 
         return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');
     }
@@ -126,7 +128,6 @@ class DonationController extends Controller implements HasMiddleware
             $donation->remain = 0;
         }
         $donation->save();
-
         return redirect()->route('donation.index')->with('success', 'Berhasil mengubah data donasi');
     }
 

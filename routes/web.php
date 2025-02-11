@@ -6,6 +6,7 @@ use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\ReportController;
@@ -68,6 +69,10 @@ Route::middleware('auth')->group(function () {
         Route::delete('contributor/foods/{booking}', 'foodCancel')->name('contributor.food.destroy');
         Route::put('contributor/foods/{booking}', 'foodDone')->name('contributor.food.update');
         Route::get('contributor/people', 'people')->name('contributor.people');
+    });
+    Route::controller(LogController::class)->group(function(){
+        Route::get('logs/system')->name('logs.system');
+        Route::get('logs/activity','activityLogs')->name('logs.activity');
     });
 });
 Route::middleware('guest')->group(function () {

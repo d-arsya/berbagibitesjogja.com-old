@@ -193,6 +193,35 @@
                     </li>
                 </ul>
             </li>
+            <li>
+                <button type="button" class="flex items-center w-full text-base group"
+                    aria-controls="dropdown-logs" data-collapse-toggle="dropdown-logs">
+                    <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Logs</span>
+                    <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 4 4 4-4" />
+                    </svg>
+                </button>
+                <ul id="dropdown-logs" aria-expanded="false" class="hidden py-2 space-y-2">
+                    <li>
+                        <a href="{{ route('logs.system') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">System</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('logs.activity') }}"
+                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
+                            <span class="w-2 h-2 rounded-full
+                        inline-block ms-1"></span>
+                            <span class="text-sm">User</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
             <li><a class="w-full block" href="{{ route('logout') }}">Logout</a></li>
         @endauth
     </ul>
@@ -461,6 +490,26 @@
                         <li>
                             <a href="{{ route('contributor.people') }}"
                                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">People</a>
+                        </li>
+                    </ul>
+                </div>
+            </li>
+            <li class="relative group">
+                <a
+                    class="@if (in_array(explode('.', request()->route()->getName())[0], ['logs'])) border-b-2 border-tosca-500 text-tosca
+                    @else
+                    hover-underline text-gray-400 hover:text-tosca group-hover:text-tosca @endif
+                    py-2">Logs</a>
+                <div
+                    class="absolute transition-all duration-300 ease-in-out transform translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10 bg-white divide-y mt-2 divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+                    <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                            <a href="{{ route('logs.system') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">System</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('logs.activity') }}"
+                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">User</a>
                         </li>
                     </ul>
                 </div>

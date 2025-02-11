@@ -134,6 +134,13 @@ class VolunteerController extends Controller
 
     public function logout(Request $request)
     {
+        $volunteer = User::find(Auth::user()->id);
+        activity()
+        ->causedBy($volunteer)
+        ->performedOn($volunteer)
+        ->createdAt(now())
+        ->event('authentication')
+        ->log('Logout');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -152,6 +159,12 @@ class VolunteerController extends Controller
         $volunteer->photo = $user->avatar;
         $volunteer->save();
         Auth::login($volunteer);
+        activity()
+        ->causedBy($volunteer)
+        ->performedOn($volunteer)
+        ->createdAt(now())
+        ->event('authentication')
+        ->log('Login');
 
         return redirect()->intended('/')->with('success', 'Berhasil login');
     }
