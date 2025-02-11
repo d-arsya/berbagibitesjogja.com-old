@@ -47,7 +47,7 @@ class DonationController extends Controller implements HasMiddleware
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
         $donation = Donation::create($data);
-        // BotController::notificationForDocumentation($donation);
+        BotController::notificationForDocumentation($donation);
 
         return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');
     }
