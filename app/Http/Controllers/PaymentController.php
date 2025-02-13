@@ -84,6 +84,7 @@ class PaymentController extends Controller
     }
     public function create(Request $request)
     {
+        return redirect('https://berbagibitesjogja.site/beri-kontribusi');
         $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
         $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null)));
 
