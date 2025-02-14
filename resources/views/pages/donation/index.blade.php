@@ -28,7 +28,7 @@
                         </th>
                     @else
                         <th scope="col" class="px-6 py-3 hidden sm:table-cell">
-                            Penerima
+                            Food Heroes
                         </th>
                     @endauth
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">

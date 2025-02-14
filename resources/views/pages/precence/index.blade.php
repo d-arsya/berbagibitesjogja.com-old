@@ -19,7 +19,8 @@
                     </a>
     </div>
     @endif
-    <div class="mt-6">
+    <div class="mt-6 w-full">
+        {{ $precences->links() }}
     </div>
     <table class="mt-6 shadow-md sm:rounded-lg text-center w-full text-sm text-left rtl:text-right text-gray-500">
         <thead class="text-xs text-gray-700 uppercase bg-gray-50">
