@@ -84,7 +84,8 @@ class HeroController extends Controller implements HasMiddleware
             ];
         }
 
-        return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
+        // return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
+        return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'lastData'));
     }
 
     public function contributor(Request $request)

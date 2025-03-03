@@ -149,7 +149,8 @@ class PaymentController extends Controller
             ];
         }
 
-        return view('pages.payment.food', compact('donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
+        // return view('pages.payment.food', compact('donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
+        return view('pages.payment.food', compact('donations_sum', 'foods', 'heroes', 'lastData'));
     }
     public function foodStore(Request $request)
     {
