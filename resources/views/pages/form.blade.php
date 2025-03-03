@@ -182,7 +182,7 @@
         </div>
     </div>
 
-    <main class="bg-gray-100 bg-opacity-25 mt-12">
+    {{-- <main class="bg-gray-100 bg-opacity-25 mt-12">
         <div class="mb-8">
             <header class="flex flex-wrap items-center p-4 md:py-8">
                 <div class="md:w-3/12 md:ml-16">
@@ -273,7 +273,7 @@
         <div>
             <canvas id="foodStatistics" class="h-max"></canvas>
         </div>
-    </main>
+    </main> --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         const university = document.querySelectorAll('.university')

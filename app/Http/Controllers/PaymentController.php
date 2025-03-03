@@ -119,8 +119,8 @@ class PaymentController extends Controller
     }
     public function foodCreate(Request $request)
     {
-        $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
-        $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null)));
+        // $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
+        // $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null)));
 
         $donations_sum = Donation::all()->count();
         $foods = round(Food::all()->sum('weight') / 1000);
@@ -159,16 +159,16 @@ class PaymentController extends Controller
             'variant' => 'required',
             'description' => 'required',
         ]);
-        $data = $request->except(['hour','minute']);
+        $data = $request->except(['hour', 'minute']);
         $data["status"] = "waiting";
         $data["phone"] = "62" . $request->phone;
-        $data["take"]=$data["take"]." ".$request["hour"].":".$request["minute"].":00";
+        $data["take"] = $data["take"] . " " . $request["hour"] . ":" . $request["minute"] . ":00";
         do {
             $data["ticket"] = $this->createFoodTicket();
         } while (Booking::where('ticket', $data["ticket"])->first());
         $booking = Booking::create($data);
         BotController::sendForPublic($booking->phone, "*[" . $booking->ticket . "]*\n\nSilahkan tunggu admin mengonfirmasi donasi anda. Terimakasih atas kontribusinya" . "\n\n🌱 Empowering sustainability through collective action\n🍽 Partnering with local businesses & communities\n📍 Yogyakarta-based food rescue initiative\n\n📷 Instagram: @berbagibitesjogja\n🌐 Website: https://berbagibitesjogja.site", AppConfiguration::useWhatsapp());
-        BotController::sendForPublic("120363301975705765@g.us", "*[DONASI MAKANAN]*\n\nNomor Tiket : " . $booking->ticket . "\nNama : " . $booking->name . "\nPorsi : " . $booking->quota . " Orang\nDeskripsi : " . $booking->description . "\nAlamat Pengambilan : " . $booking->location ."\nWaktu Pengambilan : ".Carbon::parse($booking->take)->isoFormat('dddd, D MMMM Y hh:mm')." WIB". "\nNomor Telepon : " . "wa.me/" . $booking->phone . "\n\nMohon MinJe untuk melakukan follow up", 'SECOND');
+        BotController::sendForPublic("120363301975705765@g.us", "*[DONASI MAKANAN]*\n\nNomor Tiket : " . $booking->ticket . "\nNama : " . $booking->name . "\nPorsi : " . $booking->quota . " Orang\nDeskripsi : " . $booking->description . "\nAlamat Pengambilan : " . $booking->location . "\nWaktu Pengambilan : " . Carbon::parse($booking->take)->isoFormat('dddd, D MMMM Y hh:mm') . " WIB" . "\nNomor Telepon : " . "wa.me/" . $booking->phone . "\n\nMohon MinJe untuk melakukan follow up", 'SECOND');
         return redirect()->route('form.create')->with('success', 'Berhasil mendonasikan makanan');
     }
     private function createFoodTicket()
