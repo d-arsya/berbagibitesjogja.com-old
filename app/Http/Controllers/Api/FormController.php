@@ -18,9 +18,10 @@ class FormController extends Controller
                 "name" => "required",
                 "phone" => "required",
                 "total" => "required",
+                "pesan" => "required"
             ]);
             $pay = $data["total"] * 90 / 100;
-            $message = "Halo " . $data["name"] . "\nTotal : Rp" . number_format($data["total"], 0, ',', '.') . "\nSetelah discount : Rp" . number_format($pay, 0, ',', '.') . "\n\nSilahkan bayar menggunakan QRIS dibawah\n" . "https://berbagibitesjogja.site/qris-podo";
+            $message = "Halo " . $data["name"] . "\nTotal : Rp" . number_format($data["total"], 0, ',', '.') . "\nSetelah discount : Rp" . number_format($pay, 0, ',', '.') . "\n\nSilahkan bayar menggunakan QRIS dibawah\n" . "https://berbagibitesjogja.site/qris-podo\n\nPesanan\n" . $data["pesan"];
             BotController::sendForPublic($data["phone"], $message, AppConfiguration::useWhatsapp());
             return response()->json($request->all());
         }
