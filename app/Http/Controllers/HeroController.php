@@ -7,6 +7,7 @@ use App\Models\Donation\Food;
 use App\Models\Heroes\Backup;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Faculty;
+use App\Models\Volunteer\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
@@ -125,6 +126,10 @@ class HeroController extends Controller implements HasMiddleware
         $code = $this->generate();
         $phone = $donation->heroes->pluck('phone');
         if ($phone->contains($request['phone'])) {
+            return back()->with('error', 'Gagal mendaftar');
+        }
+        $voulunteer = User::all()->pluck('phone');
+        if ($voulunteer->contains($request['phone'])) {
             return back()->with('error', 'Gagal mendaftar');
         }
         Hero::create([
