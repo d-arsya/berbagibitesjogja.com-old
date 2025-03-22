@@ -48,14 +48,15 @@ class VolunteerController extends Controller
             ];
         }
         $user = Auth::user();
-        $donations = Donation::all();
+        $donations = Donation::where('charity', 0)->get();
+        $donationsCharity = Donation::where('charity', 1)->get();
         $precence = Precence::where('status', 'active')->count();
-        $foods = Food::all();
-        $volunteers = User::all();
+        $foods = Food::whereIn('donation_id', $donations->pluck('id'))->get();
+        $foodsCharity = Food::whereIn('donation_id', $donationsCharity->pluck('id'))->get();
         $heroes = Hero::all();
         $faculties = Faculty::where('university_id', 1)->whereNotIn('name', ['Volunteer', 'RZIS', 'Lainnya'])->with('heroes')->get();
 
-        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'volunteers', 'heroes', 'faculties', 'lastData', 'precence'));
+        return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'donationsCharity', 'foodsCharity', 'heroes', 'faculties', 'lastData', 'precence'));
     }
 
     public function index()
@@ -136,11 +137,11 @@ class VolunteerController extends Controller
     {
         $volunteer = User::find(Auth::user()->id);
         activity()
-        ->causedBy($volunteer)
-        ->performedOn($volunteer)
-        ->createdAt(now())
-        ->event('authentication')
-        ->log('Logout');
+            ->causedBy($volunteer)
+            ->performedOn($volunteer)
+            ->createdAt(now())
+            ->event('authentication')
+            ->log('Logout');
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
@@ -160,11 +161,11 @@ class VolunteerController extends Controller
         $volunteer->save();
         Auth::login($volunteer);
         activity()
-        ->causedBy($volunteer)
-        ->performedOn($volunteer)
-        ->createdAt(now())
-        ->event('authentication')
-        ->log('Login');
+            ->causedBy($volunteer)
+            ->performedOn($volunteer)
+            ->createdAt(now())
+            ->event('authentication')
+            ->log('Login');
 
         return redirect()->intended('/')->with('success', 'Berhasil login');
     }

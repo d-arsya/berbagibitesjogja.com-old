@@ -28,6 +28,22 @@ class DonationController extends Controller implements HasMiddleware
 
         return view('pages.donation.index', compact('donations'));
     }
+    public function charity()
+    {
+        $donations = Donation::where('charity', 1)->with('sponsor')->orderByRaw("CASE WHEN status = 'aktif' THEN 0 WHEN status = 'selesai' THEN 1 ELSE 2 END")
+            ->orderBy('take')
+            ->paginate(10);
+
+        return view('pages.donation.index', compact('donations'));
+    }
+    public function rescue()
+    {
+        $donations = Donation::where('charity', 0)->with('sponsor')->orderByRaw("CASE WHEN status = 'aktif' THEN 0 WHEN status = 'selesai' THEN 1 ELSE 2 END")
+            ->orderBy('take')
+            ->paginate(10);
+
+        return view('pages.donation.index', compact('donations'));
+    }
 
     public function create()
     {
@@ -40,6 +56,9 @@ class DonationController extends Controller implements HasMiddleware
     public function store(Request $request)
     {
         $data = $request->except('_token');
+        if ($request->has('charity')) {
+            $data['charity'] = true;
+        }
         $data['remain'] = $request->quota;
         $data['status'] = 'aktif';
         $data['beneficiaries'] = json_encode($request->beneficiaries);
@@ -47,7 +66,7 @@ class DonationController extends Controller implements HasMiddleware
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
         $donation = Donation::create($data);
-        BotController::notificationForDocumentation($donation);
+        // BotController::notificationForDocumentation($donation);
 
         return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');
     }
@@ -127,6 +146,7 @@ class DonationController extends Controller implements HasMiddleware
             $donation->quota = $donation->quota - $donation->remain;
             $donation->remain = 0;
         }
+        $donation->charity = $request->has('charity');
         $donation->save();
         return redirect()->route('donation.index')->with('success', 'Berhasil mengubah data donasi');
     }

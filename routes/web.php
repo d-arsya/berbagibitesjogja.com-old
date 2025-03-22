@@ -70,9 +70,9 @@ Route::middleware('auth')->group(function () {
         Route::put('contributor/foods/{booking}', 'foodDone')->name('contributor.food.update');
         Route::get('contributor/people', 'people')->name('contributor.people');
     });
-    Route::controller(LogController::class)->group(function(){
+    Route::controller(LogController::class)->group(function () {
         Route::get('logs/system')->name('logs.system');
-        Route::get('logs/activity','activityLogs')->name('logs.activity');
+        Route::get('logs/activity', 'activityLogs')->name('logs.activity');
     });
 });
 Route::middleware('guest')->group(function () {
@@ -81,5 +81,7 @@ Route::middleware('guest')->group(function () {
 });
 Route::resource('hero', HeroController::class)->except(['show', 'edit', 'create', 'store']);
 Route::get('/hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel');
+Route::get('donation/food-rescue', [DonationController::class, 'rescue'])->name('donation.rescue');
+Route::get('donation/charity', [DonationController::class, 'charity'])->name('donation.charity');
 Route::resource('donation', DonationController::class);
 Route::get('logout', [VolunteerController::class, 'logout'])->name('logout');

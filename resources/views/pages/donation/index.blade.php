@@ -6,6 +6,22 @@
                 + Tambah
             </a>
         @endif
+        <div class="mt-3 flex gap-x-2">
+            @if (request()->route()->getName() == 'donation.index')
+                <a href="{{ route('donation.charity') }}"
+                    class="bg-orange-600 hover:bg-orange-800 p-2 text-white rounded-md shadow-md">
+                    CSR Only
+                </a>
+                <a href="{{ route('donation.rescue') }}"
+                    class="bg-navy-600 hover:bg-navy-800 p-2 text-white rounded-md shadow-md">
+                    Food Rescue Only
+                </a>
+            @else
+                <a href="{{ route('donation.index') }}" class="bg-navy-600 hover:bg-navy-800 p-2 text-white rounded-md shadow-md">
+                    All Action
+                </a>
+            @endif
+        </div>
 
     @endauth
     <div class="mt-6">

@@ -46,7 +46,7 @@
             </div>
             <div>
                 <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Total Aksi</p>
-                <p class="font-bold text-md sm:text-lg md:text-xl">{{ $donations->count() }} Aksi</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ $donations->count() }} + {{ $donationsCharity->count() }} Aksi</p>
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
@@ -59,6 +59,15 @@
             </div>
         </div>
         <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
+            <div class="bg-tosca rounded-full px-2 pb-3 w-max flex justify-center items-center">
+                <img width="40px" src="{{ asset('assets/food.svg') }}" alt="">
+            </div>
+            <div>
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Donasi Makanan</p>
+                <p class="font-bold text-md sm:text-lg md:text-xl">{{ round($foodsCharity->sum('weight') / 1000) }} Kg</p>
+            </div>
+        </div>
+        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full p-2 w-max flex justify-center items-center">
                 <img width="36px" src="{{ asset('assets/people.svg') }}" alt="">
             </div>
@@ -67,7 +76,7 @@
                 <p class="font-bold text-md sm:text-lg md:text-xl">{{ $heroes->sum('quantity') }} Orang</p>
             </div>
         </div>
-        <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
+        {{-- <div class="bg-white rounded-lg shadow-md p-4 w-full flex gap-2">
             <div class="bg-tosca rounded-full px-2.5 py-2 w-max flex justify-center items-center">
                 <img width="36px" src="{{ asset('assets/hero.svg') }}" alt="">
             </div>
@@ -77,7 +86,7 @@
                 </p>
                 <p class="font-bold text-md sm:text-lg md:text-xl">{{ $volunteers->count() }} Orang</p>
             </div>
-        </div>
+        </div> --}}
     </div>
     <h1 class="font-bold text-navy text-xl md:text-2xl my-12">Statistik Berdasarkan Fakultas</h1>
     <div>
