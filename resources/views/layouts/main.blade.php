@@ -29,6 +29,8 @@
     @vite('resources/css/app.css')
     @vite('resources/js/app.js')
     <title>{{ $active ?? '' ? "$active |" : '' }}Berbagi Bites Jogja</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.7.0/flowbite.min.js"></script>
+
 
 </head>
 

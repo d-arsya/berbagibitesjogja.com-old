@@ -18,7 +18,7 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logOnly(['role','faculty_id','division_id','name','point']);
+            ->logOnly(['role', 'faculty_id', 'division_id', 'name', 'point']);
     }
 
     protected $hidden = [
@@ -41,6 +41,10 @@ class User extends Authenticatable
     public function attendances()
     {
         return $this->hasMany(Attendance::class);
+    }
+    public function availabilities()
+    {
+        return $this->hasMany(Availability::class);
     }
 
     public function points()

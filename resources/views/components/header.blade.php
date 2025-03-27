@@ -183,19 +183,11 @@
                             <span class="text-sm">Food</span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('contributor.people') }}"
-                            class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
-                            <span class="w-2 h-2 rounded-full
-                        inline-block ms-1"></span>
-                            <span class="text-sm">People</span>
-                        </a>
-                    </li>
                 </ul>
             </li>
             <li>
-                <button type="button" class="flex items-center w-full text-base group"
-                    aria-controls="dropdown-logs" data-collapse-toggle="dropdown-logs">
+                <button type="button" class="flex items-center w-full text-base group" aria-controls="dropdown-logs"
+                    data-collapse-toggle="dropdown-logs">
                     <span class="flex-1 text-left rtl:text-right whitespace-nowrap">Logs</span>
                     <svg class="w-3 h-3 transition-transform duration-200 transform" aria-hidden="true"
                         xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
@@ -486,10 +478,6 @@
                         <li>
                             <a href="{{ route('contributor.food') }}"
                                 class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Food</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('contributor.people') }}"
-                                class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">People</a>
                         </li>
                     </ul>
                 </div>

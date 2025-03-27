@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ContributorController;
@@ -74,6 +75,11 @@ Route::middleware('auth')->group(function () {
         Route::get('logs/system')->name('logs.system');
         Route::get('logs/activity', 'activityLogs')->name('logs.activity');
     });
+    Route::controller(AvailabilityController::class)->name('availability.')->group(function () {
+        Route::get('availability', 'dashboard')->name('dashboard');
+        Route::get('availability/{time}', 'time')->name('time');
+    });
+    Route::get('availability/{codes}/{status}', [AvailabilityController::class, 'update']);
 });
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');

@@ -22,6 +22,7 @@
 
     </div>
     <div class="flex justify-start flex-row gap-y-3 my-4 gap-x-4 flex-wrap">
+        <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('availability.dashboard') }}">Kesediaan</a>
         @if ($user->role=='super' || $user->division->name=='PSDM')
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
         @endif
