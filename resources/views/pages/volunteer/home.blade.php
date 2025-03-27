@@ -73,7 +73,7 @@
                 <img width="40px" src="{{ asset('assets/food.svg') }}" alt="">
             </div>
             <div>
-                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Donasi Makanan</p>
+                <p class="text-slate-600 italic text-xs sm:text-xs md:text-sm">Food Donate</p>
                 <p class="font-bold text-md sm:text-lg md:text-xl">{{ round($foodsCharity->sum('weight') / 1000) }} Kg</p>
             </div>
         </div>
