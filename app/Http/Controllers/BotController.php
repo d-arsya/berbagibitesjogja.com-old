@@ -6,6 +6,8 @@ use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
+use App\Models\Volunteer\Availability;
+use App\Models\Volunteer\User;
 
 class BotController extends Controller
 {
@@ -21,7 +23,7 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        if (in_array($sender, ['120363350581821641@g.us', '120363313399113112@g.us'])) {
+        if (in_array($sender, ['120363332744812855@g.us', '120363399651067268@g.us', '120363331268762938@g.us', '120363315008311976@g.us', '120363313399113112@g.us', '120363313972688495@g.us', '120363301975705765@g.us', '120363330280278639@g.us', '120363350581821641@g.us', '120363330115513057@g.us'])) {
             if ($message == '@BOT donasi hari ini') {
                 $this->getActiveDonation($sender);
             } elseif ($message == '@BOT hero hari ini') {
@@ -34,12 +36,60 @@ class BotController extends Controller
                 $this->reminderLastCall($message, $sender);
             } elseif (str_starts_with($message, '@BOT balas')) {
                 $this->replyHero($sender, $message);
-            }elseif (str_starts_with($message, '@BOT dokumentasi')) {
+            } elseif (str_starts_with($message, '@BOT dokumentasi')) {
                 $this->giveDocumentation($message);
+            } elseif (str_starts_with($message, '@BOT avail')) {
+                $this->getAvailableVolunteer($sender, $message);
             }
         } else {
             $this->getReplyFromStranger($sender, $message);
         }
+    }
+
+    public function getAvailableVolunteer($sender, $message)
+    {
+        $days = ['', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
+
+        $time = str_replace('@BOT avail ', '', $message);
+        $timeRange = strpos($time, '-') !== false ? explode('-', $time) : [$time];
+
+        $day = substr($timeRange[0], 0, 1);
+        foreach ($timeRange as $key => $avail) {
+            if (substr($avail, 0, 1) !== $day) {
+                return $this->kirimWa($sender, 'Tidak boleh beda hari', 'SECOND');
+            }
+            $timeRange[$key] = substr($avail, 1);
+        }
+
+        if ($timeRange[0] > end($timeRange)) {
+            return $this->kirimWa($sender, 'Waktu harus berurutan', 'SECOND');
+        }
+
+        $take = [];
+        for ($i = $timeRange[0]; $i <= end($timeRange); $i += 5) {
+            $take[] = $day . $i;
+        }
+
+        $availUsers = Availability::whereIn('code', $take)
+            ->select('user_id')
+            ->groupBy('user_id')
+            ->havingRaw("COUNT(user_id) = ?", [count($take)])
+            ->pluck('user_id');
+
+        $users = User::whereIn('id', $availUsers)->get();
+
+        $startHour = substr($timeRange[0], 0, -1);
+        $startMinute = substr($timeRange[0], -1) == 0 ? "00" : "30";
+        $endHour = substr(end($timeRange), 0, -1);
+        $endMinute = substr(end($timeRange), -1) == 0 ? "00" : "30";
+
+        $message = "*[Available Volunteer]*\n\n{$days[$day]} $startHour.$startMinute - $endHour.$endMinute\nJumlah : " . count($users) . " Volunteer\n\n";
+
+        foreach ($users as $user) {
+            $message .= "{$user->name}\n{$user->phone}\n";
+        }
+
+        $this->kirimWa($sender, $message, 'SECOND');
     }
 
     public function getReplyFromStranger($sender, $text)
@@ -68,17 +118,19 @@ class BotController extends Controller
         $this->kirimWa('120363301975705765@g.us', $message, 'SECOND');
     }
 
-    public function giveDocumentation($message){
-        $message = str_replace('@BOT dokumentasi ','',$message);
-        $message = explode(' ',$message);
-        $donation = Donation::find(str_replace('#','',$message[0]));
-        $donation->update(["media"=>$message[1]]);
-        BotController::sendForPublic('120363313399113112@g.us','Terimakasih dokumentasinya','SECOND'); 
+    public function giveDocumentation($message)
+    {
+        $message = str_replace('@BOT dokumentasi ', '', $message);
+        $message = explode(' ', $message);
+        $donation = Donation::find(str_replace('#', '', $message[0]));
+        $donation->update(["media" => $message[1]]);
+        BotController::sendForPublic('120363313399113112@g.us', 'Terimakasih dokumentasinya', 'SECOND');
     }
 
-    public static function notificationForDocumentation(Donation $donation){
-        $message = "*[NEED FOR DOCUMENTATION]*\n\nKode : #".$donation->id."\n\nHalo tim medinfo, kita ada aksi dari ". $donation->sponsor->name . " nih. Minta bantuannya buat kirimin link dokumentasi yaa biar tim Food lebih mudah dalam mencari dokumentasinya. Caranya ketik *@BOT dokumentasi <KODE> <LINK>*\n\nContoh : @BOT dokumentasi #35 https://drive/com";   
-        BotController::sendForPublic('120363313399113112@g.us',$message,'SECOND'); 
+    public static function notificationForDocumentation(Donation $donation)
+    {
+        $message = "*[NEED FOR DOCUMENTATION]*\n\nKode : #" . $donation->id . "\n\nHalo tim medinfo, kita ada aksi dari " . $donation->sponsor->name . " nih. Minta bantuannya buat kirimin link dokumentasi yaa biar tim Food lebih mudah dalam mencari dokumentasinya. Caranya ketik *@BOT dokumentasi <KODE> <LINK>*\n\nContoh : @BOT dokumentasi #35 https://drive/com";
+        BotController::sendForPublic('120363313399113112@g.us', $message, 'SECOND');
     }
 
     public function kirimWa($target, $message, $from)

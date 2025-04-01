@@ -7,6 +7,7 @@ use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Heroes\Hero;
 use App\Models\Heroes\University;
+use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\Division;
 use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\Precence;
@@ -15,6 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Bus;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
 class VolunteerController extends Controller
@@ -99,12 +101,36 @@ class VolunteerController extends Controller
     public function store(Request $request)
     {
         try {
+            DB::beginTransaction();
             $request['phone'] = str_replace('08', '628', $request->phone);
-            User::create($request->all());
-
+            $user = User::create($request->all());
+            $id = $user->id;
+            $data = [];
+            for ($day = 1; $day <= 7; $day++) {
+                for ($hour = 7; $hour <= 21; $hour++) {
+                    $data[] = [
+                        "user_id" => $id,
+                        "day" => $day,
+                        "hour" => $hour,
+                        "minute" => 0,
+                        "code" => $day . $hour . "0"
+                    ];
+                    $data[] = [
+                        "user_id" => $id,
+                        "day" => $day,
+                        "hour" => $hour,
+                        "minute" => 30,
+                        "code" => $day . $hour . "5"
+                    ];
+                }
+            }
+            Availability::insert($data);
+            $user->availabilities()->update(["created_at" => now(), "updated_at" => now()]);
+            DB::commit();
             return redirect()->route('volunteer.index')->with('success', 'Berhasil menambahkan volunteer');
         } catch (\Throwable $th) {
-            return redirect()->route('volunteer.index')->with('error', 'Gagal menambahkan volunteer');
+            DB::rollBack();
+            return redirect()->route('volunteer.index')->with('error', $th->getMessage());
         }
     }
 

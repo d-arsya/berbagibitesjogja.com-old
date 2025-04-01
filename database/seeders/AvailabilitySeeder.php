@@ -14,27 +14,33 @@ class AvailabilitySeeder extends Seeder
      */
     public function run(): void
     {
-        $ids = User::all()->pluck('id');
+        User::where('name', 'BELUM')->delete();
+        $userIds = User::pluck('id')->toArray();
 
-        foreach ($ids as $id) {
-            for ($day = 1; $day <= 7; $day++) {
-                for ($hour = 7; $hour <= 21; $hour++) {
-                    Availability::create([
+        $data = [];
+
+        foreach ($userIds as $id) {
+            foreach (range(1, 7) as $day) {
+                foreach (range(7, 21) as $hour) {
+                    $data[] = [
                         "user_id" => $id,
                         "day" => $day,
                         "hour" => $hour,
                         "minute" => 0,
-                        "code" => $day . $hour . "0"
-                    ]);
-                    Availability::create([
+                        "code" => "{$day}{$hour}0",
+                    ];
+                    $data[] = [
                         "user_id" => $id,
                         "day" => $day,
                         "hour" => $hour,
                         "minute" => 30,
-                        "code" => $day . $hour . "5"
-                    ]);
+                        "code" => "{$day}{$hour}5",
+                    ];
                 }
             }
+            Availability::insert($data);
+            $data = [];
         }
+        Availability::whereNull('created_at')->update(["created_at" => now(), "updated_at" => now()]);
     }
 }

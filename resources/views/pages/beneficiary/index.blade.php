@@ -1,6 +1,6 @@
 @extends('layouts.main')
 @section('container')
-    @if (auth()->user()->role == 'super')
+    @if (in_array(auth()->user()->role, ['super', 'core']))
         <a href="{{ route('beneficiary.create') }}" class="bg-lime-600 hover:bg-lime-800 p-2 text-white rounded-md shadow-md">
             + Tambah
         </a>
