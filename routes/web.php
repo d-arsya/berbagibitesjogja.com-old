@@ -19,6 +19,7 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('test', [BotController::class, 'sendWa']);
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::match(['get', 'post'], 'from-fonnte-pemkot', [BotController::class, 'fromFonntePemkot'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::match(['get', 'post'], 'midtrans-callback', [PaymentController::class, 'callback'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::get('send-wa', [BotController::class, 'sendWa']);
 Route::view('print', 'print');

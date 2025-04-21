@@ -16,6 +16,28 @@ class BotController extends Controller
         return 1;
     }
 
+    private function cekStart($message)
+    {
+        $mess = strtolower($message);
+        return str_starts_with($mess, 'bot ');
+    }
+
+    public function fromFonntePemkot()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+        $json = file_get_contents('php://input');
+        $data = json_decode($json, true);
+        $sender = $data['sender'];
+        $message = $data['message'];
+        if ($this->cekStart($message)) {
+            $mess = substr($message, 4);
+            if (in_array($sender, ['120363418041506824@g.us'])) {
+                if ($mess == 'status') {
+                    $this->kirimWa($sender, 'Normal', 'PEMKOT');
+                }
+            }
+        }
+    }
     public function fromFonnte()
     {
         header('Content-Type: application/json; charset=utf-8');
