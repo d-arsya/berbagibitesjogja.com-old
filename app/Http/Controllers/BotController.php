@@ -37,7 +37,9 @@ class BotController extends Controller
                 }
             }
         } else if (!str_starts_with($message, 'verify')) {
-            $this->kirimWa('120363418041506824@g.us', "*[PESAN MASUK]*\n\nPengirim : $sender\nPesan : $message", 'PEMKOT');
+            if (!in_array($sender, ['120363418041506824@g.us'])) {
+                $this->kirimWa('120363418041506824@g.us', "*[PESAN MASUK]*\n\nPengirim : $sender\nPesan : $message", 'PEMKOT');
+            }
         }
     }
     public function fromFonnte()
