@@ -78,7 +78,7 @@
                                             placeholder="Nomor Whatsapp" required>
                                             <option value="">Asal</option>
                                             @foreach (App\Models\Heroes\University::whereIn('id', json_decode($donation->beneficiaries))->get() as $item)
-                                                <option value="{{ $item->id }}">{{ $item->name }}</option>
+                                                <option value="{{ $item->id }}">{{ $item->name }}</option>  
                                             @endforeach
                                         </select>
                                         <div class="relative z-0 w-full mt-8 group">
@@ -279,7 +279,9 @@
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(function(e) {
-                            faculty.innerHTML += `<option value="${e.id}">${e.name}</option>`
+                            if (!['Volunteer','RZIS','Lainnya'].inlcudes(e.name)) {
+                                faculty.innerHTML += `<option value="${e.id}">${e.name}</option>`                                
+                            }
                         })
                     })
                     .catch(error => console.error('Error:', error));

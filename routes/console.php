@@ -12,21 +12,21 @@ use Illuminate\Support\Facades\Storage;
 Schedule::command('que:work --stop-when-empty')->timezone('Asia/Jakarta')->everyFiveSeconds();
 Schedule::command('backup:clean')->timezone('Asia/Jakarta')->dailyAt('01.00')->days([1, 4, 6]);
 Schedule::command('backup:run')->timezone('Asia/Jakarta')->dailyAt('01.00')->days([1, 4, 6]);
-// Schedule::call(function () {
-//     $remind = User::withCount('availabilities')
-//         ->having('availabilities_count', '>', 160)
-//         ->get();
-//     $delay = 60;
-//     foreach ($remind as $user) {
-//         $message = "🔥 Halo, " . $user->name . "! 🔥\n\nWah, sepertinya kamu memiliki kesediaan di lebih dari *160 waktu* ⏳⏰ Itu cukup banyak dan mungkin kurang wajar 🤔\n\nYuk, segera *perbarui waktu kesediaan* kamu agar lebih sesuai ya! ⚡📅\nKamu bisa langsung update di sini 👉 https://app.berbagibitesjogja.site/availability \n\nJika tidak diperbarui, kamu akan menerima notifikasi ini lagi 📩🔄 Jadi, pastikan untuk memperbaruinya sekarang ya! 🚀\n\nTerima kasih sudah menjadi bagian dari BBJ! 💚😊";
-//         $phone = $user->phone;
-//         $used = AppConfiguration::useWhatsapp();
-//         dispatch(function () use ($phone, $message, $used) {
-//             BotController::sendForPublic($phone, $message, $used);
-//         })->delay(now()->addSeconds($delay));
-//         $delay += 60;
-//     }
-// })->timezone('Asia/Jakarta')->days([0, 2, 4, 6]);
+Schedule::call(function () {
+    $remind = User::withCount('availabilities')
+        ->having('availabilities_count', '>', 160)
+        ->get();
+    $delay = 60;
+    foreach ($remind as $user) {
+        $message = "🔥 Halo, " . $user->name . "! 🔥\n\nWah, sepertinya kamu memiliki kesediaan di lebih dari *160 waktu* ⏳⏰ Itu cukup banyak dan mungkin kurang wajar 🤔\n\nYuk, segera *perbarui waktu kesediaan* kamu agar lebih sesuai ya! ⚡📅\nKamu bisa langsung update di sini 👉 https://app.berbagibitesjogja.site/availability \n\nJika tidak diperbarui, kamu akan menerima notifikasi ini lagi 📩🔄 Jadi, pastikan untuk memperbaruinya sekarang ya! 🚀\n\nTerima kasih sudah menjadi bagian dari BBJ! 💚😊";
+        $phone = $user->phone;
+        $used = AppConfiguration::useWhatsapp();
+        dispatch(function () use ($phone, $message, $used) {
+            BotController::sendForPublic($phone, $message, $used);
+        })->delay(now()->addSeconds($delay));
+        $delay += 60;
+    }
+})->timezone('Asia/Jakarta')->dailyAt('06.00')->days([0, 2, 4, 6]);
 Schedule::call(function () {
     $files = File::files(storage_path('app/private/' . env('APP_NAME', '')));
 
