@@ -279,7 +279,7 @@
                     .then(response => response.json())
                     .then(data => {
                         data.forEach(function(e) {
-                            if (!['Volunteer','RZIS','Lainnya'].inlcudes(e.name)) {
+                            if (!['Volunteer','RZIS','Lainnya'].includes(e.name)) {
                                 faculty.innerHTML += `<option value="${e.id}">${e.name}</option>`                                
                             }
                         })
