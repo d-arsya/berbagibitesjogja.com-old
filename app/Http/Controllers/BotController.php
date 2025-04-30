@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\AppConfiguration;
+use App\Models\Chat;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\User;
+use Illuminate\Http\Request;
 
 class BotController extends Controller
 {
@@ -22,26 +24,6 @@ class BotController extends Controller
         return str_starts_with($mess, 'bot ');
     }
 
-    public function fromFonntePemkot()
-    {
-        header('Content-Type: application/json; charset=utf-8');
-        $json = file_get_contents('php://input');
-        $data = json_decode($json, true);
-        $sender = $data['sender'];
-        $message = $data['message'];
-        if ($this->cekStart($message)) {
-            $mess = substr($message, 4);
-            if (in_array($sender, ['120363418041506824@g.us'])) {
-                if ($mess == 'status') {
-                    $this->kirimWa($sender, 'Normal', 'PEMKOT');
-                }
-            }
-        } else if (!str_starts_with($message, 'verify')) {
-            if (!in_array($sender, ['120363418041506824@g.us'])) {
-                $this->kirimWa('120363418041506824@g.us', "*[PESAN MASUK]*\n\nPengirim : $sender\nPesan : $message", 'PEMKOT');
-            }
-        }
-    }
     public function fromFonnte()
     {
         header('Content-Type: application/json; charset=utf-8');
@@ -123,14 +105,34 @@ class BotController extends Controller
         $activeDonation = Donation::where('status', 'aktif')->pluck('id');
         $hero = Hero::where('phone', $sender)->where('status', 'belum')->whereIn('donation_id', $activeDonation)->first();
         $foodDonator = Booking::where('phone', $sender)->where('status', 'waiting')->first();
-
+        if (str_starts_with($text, "verify")) {
+            return true;
+        }
         if ($hero) {
             $this->getReplyFromHeroes($hero, $text);
-        }
-        if ($foodDonator) {
+        } elseif ($foodDonator) {
             $this->getReplyFromFoodDonator($foodDonator, $text);
+        } else {
+            $this->gemini($sender, $text);
         }
         return true;
+    }
+
+    public function gemini($sender, $text)
+    {
+        $gemini =  new ChatController();
+        $response = $gemini->chat($text);
+        $spam = str_starts_with($response[0], 'Maaf');
+        Chat::create([
+            "phone" => $sender,
+            "question" => $text,
+            "answer" => $spam ? null : $response[0],
+            "token" => $response[1],
+            "spam" => $spam
+        ]);
+        if (!$spam) {
+            $this->kirimWa($sender, $response[0], 'SECOND');
+        }
     }
 
     public function getReplyFromHeroes($hero, $text)

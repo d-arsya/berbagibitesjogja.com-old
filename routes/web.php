@@ -3,6 +3,7 @@
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\BotController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
@@ -19,7 +20,6 @@ use Laravel\Socialite\Facades\Socialite;
 
 Route::get('test', [BotController::class, 'sendWa']);
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
-Route::match(['get', 'post'], 'from-fonnte-pemkot', [BotController::class, 'fromFonntePemkot'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::match(['get', 'post'], 'midtrans-callback', [PaymentController::class, 'callback'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::get('send-wa', [BotController::class, 'sendWa']);
 Route::view('print', 'print');
