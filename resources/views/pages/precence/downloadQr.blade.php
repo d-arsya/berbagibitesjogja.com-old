@@ -6,14 +6,14 @@
         <script type="module">
             import "https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js";
             const data =
-                "{{ env('APP_URL', 'https://heroes.berbagibitesjogja.site') }}/volunteer/precence/qr?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
+                "{{ env('APP_URL', 'https://app.berbagibitesjogja.com') }}/volunteer/precence/qr?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
 
             const qrCode = new QRCodeStyling({
                 width: 1000,
                 height: 1000,
                 type: "svg",
                 data: data,
-                image: "https://media.berbagibitesjogja.site/logo_transparan.png",
+                image: "https://media.berbagibitesjogja.com/logo_transparan.png",
                 dotsOptions: {
                     color: "#1A446D",
                     type: "rounded",
@@ -43,14 +43,14 @@
         <script type="module">
             import "https://unpkg.com/qr-code-styling@1.5.0/lib/qr-code-styling.js";
             const data =
-                "{{ env('APP_URL', 'https://heroes.berbagibitesjogja.site') }}/volunteer/precence/qr?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
+                "{{ env('APP_URL', 'https://app.berbagibitesjogja.site') }}/volunteer/precence/qr?datat={{ $precence->latitude }}!{{ $precence->code }}!{{ $precence->longitude }}";
 
             const qrCode = new QRCodeStyling({
                 width: 300,
                 height: 300,
                 type: "svg",
                 data: data,
-                image: "https://media.berbagibitesjogja.site/logo_transparan.png",
+                image: "https://media.berbagibitesjogja.com/logo_transparan.png",
                 dotsOptions: {
                     color: "#1A446D",
                     type: "rounded",
@@ -140,7 +140,7 @@
                             document.querySelector('#success').classList.remove('hidden')
                         }
                         setTimeout(() => {
-                            window.location.href = `{{ env('APP_URL', 'https://heroes.berbagibitesjogja.site') }}`
+                            window.location.href = `{{ env('APP_URL', 'https://app.berbagibitesjogja.site') }}`
                         }, 800)
                     })
             }
