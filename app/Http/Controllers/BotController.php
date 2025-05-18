@@ -15,7 +15,7 @@ class BotController extends Controller
 {
     public function sendWa()
     {
-        return 1;
+        return true;
     }
 
     private function cekStart($message)
@@ -157,7 +157,7 @@ class BotController extends Controller
 
     public static function notificationForDocumentation(Donation $donation)
     {
-        $message = "*[NEED FOR DOCUMENTATION]*\n\nKode : #" . $donation->id . "\n\nHalo tim medinfo, kita ada aksi dari " . $donation->sponsor->name . " nih. Minta bantuannya buat kirimin link dokumentasi yaa biar tim Food lebih mudah dalam mencari dokumentasinya. Caranya ketik *@BOT dokumentasi <KODE> <LINK>*\n\nContoh : @BOT dokumentasi #35 https://drive/com";
+        $message = "*[NEED FOR DOCUMENTATION]*\n\nKode : #" . $donation->id . "\n" . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y') . "\n\nHalo tim medinfo, kita ada aksi dari " . $donation->sponsor->name . " nih. Minta bantuannya buat kirimin link dokumentasi yaa biar tim Food lebih mudah dalam mencari dokumentasinya. Caranya ketik *@BOT dokumentasi <KODE> <LINK>*\n\nContoh : @BOT dokumentasi #35 https://drive/com";
         BotController::sendForPublic('120363313399113112@g.us', $message, 'SECOND');
     }
 
@@ -240,6 +240,26 @@ class BotController extends Controller
         })->delay(now()->addSeconds($delay));
     }
 
+    public function batalin($sender)
+    {
+        $activeDonation = Donation::where('status', 'aktif')->first();
+        $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
+        $delay = 10;
+        foreach ($allActiveHero as $hero) {
+            $message = "Selamat pagi, food heroes 🌻💙\nKami dari *Berbagi Bites Jogja* menyampaikan permohonan maaf karena distribusi hari ini dibatalkan.\nBuat teman-teman yang sudah daftar, tenang aja kalian tetap akan dapat surplus food besok dari Artotel, pada jam pengambilan yang sama✨\n\nJika besok kalian *berhalangan hadir* karena sudah ada jadwal lain di jam tersebut, boleh banget konfirmasi ke kami. Mohon maaf atas ketidaknyamanannya. Terima kasih atas pengertiannya, sampai ketemu besok, ya!!!\n\nSalam hangat,\nBerbagi Bites Jogja \n\n" . '_pesan ini dikirim dengan bot_';
+            $phone = $hero->phone;
+            dispatch(function () use ($phone, $message) {
+                $this->kirimWa($phone, $message, AppConfiguration::useWhatsapp());
+            })->delay(now()->addSeconds($delay));
+            $delay += 30;
+        }
+        $message = 'Akan mengirimkan pembatalan kepada ' . $allActiveHero->count() . ' hero secara bertahap';
+        $this->kirimWa($sender, $message, 'SECOND');
+        $message = 'Berhasil mengirimkan pembatalan kepada ' . $allActiveHero->count() . ' hero';
+        dispatch(function () use ($sender, $message) {
+            $this->kirimWa($sender, $message, 'SECOND');
+        })->delay(now()->addSeconds($delay));
+    }
     public function reminderToday($sender)
     {
         $activeDonation = Donation::where('status', 'aktif')->first();
