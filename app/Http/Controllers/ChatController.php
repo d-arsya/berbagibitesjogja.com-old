@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Donation\Sponsor;
+use App\Models\Heroes\Hero;
 use App\Models\Heroes\University;
 use Gemini\Data\GenerationConfig;
 use Gemini\Laravel\Facades\Gemini;
@@ -79,11 +80,14 @@ class ChatController extends Controller
 
     private function material()
     {
-        $proposal = "Berbagi Bites Jogja (BBJ) adalah program non-profit yang bertujuan mengurangi limbah makanan dan kelaparan di Yogyakarta melalui inisiatif food rescue dan food bank. BBJ menghubungkan donatur makanan dengan penerima manfaat (food heroes) seperti mahasiswa UGM dan masyarakat rentan, menciptakan dampak lingkungan dan sosial. Sejak peluncuran pada 22 Juni 2024, BBJ telah menyelamatkan 734 kg makanan dalam 84 aksi, menjangkau 2.715 food heroes. Visi BBJ adalah kelestarian lingkungan dan kesejahteraan kemanusiaan melalui kerja sama berkelanjutan. Program utamanya meliputi pendistribusian makanan layak konsumsi (Food Rescue) dan penyimpanan pangan untuk kegiatan komunitas (Food Bank), dengan protokol keamanan dari sumber hingga distribusi.";
+        $weight = Food::all()->sum('weight') / 1000;
+        $count = Donation::all()->count();
+        $hero = Hero::all()->sum('quantity');
+        $proposal = "Berbagi Bites Jogja (BBJ) adalah program non-profit yang bertujuan mengurangi limbah makanan dan kelaparan di Yogyakarta melalui inisiatif food rescue dan food bank. BBJ menghubungkan donatur makanan dengan penerima manfaat (food heroes) seperti mahasiswa UGM dan masyarakat rentan, menciptakan dampak lingkungan dan sosial. Sejak peluncuran pada 22 Juni 2024, BBJ telah menyelamatkan $weight kg makanan dalam $count aksi, menjangkau $hero food heroes. Visi BBJ adalah kelestarian lingkungan dan kesejahteraan kemanusiaan melalui kerja sama berkelanjutan. Program utamanya meliputi pendistribusian makanan layak konsumsi (Food Rescue) dan penyimpanan pangan untuk kegiatan komunitas (Food Bank), dengan protokol keamanan dari sumber hingga distribusi.";
 
-        $proposalFund = "Limbah makanan di Yogyakarta mencapai 54,6% dari total sampah, menunjukkan urgensi pengelolaan limbah yang berkelanjutan. BBJ mengajak mitra strategis untuk berkolaborasi dalam mengurangi food waste, mendukung edukasi pangan, dan menanggulangi kelaparan. Sejak berdiri, BBJ telah mendistribusikan lebih dari 204 kg makanan ke lebih dari 1.700 orang. BBJ bermitra dengan Sheraton, Holland Bakery, Artotel, dan produsen makanan beku. Total kebutuhan operasional tahunan mencapai Rp223.600.000, mencakup insentif staf, logistik, transportasi, hingga program distribusi. Bentuk kerja sama akan disepakati melalui MoU.";
+        $proposalFund = "Limbah makanan di Yogyakarta mencapai 54,6% dari total sampah, menunjukkan urgensi pengelolaan limbah yang berkelanjutan. BBJ mengajak mitra strategis untuk berkolaborasi dalam mengurangi food waste, mendukung edukasi pangan, dan menanggulangi kelaparan. Sejak berdiri, BBJ telah mendistribusikan lebih dari $weight kg makanan ke lebih dari $hero orang. BBJ bermitra dengan Sheraton, Holland Bakery, Artotel, dan produsen makanan beku. Bentuk kerja sama akan disepakati melalui MoU.";
 
-        $contact = "Untuk informasi lebih lanjut, hubungi kami melalui WhatsApp di *08986950700*, Instagram _@berbagibitesjogja_ , atau email ke *berbagibitesjogja@gmail.com*, dan website berbagibitesjogja.site.";
+        $contact = "Untuk informasi lebih lanjut, hubungi kami melalui WhatsApp di *08986950700*, Instagram _@berbagibitesjogja_ , atau email ke *berbagibitesjogja@gmail.com*, dan website berbagibitesjogja.com.";
 
         return "Berikut gambaran umum: $proposal\n\nBerikut ringkasan proposal keuangan: $proposalFund\n\nKontak resmi BBJ: $contact";
     }
