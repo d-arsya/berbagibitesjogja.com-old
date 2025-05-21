@@ -31,7 +31,8 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        if (in_array($sender, ['120363332744812855@g.us', '120363399651067268@g.us', '120363331268762938@g.us', '120363315008311976@g.us', '120363313399113112@g.us', '120363313972688495@g.us', '120363301975705765@g.us', '120363330280278639@g.us', '120363350581821641@g.us', '120363330115513057@g.us'])) {
+        $group = explode(',', env('GROUP_WA'));
+        if (in_array($sender, $group)) {
             if ($message == '@BOT donasi hari ini') {
                 $this->getActiveDonation($sender);
             } elseif ($message == '@BOT hero hari ini') {
