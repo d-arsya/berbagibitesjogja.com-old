@@ -3,21 +3,11 @@
 namespace App\Models\Heroes;
 
 use App\Models\Volunteer\Faculty;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 class University extends Model
 {
-    use LogsActivity, HasFactory;
-    protected $guarded = ['id','created_at','updated_at'];
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-        ->logUnguarded();
-    }
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     protected $table = 'universities';
 

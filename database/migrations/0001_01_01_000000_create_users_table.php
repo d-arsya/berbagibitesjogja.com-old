@@ -15,19 +15,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
-            $table->enum('role', ['super', 'core', 'staff', 'member']);
-            $table->foreignIdFor(Faculty::class);
-            $table->foreignIdFor(Division::class);
-            $table->string('name');
             $table->string('email');
-            $table->string('phone');
-            $table->string('photo')->nullable();
-            $table->integer('point')->default(0);
-            $table->timestamps();
-        });
-        Schema::create('divisions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
             $table->timestamps();
         });
         Schema::create('sessions', function (Blueprint $table) {

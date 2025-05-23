@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
-use App\Models\Heroes\Backup;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\User;
@@ -19,7 +18,7 @@ class HeroController extends Controller implements HasMiddleware
     {
         return [
             new Middleware('guest', only: ['create', 'cancel']),
-            new Middleware('auth', only: ['index', 'backups', 'contributor', 'show', 'update', 'restore', 'destroy', 'faculty']),
+            new Middleware('auth', only: ['index', 'contributor', 'show', 'update', 'destroy', 'faculty']),
         ];
     }
 
@@ -30,13 +29,6 @@ class HeroController extends Controller implements HasMiddleware
         $faculties = Faculty::all();
 
         return view('pages.hero.index', compact('donations', 'heroes', 'faculties'));
-    }
-
-    public function backups()
-    {
-        $backups = Backup::orderBy('updated_at', 'desc')->paginate(30);
-
-        return view('pages.hero.backups', compact('backups'));
     }
 
     public function getJsonData($url)
@@ -161,45 +153,11 @@ class HeroController extends Controller implements HasMiddleware
         return back()->with('success', 'Hero telah datang');
     }
 
-    public function restore(Backup $backup)
-    {
-        $donation = $backup->donation;
-        if ($donation->remain > 0) {
-            Hero::create([
-                'name' => $backup->name,
-                'phone' => $backup->phone,
-                'faculty' => $backup->faculty,
-                'donation' => $backup->donation,
-                'code' => $backup->code,
-                'status' => 'belum',
-            ]);
-            $donation->remain = $donation->remain - 1;
-            $donation->save();
-            $backup->delete();
-        }
-
-        return back();
-    }
-
-    public function trash(Backup $backup)
-    {
-        $backup->delete();
-
-        return back();
-    }
-
     public function destroy(Hero $hero)
     {
         $donation = $hero->donation;
         $donation->remain = $donation->remain + 1;
         $donation->save();
-        Backup::create([
-            'name' => $hero->name,
-            'phone' => $hero->phone,
-            'faculty_id' => $hero->faculty_id,
-            'donation_id' => $hero->donation_id,
-            'code' => $hero->code,
-        ]);
         $hero->delete();
 
         return back()->with('success', 'Hero batal mengambil');

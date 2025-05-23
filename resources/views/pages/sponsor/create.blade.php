@@ -46,11 +46,6 @@
         </div>
         <div class="flex gap-3">
             <div class="flex align-middle gap-2 my-2">
-                <input type="checkbox" name="hidden" id="hidden">
-                <label for="hidden" class="text-xs ">Sembunyikan</label>
-
-            </div>
-            <div class="flex align-middle gap-2 my-2">
                 <input type="checkbox" name="variant" id="variant">
                 <label for="variant" class="text-xs ">Individu</label>
 

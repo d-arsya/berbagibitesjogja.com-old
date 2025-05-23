@@ -28,7 +28,6 @@ class SponsorController extends Controller
     {
         try {
             $data = $request->all();
-            $data['hidden'] = $request->hidden == 'on';
             $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
             Sponsor::create($data);
 
@@ -55,7 +54,6 @@ class SponsorController extends Controller
     {
         try {
             $data = $request->all();
-            $data['hidden'] = $request->hidden == 'on';
             $data['variant'] = $request->variant == 'on' ? 'individual' : 'company';
             $sponsor->update($data);
             return redirect()->route('sponsor.index')->with('success', 'Berhasil mengubah data partner');

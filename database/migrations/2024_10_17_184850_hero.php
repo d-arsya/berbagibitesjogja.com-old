@@ -25,15 +25,6 @@ return new class extends Migration
             $table->integer('weight')->default(0);
             $table->timestamps();
         });
-        Schema::create('backups', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('phone')->nullable();
-            $table->foreignIdFor(Faculty::class)->constrained()->onDelete('restrict');
-            $table->foreignIdFor(Donation::class)->constrained()->onDelete('restrict');
-            $table->char('code', 6)->nullable();
-            $table->timestamps();
-        });
     }
 
     /**
@@ -42,6 +33,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('heroes');
-        Schema::dropIfExists('backups');
     }
 };

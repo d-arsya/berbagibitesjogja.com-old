@@ -42,11 +42,6 @@
                 </div>
                 <div class="flex gap-2 flex-row">
                     <div class="flex align-middle gap-2 my-2">
-                        <input {{ $sponsor->hidden ? 'checked' : '' }} type="checkbox" name="hidden" id="hidden">
-                        <label for="hidden" class="text-xs ">Sembunyikan</label>
-
-                    </div>
-                    <div class="flex align-middle gap-2 my-2">
                         <input {{ $sponsor->variant == 'individual' ? 'checked' : '' }} type="checkbox" name="variant"
                             id="variant">
                         <label for="variant" class="text-xs ">Individu</label>
