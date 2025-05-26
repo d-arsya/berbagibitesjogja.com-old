@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\FormController;
+use App\Http\Controllers\Api\FoundationController;
 use App\Http\Controllers\Api\ReportController;
 use App\Http\Controllers\Api\UniversityController;
 use Illuminate\Http\Request;
@@ -15,3 +16,6 @@ Route::post('form-submit', function () {
     return abort(403);
 });
 Route::post('form-submit/{token}', [FormController::class, 'fromGoogleSheets']);
+Route::middleware('apikey')->group(function () {
+    Route::get('foundations', [FoundationController::class, 'index']);
+});
