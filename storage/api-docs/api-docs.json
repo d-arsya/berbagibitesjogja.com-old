@@ -22,7 +22,7 @@
                 ],
                 "summary": "Get list of yayasan",
                 "description": "Returns a list of yayasan with their details",
-                "operationId": "getYayasans",
+                "operationId": "getFoundation",
                 "responses": {
                     "200": {
                         "description": "Successful response",
