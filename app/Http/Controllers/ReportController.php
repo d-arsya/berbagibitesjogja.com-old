@@ -6,8 +6,6 @@ use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use PhpOffice\PhpWord\IOFactory;
-use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\TemplateProcessor;
 
 class ReportController extends Controller
@@ -38,8 +36,6 @@ class ReportController extends Controller
             $templateProcessor->setValue('year', \Carbon\Carbon::now()->isoFormat('Y'));
             $templateProcessor->setValue('createdDate', \Carbon\Carbon::now()->isoFormat('D-M-Y'));
             $templateProcessor->setValue('sponsorName', $sponsor->name);
-            $templateProcessor->setValue('volunteerName', $volunteerName);
-            $templateProcessor->setValue('volunteerRole', $volunteerRole);
             $templateProcessor->setValue('donationDate', $donationDate);
             $templateProcessor->setValue('foodTotal', round($donation->foods->sum('weight') / 100) / 10);
             if ($donation->partner_id != null) {
@@ -47,7 +43,7 @@ class ReportController extends Controller
             } else {
                 $heroes = $donation->heroes;
             }
-            $templateProcessor->setValue('totalHeroes', $heroes->count());
+            $templateProcessor->setValue('totalHeroes', $heroes->sum('quantity'));
             $templateProcessor->cloneRow('heroesName', $heroes->count());
             for ($i = 1; $i < $heroes->count() + 1; $i++) {
                 $templateProcessor->setValue("heroesName#$i", $heroes[$i - 1]->name);
@@ -85,8 +81,6 @@ class ReportController extends Controller
             $templateProcessor->setValue('year', \Carbon\Carbon::now()->isoFormat('Y'));
             $templateProcessor->setValue('createdDate', \Carbon\Carbon::now()->isoFormat('D-M-Y'));
             $templateProcessor->setValue('sponsorName', $sponsor->name);
-            $templateProcessor->setValue('volunteerName', "Volunteer");
-            $templateProcessor->setValue('volunteerRole', "Volunteer");
             $templateProcessor->setValue('donationDate', $donationDate);
             $templateProcessor->setValue('foodTotal', round($donation->foods->sum('weight') / 100) / 10);
             if ($donation->partner_id != null) {
@@ -94,7 +88,7 @@ class ReportController extends Controller
             } else {
                 $heroes = $donation->heroes;
             }
-            $templateProcessor->setValue('totalHeroes', $heroes->count());
+            $templateProcessor->setValue('totalHeroes', $heroes->sum('quantity'));
             $templateProcessor->cloneRow('heroesName', $heroes->count());
             for ($i = 1; $i < $heroes->count() + 1; $i++) {
                 $templateProcessor->setValue("heroesName#$i", $heroes[$i - 1]->name);
