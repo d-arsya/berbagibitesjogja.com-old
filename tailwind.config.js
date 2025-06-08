@@ -3,7 +3,7 @@ export default {
     content: ['./resources/**/*.blade.php', './resources/**/*.js', './resources/**/*.vue'],
     theme: {
         fontFamily: {
-            sans: ['Outfit', 'sans-serif']
+            sans: ['Inter', 'sans-serif']
         },
         extend: {
             boxShadow: {
@@ -23,7 +23,7 @@ export default {
                     900: '#5A6611'
                 },
                 tosca: {
-                    DEFAULT: '#0395AF',
+                    DEFAULT: '#004C5A',
                     100: '#CCF5FB',
                     200: '#99EBF7',
                     300: '#66E2F2',
@@ -71,7 +71,7 @@ export default {
                     900: '#B3B3B3'
                 },
                 navy: {
-                    DEFAULT: '#21568A',
+                    DEFAULT: '#009CA6',
                     100: '#C4D5E7',
                     200: '#A8BED8',
                     300: '#8DA7CA',

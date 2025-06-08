@@ -1,36 +1,133 @@
-<footer class="bg-tosca md:px-44 px-6 pt-10 md:pt-20 pb-5">
-    <div>
-        <img src="{{ asset('assets/lebar.png') }}" class="h-24 md:h-28" alt="">
-    </div>
-    <div class="w-full md:w-3/5 text-white text-xl">
-        <h1 class="my-10">Pusat Studi Pancasila UGM</h1>
-        <p>Blk. A, Jl. Podocarpus II Bulaksumur, Sagan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah Istimewa
-            Yogyakarta 55281</p>
-    </div>
-    <div class="flex gap-3 justify-start items-center mt-10">
-        <svg class="rishi-icon" width="15" fill="white" height="20" viewBox="0 0 511 511.9">
-            <path
-                d="m510.949219 150.5c-1.199219-27.199219-5.597657-45.898438-11.898438-62.101562-6.5-17.199219-16.5-32.597657-29.601562-45.398438-12.800781-13-28.300781-23.101562-45.300781-29.5-16.296876-6.300781-34.898438-10.699219-62.097657-11.898438-27.402343-1.300781-36.101562-1.601562-105.601562-1.601562s-78.199219.300781-105.5 1.5c-27.199219 1.199219-45.898438 5.601562-62.097657 11.898438-17.203124 6.5-32.601562 16.5-45.402343 29.601562-13 12.800781-23.097657 28.300781-29.5 45.300781-6.300781 16.300781-10.699219 34.898438-11.898438 62.097657-1.300781 27.402343-1.601562 36.101562-1.601562 105.601562s.300781 78.199219 1.5 105.5c1.199219 27.199219 5.601562 45.898438 11.902343 62.101562 6.5 17.199219 16.597657 32.597657 29.597657 45.398438 12.800781 13 28.300781 23.101562 45.300781 29.5 16.300781 6.300781 34.898438 10.699219 62.101562 11.898438 27.296876 1.203124 36 1.5 105.5 1.5s78.199219-.296876 105.5-1.5c27.199219-1.199219 45.898438-5.597657 62.097657-11.898438 34.402343-13.300781 61.601562-40.5 74.902343-74.898438 6.296876-16.300781 10.699219-34.902343 11.898438-62.101562 1.199219-27.300781 1.5-36 1.5-105.5s-.101562-78.199219-1.300781-105.5zm-46.097657 209c-1.101562 25-5.300781 38.5-8.800781 47.5-8.601562 22.300781-26.300781 40-48.601562 48.601562-9 3.5-22.597657 7.699219-47.5 8.796876-27 1.203124-35.097657 1.5-103.398438 1.5s-76.5-.296876-103.402343-1.5c-25-1.097657-38.5-5.296876-47.5-8.796876-11.097657-4.101562-21.199219-10.601562-29.398438-19.101562-8.5-8.300781-15-18.300781-19.101562-29.398438-3.5-9-7.699219-22.601562-8.796876-47.5-1.203124-27-1.5-35.101562-1.5-103.402343s.296876-76.5 1.5-103.398438c1.097657-25 5.296876-38.5 8.796876-47.5 4.101562-11.101562 10.601562-21.199219 19.203124-29.402343 8.296876-8.5 18.296876-15 29.398438-19.097657 9-3.5 22.601562-7.699219 47.5-8.800781 27-1.199219 35.101562-1.5 103.398438-1.5 68.402343 0 76.5.300781 103.402343 1.5 25 1.101562 38.5 5.300781 47.5 8.800781 11.097657 4.097657 21.199219 10.597657 29.398438 19.097657 8.5 8.300781 15 18.300781 19.101562 29.402343 3.5 9 7.699219 22.597657 8.800781 47.5 1.199219 27 1.5 35.097657 1.5 103.398438s-.300781 76.300781-1.5 103.300781zm0 0">
-            </path>
-            <path
-                d="m256.449219 124.5c-72.597657 0-131.5 58.898438-131.5 131.5s58.902343 131.5 131.5 131.5c72.601562 0 131.5-58.898438 131.5-131.5s-58.898438-131.5-131.5-131.5zm0 216.800781c-47.097657 0-85.300781-38.199219-85.300781-85.300781s38.203124-85.300781 85.300781-85.300781c47.101562 0 85.300781 38.199219 85.300781 85.300781s-38.199219 85.300781-85.300781 85.300781zm0 0">
-            </path>
-            <path
-                d="m423.851562 119.300781c0 16.953125-13.746093 30.699219-30.703124 30.699219-16.953126 0-30.699219-13.746094-30.699219-30.699219 0-16.957031 13.746093-30.699219 30.699219-30.699219 16.957031 0 30.703124 13.742188 30.703124 30.699219zm0 0">
-            </path>
-        </svg>
-        <svg class="rishi-icon" fill="white" width="15" height="20" viewBox="0 0 24 24">
-            <path
-                d="m23.994 24v-.001h.006v-8.802c0-4.306-.927-7.623-5.961-7.623-2.42 0-4.044 1.328-4.707 2.587h-.07v-2.185h-4.773v16.023h4.97v-7.934c0-2.089.396-4.109 2.983-4.109 2.549 0 2.587 2.384 2.587 4.243v7.801z">
-            </path>
-            <path d="m.396 7.977h4.976v16.023h-4.976z"></path>
-            <path
-                d="m2.882 0c-1.591 0-2.882 1.291-2.882 2.882s1.291 2.909 2.882 2.909 2.882-1.318 2.882-2.909c-.001-1.591-1.292-2.882-2.882-2.882z">
-            </path>
-        </svg>
-    </div>
-    <div class="mt-6">
-        <span id="clickFooter" class="text-gray-300 text-sm font-medium">Copyright ©
-            {{ \Carbon\Carbon::now()->isoFormat('Y') }} Berbagi Bites Jogja</span>
+<footer class='bg-tosca px-6 md:px-32 py-12 text-white'>
+    <nav class="flex md:flex-row flex-col gap-y-4 justify-between">
+        <div class='md:w-1/4'>
+            <a href="https://berbagibitesjogja.com/" class='flex items-center gap-x-2'>
+                <img src='https://berbagibitesjogja.com/plain-logo-white.png' width="40" height="40" alt='bbj-logo'
+                    class='inline'></img>
+                <span class='font-bold text-2xl'>Berbagi Bites Jogja</span>
+            </a>
+            <p class='mt-2 leading-8'>Inisiatif nonprofit yang berfokus pada penyelamatan dan redistribusi makanan di
+                seluruh Yogyakarta.</p>
+            <div class='flex mt-3 gap-x-2 text-slate-400 text-xs font-thin'>
+                <a href="https://instagram.com/berbagibitesjogja">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-instagram" aria-hidden="true">
+                        <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+                    </svg>
+                </a>
+                <a href="http://linkedin.com/company/berbagibitesjogja">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-linkedin" aria-hidden="true">
+                        <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                        <rect width="4" height="12" x="2" y="9"></rect>
+                        <circle cx="4" cy="4" r="2"></circle>
+                    </svg>
+                </a>
+                <a href="https://www.tiktok.com/@berbagibitesjogja">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-music2 lucide-music-2" aria-hidden="true">
+                        <circle cx="8" cy="18" r="4"></circle>
+                        <path d="M12 18V2l7 4"></path>
+                    </svg>
+                </a>
+            </div>
+        </div>
+        <div>
+            <p class='font-bold text-xl'>Program</p>
+            <nav class='flex flex-col gap-y-2 mt-4'>
+                <a href="https://berbagibitesjogja.com/penyelamatan">
+                    Penyelamatan
+                </a>
+                <a href="https://berbagibitesjogja.com/distribusi">
+                    Distribusi Makanan
+                </a>
+                <a href="https://berbagibitesjogja.com/edukasi">
+                    Edukasi Masyarakat
+                </a>
+                <a href="https://app.berbagibitesjogja.com/login">
+                    Login Relawan
+                </a>
+                <a href="https://app.berbagibitesjogja.com/form">
+                    Form Pendaftaran
+                </a>
+
+            </nav>
+        </div>
+        <div>
+            <p class='font-bold text-xl'>Terlibat</p>
+            <nav class='flex flex-col gap-y-2 mt-4'>
+                <a href="https://berbagibitesjogja.com/donasi">
+                    Donasi
+                </a>
+                <a href="https://berbagibitesjogja.com/gabung/relawan">
+                    Menjadi Relawan
+                </a>
+                <a href="https://berbagibitesjogja.com/gabung/mitra">
+                    Menjadi Mitra
+                </a>
+                <a href="https://berbagibitesjogja.com/">
+                    Acara Mendatang
+                </a>
+
+            </nav>
+        </div>
+        <div class='md:w-1/4'>
+            <p class='font-bold text-xl'>Kontak</p>
+            <nav class='flex flex-col gap-y-2 mt-4'>
+                <a class='flex' href="https://maps.app.goo.gl/vHHZVQ4ymYhW1JhX6">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-map-pin w-20" aria-hidden="true">
+                        <path
+                            d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0">
+                        </path>
+                        <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    <span class='w-full'>
+                        Blk. A, Jl. Podocarpus II Bulaksumur, Sagan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah
+                        Istimewa Yogyakarta 55281
+
+                    </span>
+                </a>
+                <a class='flex' href="https://wa.me/628986950700">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-phone w-20" aria-hidden="true">
+                        <path
+                            d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                        </path>
+                    </svg>
+                    <span class='w-full'>
+                        +62 898 695 0700
+
+                    </span>
+                </a>
+                <a class='flex' href="mailto:berbagibitesjogja@gmail.com">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" class="lucide lucide-mail w-20" aria-hidden="true">
+                        <rect width="20" height="16" x="2" y="4" rx="2"></rect>
+                        <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+                    </svg>
+                    <span class='w-full'>
+                        berbagibitesjogja@gmail.com
+                    </span>
+                </a>
+
+            </nav>
+        </div>
+    </nav>
+    <div class="flex md:flex-row flex-col justify-between items-center mt-12 gap-y-6">
+        <span>© 2025 Berbagi Bites Jogja. Semua hak dilindungi.</span>
+        <nav class="flex justify-between gap-x-4">
+            <a href="https://berbagibitesjogja.com/">Kebijakan Privasi</a>
+            <a href="https://berbagibitesjogja.com/">Syarat & Ketentuan</a>
+            <a href="https://berbagibitesjogja.com/sitemap.xml">Peta Situs</a>
+        </nav>
     </div>
 </footer>
