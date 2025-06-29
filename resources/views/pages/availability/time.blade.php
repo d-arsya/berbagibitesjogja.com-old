@@ -14,9 +14,6 @@
                     <div class="flex flex-col justify-between p-4 leading-normal">
                         <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900">{{ $item->name }}
                         </h5>
-                        <p class="mb-3 font-normal text-gray-700">{{ $item->faculty->name }}
-                            ({{ $item->faculty->university->name }})
-                        </p>
                         <a href="https://wa.me/{{ $item->phone }}"
                             class="bg-green-600 w-max px-2 py-1 rounded-md text-white">Chat</a>
                     </div>

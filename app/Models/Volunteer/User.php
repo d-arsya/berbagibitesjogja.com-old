@@ -18,7 +18,7 @@ class User extends Authenticatable
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-            ->logOnly(['role', 'faculty_id', 'division_id', 'name', 'point']);
+            ->logOnly(['role', 'division_id', 'name', 'point']);
     }
 
     protected $hidden = [
@@ -27,10 +27,6 @@ class User extends Authenticatable
     public function activities(): HasMany
     {
         return $this->hasMany(\Spatie\Activitylog\Models\Activity::class, 'causer_id');
-    }
-    public function faculty()
-    {
-        return $this->belongsTo(Faculty::class)->with('university');
     }
 
     public function division()

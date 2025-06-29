@@ -3,15 +3,14 @@
     <div class="flex justify-between flex-wrap-reverse flex-row gap-y-3">
         <div class="flex md:w-max w-full justify-start gap-2">
             <div class="text-start">
-                <p>Divisi : {{ $user->division->name }}</p>
-                <p>{{ $user->attendances->count() }} Aksi</p>
+                
             </div>
 
         </div>
         <a href="{{ route('volunteer.show', $user->id) }}" class="flex md:w-max w-full justify-end gap-2">
             <div class="text-end">
                 <p>{{ $user->name }}</p>
-                <p>{{ $user->faculty->name }} ({{ $user->faculty->university->name }})</p>
+                <p>{{ $user->division->name }} ({{ $user->attendances->count() }} Aksi)</p>
             </div>
             <div class="w-12 block rounded-full overflow-hidden">
                 <img src="{{ $user->photo}}"

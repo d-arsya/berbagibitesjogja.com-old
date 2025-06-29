@@ -20,13 +20,10 @@
                         Nama
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Fakultas
-                    </th>
-                    <th scope="col" class="hidden sm:table-cell px-6 py-3">
                         Divisi
                     </th>
                     <th scope="col" class="hidden sm:table-cell px-6 py-3">
-                        Poin
+                        Kontribusi
                     </th>
                     @if (auth()->user()->role == 'super')
                         <th scope="col" class="hidden sm:table-cell px-6 py-3">
@@ -44,14 +41,9 @@
                             <a href="https://wa.me/{{ $item->phone }}">{{ $item->phone }}</a>
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->faculty->name }} <br> ({{ $item->faculty->university->name }})
-                        </td>
-                        <td class="px-6 py-4 hidden sm:table-cell">
                             {{ $item->division->name }} ({{ $item->role }})
                         </td>
                         <td class="px-6 py-4 hidden sm:table-cell">
-                            {{ $item->points() }} poin
-                            <br>
                             {{ $item->attendances->count() }} aksi
                         </td>
                         @if (auth()->user()->role == 'super')

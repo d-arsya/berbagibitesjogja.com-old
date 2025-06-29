@@ -40,6 +40,9 @@
         <div>
             <p class='font-bold text-xl'>Program</p>
             <nav class='flex flex-col gap-y-2 mt-4'>
+                <a href="https://berbagibitesjogja.com/news">
+                    Artikel
+                </a>
                 <a href="https://berbagibitesjogja.com/penyelamatan">
                     Penyelamatan
                 </a>
@@ -49,12 +52,7 @@
                 <a href="https://berbagibitesjogja.com/edukasi">
                     Edukasi Masyarakat
                 </a>
-                <a href="https://app.berbagibitesjogja.com/login">
-                    Login Relawan
-                </a>
-                <a href="https://app.berbagibitesjogja.com/form">
-                    Form Pendaftaran
-                </a>
+
 
             </nav>
         </div>
@@ -70,8 +68,11 @@
                 <a href="https://berbagibitesjogja.com/gabung/mitra">
                     Menjadi Mitra
                 </a>
-                <a href="https://berbagibitesjogja.com/">
-                    Acara Mendatang
+                <a href="https://app.berbagibitesjogja.com/login">
+                    Login Relawan
+                </a>
+                <a href="https://app.berbagibitesjogja.com/form">
+                    Form Pendaftaran
                 </a>
 
             </nav>
@@ -89,8 +90,8 @@
                         <circle cx="12" cy="10" r="3"></circle>
                     </svg>
                     <span class='w-full'>
-                        Blk. A, Jl. Podocarpus II Bulaksumur, Sagan, Caturtunggal, Kec. Depok, Kabupaten Sleman, Daerah
-                        Istimewa Yogyakarta 55281
+                        Pusat Studi Pancasila UGM <br>
+                        Jl. Podocarpus II D-22, Kampus UGM, Bulaksumur, Yogyakarta 55281
 
                     </span>
                 </a>
@@ -123,11 +124,7 @@
         </div>
     </nav>
     <div class="flex md:flex-row flex-col justify-between items-center mt-12 gap-y-6">
-        <span>© 2025 Berbagi Bites Jogja. Semua hak dilindungi.</span>
-        <nav class="flex justify-between gap-x-4">
-            <a href="https://berbagibitesjogja.com/">Kebijakan Privasi</a>
-            <a href="https://berbagibitesjogja.com/">Syarat & Ketentuan</a>
-            <a href="https://berbagibitesjogja.com/sitemap.xml">Peta Situs</a>
-        </nav>
+        <span class="text-center">© 2025 Berbagi Bites Jogja. Semua hak dilindungi.</span>
+        <a href="https://psp.ugm.ac.id">Pusat Studi Pancasila UGM</a>
     </div>
 </footer>

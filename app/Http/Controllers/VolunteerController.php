@@ -85,7 +85,7 @@ class VolunteerController extends Controller
         if (Auth::user()->role == 'member') {
             return redirect()->route('volunteer.home');
         }
-        $users = User::with(['attendances', 'faculty', 'division'])->get();
+        $users = User::with(['attendances', 'division'])->get();
 
         return view('pages.volunteer.index', compact('users'));
     }
@@ -137,9 +137,8 @@ class VolunteerController extends Controller
     public function show(User $volunteer)
     {
         $divisions = Division::all();
-        $faculties = Faculty::where('university_id', $volunteer->faculty->university->id)->get();
 
-        return view('pages.volunteer.show', compact('volunteer', 'divisions', 'faculties'));
+        return view('pages.volunteer.show', compact('volunteer', 'divisions'));
     }
 
     public function edit(string $id) {}

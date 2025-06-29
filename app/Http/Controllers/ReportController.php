@@ -105,7 +105,8 @@ class ReportController extends Controller
                 $templateProcessor->setValue("foodName#$i", $foods[$i - 1]->name);
                 $templateProcessor->setValue("foodWeight#$i", round($foods[$i - 1]->weight / 100) / 10);
             }
-            $filename = storage_path() . '/app/public/reports/' . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y');
+            $uniq = substr(bin2hex(random_bytes(2)), 0, 3);
+            $filename = storage_path() . '/app/public/reports/' . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y') . " $uniq";
             $templateProcessor->saveAs($filename . '.docx');
             $path = storage_path() . '/app/public/reports';
             $files = File::allFiles($path);
