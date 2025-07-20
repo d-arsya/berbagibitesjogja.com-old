@@ -47,9 +47,9 @@ Schedule::call(function () {
     $donation = Donation::where('reported', null)->where('status', 'selesai')->first();
     try {
         $fileName = ReportController::createReport($donation);
-        $relativePath = storage_path('app/public/reports/') . $fileName[1];
-        Storage::disk('google')->put('foods/arsyad/' . $donation->sponsor->name . "/" . $fileName[1], File::get($relativePath));
-        Storage::disk('public')->delete('reports/'.$fileName[1]);
+        $relativePath = storage_path('app/public/reports/') . $fileName;
+        Storage::disk('google')->put('foods/arsyad/' . $donation->sponsor->name . "/" . $fileName, File::get($relativePath));
+        Storage::disk('public')->delete('reports/'.$fileName);
         $donation->reported = "sudah";
         $donation->save();
         $sudah = Donation::where('reported', 'sudah')->count();
