@@ -112,7 +112,7 @@ class ReportController extends Controller
             $files = File::allFiles($path);
             return $files[0]->getFilename();
         } catch (\Throwable $th) {
-            BotController::sendForPublic('6289636055420', $th->getMessage(), 'SECOND');
+            BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
         }
     }
 }
