@@ -54,7 +54,7 @@ Schedule::call(function () {
         $donation->save();
         $sudah = Donation::where('reported', 'sudah')->count();
         if($sudah%10==0){
-            BotController::sendForPublic('6289636055420','Sudah '.$sudah,'SECOND');
+            BotController::sendForPublic('6289636055420','Sudah '. $sudah ,'SECOND');
         }elseif($sudah==184){
             BotController::sendForPublic('120363315008311976@g.us','Selesai membuat '.$sudah.' laporan','SECOND');
         }
@@ -63,4 +63,4 @@ Schedule::call(function () {
     }
     // foreach ($donations as $donation) {
     // }
-})->timezone('Asia/Jakarta')->everyTenSeconds();
+})->timezone('Asia/Jakarta')->everyTenSeconds()->withoutOverlapping();
