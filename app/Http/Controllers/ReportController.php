@@ -110,9 +110,9 @@ class ReportController extends Controller
             $templateProcessor->saveAs($filename . '.docx');
             $path = storage_path() . '/app/public/reports';
             $files = File::allFiles($path);
-            return [$sponsor->name, $files[0]->getFilename()];
+            return $files[0]->getFilename();
         } catch (\Throwable $th) {
-            BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
+            BotController::sendForPublic('6289636055420', $th->getMessage(), 'SECOND');
         }
     }
 }

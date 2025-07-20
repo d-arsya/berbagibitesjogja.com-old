@@ -44,18 +44,23 @@ Schedule::call(function () {
     }
 })->timezone('Asia/Jakarta')->dailyAt('01.00')->days([1, 4, 6]);
 Schedule::call(function () {
-    $donations = Donation::where('reported', null)->where('status', 'selesai')->get();
-    foreach ($donations as $donation) {
-        try {
-            $fileName = ReportController::createReport($donation);
-            $relativePath = storage_path('app/public/reports/') . $fileName[1];
-            Storage::disk('google')->put('foods/Arsip Berita Acara/' . $fileName[0] . "/" . $fileName[1], File::get($relativePath));
-            BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan donasi hari ini\n\n" . "Nama File : " . $fileName[1] . "\nUkuran file : " . round(filesize($relativePath) / 1024) . " kb", 'SECOND');
-            File::delete($relativePath);
-            $donation->reported = "sudah";
-            $donation->save();
-        } catch (\Throwable $th) {
-            BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
+    $donation = Donation::where('reported', null)->where('status', 'selesai')->first();
+    try {
+        $fileName = ReportController::createReport($donation);
+        $relativePath = storage_path('app/public/reports/') . $fileName[1];
+        Storage::disk('google')->put('foods/arsyad/' . $donation->sponsor->name . "/" . $fileName[1], File::get($relativePath));
+        Storage::disk('public')->delete('reports/'.$fileName[1]);
+        $donation->reported = "sudah";
+        $donation->save();
+        $sudah = Donation::where('reported', 'sudah')->count();
+        if($sudah%10==0){
+            BotController::sendForPublic('6289636055420','Sudah '.$sudah);
+        }elseif($sudah==184){
+            BotController::sendForPublic('120363315008311976@g.us','Selesai membuat '.$sudah.' laporan');
         }
+    } catch (\Throwable $th) {
+        BotController::sendForPublic('6289636055420', $th->getMessage(), 'SECOND');
     }
-})->timezone('Asia/Jakarta')->dailyAt('23.00');
+    // foreach ($donations as $donation) {
+    // }
+})->timezone('Asia/Jakarta')->everyTenSeconds();
