@@ -63,4 +63,4 @@ Schedule::call(function () {
     }
     // foreach ($donations as $donation) {
     // }
-})->timezone('Asia/Jakarta')->everyTenSeconds()->name()->withoutOverlapping();
+})->timezone('Asia/Jakarta')->everyTenSeconds()->name('Buat report')->withoutOverlapping();
