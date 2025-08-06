@@ -42,7 +42,7 @@ Schedule::call(function () {
         $donation->reported = "sudah";
         $donation->save();
         $sudah = Donation::where('reported', 'sudah')->count();
-        BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan\n\n" . "Nama File : " . $fileName[1] . "\nUkuran file : " . round($fileSize / 1024) . " kb", 'SECOND');
+        BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan\n\n" . "Nama File : " . $fileName . "\nUkuran file : " . round($fileSize / 1024) . " kb", 'SECOND');
     } catch (\Throwable $th) {
         BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
     }
