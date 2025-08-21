@@ -11,6 +11,7 @@ use App\Http\Controllers\HeroController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PrecenceController;
+use App\Http\Controllers\ReimburseController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
@@ -91,4 +92,5 @@ Route::get('/hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel
 Route::get('donation/food-rescue', [DonationController::class, 'rescue'])->name('donation.rescue');
 Route::get('donation/charity', [DonationController::class, 'charity'])->name('donation.charity');
 Route::resource('donation', DonationController::class);
+Route::resource('reimburse', ReimburseController::class);
 Route::get('logout', [VolunteerController::class, 'logout'])->name('logout');

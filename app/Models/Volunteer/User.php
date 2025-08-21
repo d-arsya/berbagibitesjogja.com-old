@@ -42,6 +42,10 @@ class User extends Authenticatable
     {
         return $this->hasMany(Availability::class);
     }
+    public function reimburses()
+    {
+        return $this->hasMany(Reimburse::class);
+    }
 
     public function points()
     {

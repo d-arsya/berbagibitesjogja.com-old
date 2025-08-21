@@ -337,4 +337,11 @@ class BotController extends Controller
         curl_exec($curl);
         curl_close($curl);
     }
+
+    public static function createReimburse($user, $reimburse)
+    {
+        $amount = "Rp " . number_format($reimburse->amount, 0, ',', '.');
+        BotController::sendForPublic($user->phone, "Reimburse sebesar $amount sedang diajukan", AppConfiguration::useWhatsapp());
+        BotController::sendForPublic('6289636055420', "Reimburse sebesar {$amount} sedang diajukan oleh {$user->name} melalui {$reimburse->method} dengan nomor {$reimburse->target}", 'SECOND');
+    }
 }
