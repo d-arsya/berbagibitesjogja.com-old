@@ -26,7 +26,7 @@ class BotController extends Controller
                 'countryCode' => '62',
             ],
             CURLOPT_HTTPHEADER => [
-                'Authorization: ' . env("WHATSAPP_FONNTE_" . $from),
+                'Authorization: ' . env("WHATSAPP_FONNTE_FIRST"),
             ],
         ]);
 
