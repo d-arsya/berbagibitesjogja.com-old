@@ -2,8 +2,7 @@
     <nav class="flex md:flex-row flex-col gap-y-4 justify-between">
         <div class='md:w-1/4'>
             <a href="https://berbagibitesjogja.com/" class='flex items-center gap-x-2'>
-                <img src='https://berbagibitesjogja.com/plain-logo-white.png' width="40" height="40" alt='bbj-logo'
-                    class='inline'></img>
+                <img src="{{ asset('assets/putih.png') }}" width="40" height="40" alt='bbj-logo' class='inline'></img>
                 <span class='font-bold text-2xl'>Berbagi Bites Jogja</span>
             </a>
             <p class='mt-2 leading-8'>Inisiatif nonprofit yang berfokus pada penyelamatan dan redistribusi makanan di

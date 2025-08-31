@@ -31,9 +31,9 @@
                             Batalkan
                         </div>
                     </a>
-                    <a href="https://instagram.com/berbagibitesjogja"
-                        class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Akun Instagram</a>
-                    <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">ikuti akun instagram kami</h1>
+                    <a href={{route('notify.form')}}
+                        class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Dapatkan Notifikasi</a>
+                    <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">karena keterbatasan pendonor hanya bisa digunakan dengan email UGM (mail.ugm.ac.id)</h1>
                 </div>
                 <div class="w-full rounded-lg bg-white shadow-xl mt-8 py-5 px-6">
                     <h1 class="text-md text-navy font-medium text-center italic mb-4">Informasi Pengambilan
@@ -120,9 +120,9 @@
                                     <h1 class="text-md text-navy font-medium text-center italic">Mohon maaf kuota telah
                                         terpenuhi, datang lagi lain waktu
                                     </h1>
-                                    <a href="https://instagram.com/berbagibitesjogja"
-                                        class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Akun Instagram</a>
-                                    <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">ikuti akun instagram kami</h1>
+                                    <a href={{route('notify.form')}}
+                                        class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Dapatkan Notifikasi</a>
+                                    <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">karena keterbatasan pendonor hanya bisa digunakan dengan email UGM (mail.ugm.ac.id)</h1>
                                 </div>
                             @endif
                             <h1 class="text-pink-900 text-md font-semibold text-center mt-4">Heroes</h1>
@@ -135,9 +135,9 @@
         @else
             <div class="w-full rounded-lg bg-white shadow-lg mt-8 py-5 px-6">
                 <h1 class="text-xl text-tosca font-medium text-center italic">Maaf, belum ada food rescue hari ini</h1>
-                <a href="https://instagram.com/berbagibitesjogja"
-                    class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Akun Instagram</a>
-                <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">ikuti akun instagram kami</h1>
+                <a href={{route('notify.form')}}
+                    class="text-sm bg-navy hover:bg-navy-600 mt-8 w-max rounded-md py-2 px-4 m-auto text-center block text-white font-medium text-center italic">Dapatkan Notifikasi</a>
+                <h1 class="text-xs text-slate-400 font-medium text-center italic mt-3">karena keterbatasan pendonor hanya bisa digunakan dengan email UGM (mail.ugm.ac.id)</h1>
             </div>
         @endif
     </div>

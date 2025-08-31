@@ -10,6 +10,7 @@ use App\Models\Heroes\University;
 use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\Division;
 use App\Models\Volunteer\Faculty;
+use App\Models\Volunteer\Notify;
 use App\Models\Volunteer\Precence;
 use App\Models\Volunteer\User;
 use Carbon\Carbon;
@@ -197,6 +198,23 @@ class VolunteerController extends Controller
     {
         $user = Socialite::driver('google')->user();
         $volunteer = User::where('email', $user->email)->first();
+        if (session('phone')) {
+            $phone = session('phone');
+            session()->forget('phone');
+            if (! str_ends_with($user->email, 'mail.ugm.ac.id')) {
+                return redirect()->route('volunteer.home')->with('error', 'Email tidak valid');
+            }
+            try {
+                Notify::create([
+                    "name" => $user->name,
+                    "email" => $user->email,
+                    "phone" => $phone
+                ]);
+                return redirect()->route('volunteer.home')->with('success', 'Anda berhasil mendaftar');
+            } catch (\Throwable $th) {
+                return redirect()->route('volunteer.home')->with('error', 'Anda sudah terdaftar');
+            }
+        }
         if (! $volunteer) {
             return redirect()->route('volunteer.home')->with('error', 'Anda tidak terdaftar');
         }

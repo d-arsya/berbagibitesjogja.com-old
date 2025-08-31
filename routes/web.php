@@ -9,6 +9,7 @@ use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\NotifyController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\ReimburseController;
@@ -86,6 +87,9 @@ Route::middleware('auth')->group(function () {
 Route::middleware('guest')->group(function () {
     Route::get('/form', [HeroController::class, 'create'])->name('form.create');
     Route::post('/form', [HeroController::class, 'store'])->name('hero.store');
+    Route::controller(NotifyController::class)->group(function () {
+        Route::get('notify', 'form')->name('notify.form');
+    });
 });
 Route::resource('hero', HeroController::class)->except(['show', 'edit', 'create', 'store']);
 Route::get('/hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel');

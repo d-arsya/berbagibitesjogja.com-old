@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
 use App\Models\Heroes\University;
+use App\Models\Volunteer\Notify;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
@@ -53,7 +54,7 @@ class DonationController extends Controller implements HasMiddleware
 
     public function store(Request $request)
     {
-        $data = $request->except('_token');
+        $data = $request->except('_token', 'notify');
         if ($request->has('charity')) {
             $data['charity'] = true;
         }
@@ -63,7 +64,11 @@ class DonationController extends Controller implements HasMiddleware
         if ($data['beneficiaries'] == 'null') {
             return back()->with('error', 'Pilih minimal satu beneficiaries');
         }
+
         $donation = Donation::create($data);
+        if ($request->has('notify')) {
+            NotifyController::sendNotification($donation);
+        }
         BotController::notificationForDocumentation($donation);
 
         return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');

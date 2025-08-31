@@ -536,7 +536,7 @@
 @guest
     <header class='flex justify-between py-3 md:py-6 items-center px-6 md:px-32 sticky top-0 bg-white z-100'>
         <a href="https://berbagibitesjogja.com/" class='flex items-center gap-x-2'>
-            <img src="https://berbagibitesjogja.com/plain-logo-blue.png" alt="bbj-logo" width='40' height='40' />
+            <img src="{{ asset('assets/biru.png') }}" alt="bbj-logo" width='40' height='40' />
             <span class='text-navy font-bold text-xl md:text-2xl'>Berbagi Bites Jogja</span>
         </a>
         <nav>
