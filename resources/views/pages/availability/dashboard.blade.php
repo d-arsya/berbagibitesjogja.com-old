@@ -102,8 +102,6 @@
         document.querySelectorAll("input[type=checkbox]").forEach(function(d) {
             d.addEventListener('change', function(e) {
                 fetch(`availability/${e.target.value}/${e.target.checked}`)
-                    .then(res => res.json())
-                    .then(res => console.log(res))
             })
         })
     </script>

@@ -6,6 +6,7 @@ use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Heroes\Backup;
 use App\Models\Heroes\Hero;
+use App\Models\Heroes\University;
 use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\User;
 use Carbon\Carbon;
@@ -54,9 +55,6 @@ class HeroController extends Controller implements HasMiddleware
 
     public function create()
     {
-
-        // $ig_media = collect($this->getJsonData('https://graph.instagram.com/me/media?fields=media_url,permalink,media_type,thumbnail_url&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null))['data'])->take(9);
-        // $ig_user = collect($this->getJsonData('https://graph.instagram.com/me?fields=biography,followers_count,follows_count,media_count,name,profile_picture_url,username,website&access_token=' . env('INSTAGRAM_ACCESS_TOKEN', null)));
         $donations = Donation::where('status', 'aktif')->get();
         $donations_sum = Donation::all()->count();
         $foods = round(Food::all()->sum('weight') / 1000);
@@ -85,7 +83,6 @@ class HeroController extends Controller implements HasMiddleware
             ];
         }
 
-        // return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'ig_media', 'ig_user', 'lastData'));
         return view('pages.form', compact('donations', 'donations_sum', 'foods', 'heroes', 'lastData'));
     }
 
@@ -237,5 +234,10 @@ class HeroController extends Controller implements HasMiddleware
         $request->session()->regenerateToken();
 
         return redirect('/')->with('success', 'Terimakasih telah membatalkan');
+    }
+
+    public function getFaculties(University $university)
+    {
+        return response()->json($university->faculties);
     }
 }

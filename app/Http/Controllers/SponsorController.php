@@ -67,7 +67,6 @@ class SponsorController extends Controller
     public function destroy(Sponsor $sponsor)
     {
         try {
-            //code...
             if ($sponsor->donation->count() == 0) {
                 $sponsor->delete();
             }

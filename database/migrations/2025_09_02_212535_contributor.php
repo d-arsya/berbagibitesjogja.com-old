@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('location');
             $table->integer('quota');
             $table->string('description');
+            $table->timestamp('take')->nullable();
             $table->enum('variant', ['company', 'individual']);
             $table->enum('status', ['waiting', 'cancel', 'done'])->default("waiting");
             $table->timestamps();

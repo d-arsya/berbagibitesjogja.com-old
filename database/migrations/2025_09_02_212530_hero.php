@@ -34,6 +34,13 @@ return new class extends Migration
             $table->char('code', 6)->nullable();
             $table->timestamps();
         });
+        Schema::create('notifies', function (Blueprint $table) {
+            $table->id();
+            $table->string('name');
+            $table->string('phone')->unique();
+            $table->string('email')->unique();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -43,5 +50,6 @@ return new class extends Migration
     {
         Schema::dropIfExists('heroes');
         Schema::dropIfExists('backups');
+        Schema::dropIfExists('notifies');
     }
 };

@@ -17,8 +17,7 @@
     <meta property="og:title" content="Berbagi Bites Jogja">
     <meta property="og:description"
         content="Berbagi Bites Jogja (BBJ) adalah Gerakan food rescue pertama di Jogja. Bergerak mengatasi Food Waste melalui Food Rescue dan Food Bank di wilayah Yogyakarta">
-    <meta property="og:image"
-        content="https://berbagibitesjogja.site/wp-content/uploads/2024/09/1000049401-e1726334186949.jpg">
+    <meta property="og:image" content="https://berbagibitesjogja.com/shareable-card-preview.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta property="twitter:domain" content="berbagibitesjogja.com">
     <meta property="twitter:url" content="https://berbagibitesjogja.com/">

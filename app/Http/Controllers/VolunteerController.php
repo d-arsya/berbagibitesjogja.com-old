@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Jobs\SendMailJob;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
 use App\Models\Heroes\Hero;
 use App\Models\Heroes\University;
 use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\Division;
-use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\Notify;
 use App\Models\Volunteer\Precence;
 use App\Models\Volunteer\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -33,7 +30,7 @@ class VolunteerController extends Controller
 
         $donations = Donation::where('charity', 0)->whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
         $groupedData = $donations->groupBy(function ($donation) {
-            return Carbon::parse($donation->take)->format('Y-m'); // Format tahun-bulan (YYYY-MM)
+            return Carbon::parse($donation->take)->format('Y-m');
         });
         $lastData = [];
         foreach ($groupedData as $key => $item) {
@@ -52,7 +49,7 @@ class VolunteerController extends Controller
         }
         $donations = Donation::where('charity', 1)->whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
         $groupedData = $donations->groupBy(function ($donation) {
-            return Carbon::parse($donation->take)->format('Y-m'); // Format tahun-bulan (YYYY-MM)
+            return Carbon::parse($donation->take)->format('Y-m');
         });
         $lastDataCharity = [];
         foreach ($groupedData as $key => $item) {
@@ -76,8 +73,6 @@ class VolunteerController extends Controller
         $foods = Food::whereIn('donation_id', $donations->pluck('id'))->get();
         $foodsCharity = Food::whereIn('donation_id', $donationsCharity->pluck('id'))->get();
         $heroes = Hero::all();
-        // $faculties = Faculty::where('university_id', 1)->whereNotIn('name', ['Volunteer', 'RZIS', 'Lainnya'])->with('heroes')->get();
-
         return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'donationsCharity', 'foodsCharity', 'heroes', 'lastData', 'lastDataCharity', 'precence'));
     }
 
@@ -140,15 +135,6 @@ class VolunteerController extends Controller
         $divisions = Division::all();
 
         return view('pages.volunteer.show', compact('volunteer', 'divisions'));
-    }
-
-    public function edit(string $id) {}
-
-    public function send()
-    {
-        Bus::dispatch(new SendMailJob);
-
-        return back();
     }
 
     public function update(Request $request, User $volunteer)

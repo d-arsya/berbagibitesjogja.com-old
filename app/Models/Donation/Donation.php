@@ -3,7 +3,6 @@
 namespace App\Models\Donation;
 
 use App\Models\Heroes\Hero;
-use App\Models\Volunteer\Notify;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\LogOptions;

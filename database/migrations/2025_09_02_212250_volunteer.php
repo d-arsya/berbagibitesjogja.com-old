@@ -1,5 +1,7 @@
 <?php
 
+use App\Models\Volunteer\Division;
+use App\Models\Volunteer\Faculty;
 use App\Models\Volunteer\Precence;
 use App\Models\Volunteer\User;
 use Illuminate\Database\Migrations\Migration;
@@ -13,6 +15,17 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->enum('role', ['super', 'core', 'staff', 'member']);
+            $table->foreignIdFor(Division::class);
+            $table->string('name');
+            $table->string('email');
+            $table->string('phone');
+            $table->string('photo')->nullable();
+            $table->integer('point')->default(0);
+            $table->timestamps();
+        });
         Schema::create('precences', function (Blueprint $table) {
             $table->id();
             $table->string('title');
@@ -33,6 +46,25 @@ return new class extends Migration
             $table->unique(['precence_id', 'user_id']);
             $table->timestamps();
         });
+        Schema::create('availabilities', function (Blueprint $table) {
+            $table->id();
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->integer('day');
+            $table->integer('hour');
+            $table->integer('minute');
+            $table->string('code');
+            $table->timestamps();
+        });
+        Schema::create('reimburses', function (Blueprint $table) {
+            $table->id();
+            $table->string('method');
+            $table->string('target');
+            $table->integer('amount');
+            $table->boolean('done')->default(false);
+            $table->string('file');
+            $table->foreignIdFor(User::class)->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -40,7 +72,10 @@ return new class extends Migration
      */
     public function down(): void
     {
+        Schema::dropIfExists('users');
         Schema::dropIfExists('precences');
         Schema::dropIfExists('attendances');
+        Schema::dropIfExists('availabilities');
+        Schema::dropIfExists('reimburses');
     }
 };

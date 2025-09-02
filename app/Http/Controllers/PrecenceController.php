@@ -29,9 +29,6 @@ class PrecenceController extends Controller
         }
         $precence = $precence[0];
         $distance = $this->calculateDistance($request->precenceLat, $request->precenceLong, $request->userLat, $request->userLong);
-        // if ($distance > $precence->max_distance) {
-        //     return response()->json(['message' => 'Presensi tidak ditemukan', 'data' => $request->all()], 404);
-        // }
         if (Attendance::where('user_id', Auth::user()->id)->where('precence_id', $precence->id)->get()->count() == 1) {
             return response()->json([$request->all(), $precence], 200);
         }
@@ -100,11 +97,6 @@ class PrecenceController extends Controller
         return redirect()->route('precence.index')->with('success', 'Berhasil mengubah data presensi');
     }
 
-    public function destroy(string $id)
-    {
-        //
-    }
-
     public function getQrCode()
     {
         $precence = Precence::where('status', 'active')->get()[0];
@@ -114,7 +106,6 @@ class PrecenceController extends Controller
 
     public function uniqueString($length = 20)
     {
-        // $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&()-_=+[]{}|;:,.<>?';
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';

@@ -44,14 +44,12 @@ class BeneficiaryController extends Controller
         try {
             if ($request->university_id) {
                 Faculty::create(['name' => $request->name, 'university_id' => $request->university_id]);
-
                 return redirect()->back()->with('success', 'Berhasil menambahkan fakultas atau sektor');
             }
             $university = University::create($request->all());
             if ($university->variant == 'foundation') {
                 Faculty::create(['name' => $university->name, 'university_id' => $university->id]);
             }
-
             return redirect()->route('beneficiary.index')->with('success', 'Berhasil menambahkan beneficiary');
         } catch (\Throwable $th) {
             return redirect()->route('beneficiary.index')->with('error', 'Gagal menambahkan beneficiary');
@@ -62,7 +60,6 @@ class BeneficiaryController extends Controller
     {
         try {
             $beneficiary->update($request->all());
-
             return redirect()->route('beneficiary.index')->with('success', 'Berhasil mengubah beneficiary');
         } catch (\Throwable $th) {
             return redirect()->route('beneficiary.index')->with('error', 'Gagal mengubah beneficiary');
@@ -72,11 +69,9 @@ class BeneficiaryController extends Controller
     {
         if ($beneficiary->faculties->count() == 0) {
             $beneficiary->delete();
-        } else {
-
-            return redirect()->route('beneficiary.index')->with('error', 'Gagal menghapus beneficiary');
+            return redirect()->route('beneficiary.index')->with('success', 'Berhasil menghapus beneficiary');
         }
 
-        return redirect()->route('beneficiary.index')->with('success', 'Berhasil menghapus beneficiary');
+        return redirect()->route('beneficiary.index')->with('error', 'Gagal menghapus beneficiary');
     }
 }

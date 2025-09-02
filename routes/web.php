@@ -24,36 +24,39 @@ Route::view('print', 'print');
 Route::fallback(function () {
     return view('pages.coming');
 });
-Route::get('/auth/google', function () {
+Route::get('auth/google', function () {
     return Socialite::driver('google')->redirect();
 })->name('auth.google');
 
-Route::get('/auth/google/callback', [VolunteerController::class, 'authenticate']);
-Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
-Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
-Route::redirect('/home', '/');
+Route::post('abcence/distance', [PrecenceController::class, 'userAttendance']);
+Route::redirect('home', '');
 
 Route::controller(VolunteerController::class)->group(function () {
+    Route::get('', 'home')->name('volunteer.home');
+    Route::get('auth/google/callback', 'authenticate');
     Route::get('login', 'login')->name('login');
-    Route::post('login', 'authenticate')->name('volunteer.authenticate');
-    Route::post('volunteer/send-mails', 'send')->name('volunteer.send')->middleware('auth');
+    Route::get('logout', 'logout')->name('logout')->middleware('auth');
 });
+Route::get('donation/food-rescue', [DonationController::class, 'rescue'])->name('donation.rescue');
+Route::get('donation/charity', [DonationController::class, 'charity'])->name('donation.charity');
 Route::middleware('auth')->group(function () {
     Route::get('volunteer/precence/qr', [PrecenceController::class, 'getQrCode'])->name('precence.qr');
-    Route::resource('volunteer/precence', PrecenceController::class);
-    Route::resource('volunteer', VolunteerController::class);
-    Route::resource('food', FoodController::class)->except(['show', 'create']);
-    Route::get('/sponsor/individu', [SponsorController::class, 'individu'])->name('sponsor.individu');
-    Route::post('/hero/contributor', [HeroController::class, 'contributor'])->name('hero.contributor');
-    Route::resource('sponsor', SponsorController::class);
-    Route::get('/hero/faculty/{faculty}', [HeroController::class, 'faculty'])->name('hero.faculty');
-    Route::get('/hero/backups', [HeroController::class, 'backups'])->name('hero.backups');
-    Route::get('/hero/restore/{backup}', [HeroController::class, 'restore'])->name('hero.restore');
-    Route::delete('/hero/trash/{backup}', [HeroController::class, 'trash'])->name('hero.trash');
-    Route::resource('beneficiary', BeneficiaryController::class);
-    Route::get('/report', [ReportController::class, 'index'])->name('report.index');
-    Route::post('/report/download', [ReportController::class, 'download'])->name('report.download');
-    Route::get('/report/clean', [ReportController::class, 'clean'])->name('report.clean');
+    Route::get('sponsor/individu', [SponsorController::class, 'individu'])->name('sponsor.individu');
+
+    Route::controller(HeroController::class)->name('hero.')->group(function () {
+        Route::post('hero/contributor', 'contributor')->name('contributor');
+        Route::get('hero/faculty/{faculty}', 'faculty')->name('faculty');
+        Route::get('hero/backups', 'backups')->name('backups');
+        Route::get('hero/restore/{backup}', 'restore')->name('restore');
+        Route::delete('hero/trash/{backup}', 'trash')->name('trash');
+    });
+
+    Route::controller(ReportController::class)->name('report.')->group(function () {
+        Route::get('report', 'index')->name('index');
+        Route::post('report/download', 'download')->name('download');
+        Route::get('report/clean', 'clean')->name('clean');
+    });
+
     Route::controller(ContributorController::class)->group(function () {
         Route::get('kontribusi/food-surplus', 'foodCreate')->name('payment.foodCreate');
         Route::post('kontribusi/food-surplus', 'foodStore')->name('payment.foodStore');
@@ -61,27 +64,27 @@ Route::middleware('auth')->group(function () {
         Route::delete('contributor/foods/{booking}', 'foodCancel')->name('contributor.food.destroy');
         Route::put('contributor/foods/{booking}', 'foodDone')->name('contributor.food.update');
     });
-    Route::controller(LogController::class)->group(function () {
-        Route::get('logs/system')->name('logs.system');
-        Route::get('logs/activity', 'activityLogs')->name('logs.activity');
+    Route::controller(LogController::class)->name('logs.')->group(function () {
+        Route::get('logs/system')->name('system');
+        Route::get('logs/activity', 'activityLogs')->name('activity');
     });
     Route::controller(AvailabilityController::class)->name('availability.')->group(function () {
         Route::get('availability', 'dashboard')->name('dashboard');
         Route::get('availability/{time}', 'time')->name('time');
     });
     Route::get('availability/{codes}/{status}', [AvailabilityController::class, 'update']);
+    Route::resource('volunteer/precence', PrecenceController::class);
+    Route::resource('volunteer', VolunteerController::class);
+    Route::resource('food', FoodController::class)->except(['show', 'create']);
+    Route::resource('sponsor', SponsorController::class);
+    Route::resource('beneficiary', BeneficiaryController::class);
+    Route::resource('donation', DonationController::class);
+    Route::resource('reimburse', ReimburseController::class);
 });
 Route::middleware('guest')->group(function () {
-    Route::get('/form', [HeroController::class, 'create'])->name('form.create');
-    Route::post('/form', [HeroController::class, 'store'])->name('hero.store');
-    Route::controller(NotifyController::class)->group(function () {
-        Route::get('notify', 'form')->name('notify.form');
-    });
+    Route::get('form', [HeroController::class, 'create'])->name('form.create');
+    Route::get('notify', [NotifyController::class, 'form'])->name('notify.form');
+    Route::post('form', [HeroController::class, 'store'])->name('hero.store');
 });
+Route::get('hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel');
 Route::resource('hero', HeroController::class)->except(['show', 'edit', 'create', 'store']);
-Route::get('/hero/cancel', [HeroController::class, 'cancel'])->name('hero.cancel');
-Route::get('donation/food-rescue', [DonationController::class, 'rescue'])->name('donation.rescue');
-Route::get('donation/charity', [DonationController::class, 'charity'])->name('donation.charity');
-Route::resource('donation', DonationController::class);
-Route::resource('reimburse', ReimburseController::class);
-Route::get('logout', [VolunteerController::class, 'logout'])->name('logout');

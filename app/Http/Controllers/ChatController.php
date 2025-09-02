@@ -9,7 +9,6 @@ use App\Models\Heroes\Hero;
 use App\Models\Heroes\University;
 use Gemini\Data\GenerationConfig;
 use Gemini\Laravel\Facades\Gemini;
-use Illuminate\Http\Request;
 
 class ChatController extends Controller
 {
@@ -31,40 +30,34 @@ class ChatController extends Controller
         return trim(strtolower($result[0])) === 'true';
     }
 
-
-    // Data makanan mentah
     public function latestDonation()
     {
-        $donations = Donation::with('sponsor:id,name')  // Eager load sponsor hanya dengan id dan name
+        $donations = Donation::with('sponsor:id,name')
             ->latest()
             ->limit(10)
-            ->get(['quota', 'status', 'take', 'sponsor_id']); // Jangan lupa sediakan kolom sponsor_id
+            ->get(['quota', 'status', 'take', 'sponsor_id']);
 
-        // Menggunakan map untuk memanipulasi data yang diambil
         $donations = $donations->map(function ($donation) {
             return [
                 'quota' => $donation->quota,
                 'status' => $donation->status,
                 'take' => $donation->take,
-                'sponsor_name' => $donation->sponsor ? $donation->sponsor->name : null,  // Menambahkan sponsor name
+                'sponsor_name' => $donation->sponsor ? $donation->sponsor->name : null,
             ];
         });
         return $donations;
     }
 
-    // Data makanan mentah
     private function foodData()
     {
         return Food::get(['name', 'weight']);
     }
 
-    // Total bantuan food heroes per universitas
     private function heroesData()
     {
         return University::withSum('heroes', 'quantity')->get(['id', 'name']);
     }
 
-    // Donatur perusahaan + jumlah donasinya
     private function sponsorData()
     {
         return Sponsor::withCount('donation')
@@ -93,7 +86,6 @@ class ChatController extends Controller
     }
 
 
-    // Gabungan seluruh data dinamis dalam format JSON
     private function data()
     {
         $sponsor = json_encode($this->sponsorData());
@@ -104,7 +96,6 @@ class ChatController extends Controller
         return "Data donatur dalam JSON: ```$sponsor```\nData penerima dalam JSON: ```$heroes```\nData makanan dalam JSON: ```$food```\nData donasi terbaru dalam JSON: ```$latest```";
     }
 
-    // Analisis dan jawab pertanyaan user dengan konteks BBJ
     private function analyzeChat($text)
     {
         $material = $this->material();
@@ -116,7 +107,6 @@ class ChatController extends Controller
         return $this->sendGemini($prompt);
     }
 
-    // Kirim prompt ke Gemini dan ambil hasil teks
     private function sendGemini($text)
     {
         $generationConfig = new GenerationConfig(

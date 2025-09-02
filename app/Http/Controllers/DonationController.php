@@ -5,20 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Donation\Donation;
 use App\Models\Donation\Sponsor;
 use App\Models\Heroes\University;
-use App\Models\Volunteer\Notify;
+use App\Traits\BotHeroTrait;
+use App\Traits\BotVolunteerTrait;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Controllers\HasMiddleware;
-use Illuminate\Routing\Controllers\Middleware;
 
-class DonationController extends Controller implements HasMiddleware
+class DonationController extends Controller
 {
-    public static function middleware(): array
-    {
-        return [
-            new Middleware('auth', only: ['create', 'store', 'show', 'edit', 'update', 'destroy']),
-        ];
-    }
-
+    use BotVolunteerTrait, BotHeroTrait;
     public function index()
     {
         $donations = Donation::with('sponsor')->orderByRaw("CASE WHEN status = 'aktif' THEN 0 WHEN status = 'selesai' THEN 1 ELSE 2 END")
@@ -67,9 +60,9 @@ class DonationController extends Controller implements HasMiddleware
 
         $donation = Donation::create($data);
         if ($request->has('notify')) {
-            NotifyController::sendNotification($donation);
+            $this->sendNotification($donation);
         }
-        BotController::notificationForDocumentation($donation);
+        $this->notificationForDocumentation($donation);
 
         return redirect()->route('donation.index')->with('success', 'Berhasil menambahkan donasi');
     }
@@ -158,11 +151,8 @@ class DonationController extends Controller implements HasMiddleware
     {
         if ($donation->heroes->count() == 0 && $donation->foods->count() == 0) {
             $donation->delete();
-        } else {
-
-            return redirect()->route('donation.index')->with('error', 'Gagal menghapus donasi');
+            return redirect()->route('donation.index')->with('success', 'Berhasil menghapus donasi');
         }
-
-        return redirect()->route('donation.index')->with('success', 'Berhasil menghapus donasi');
+        return redirect()->route('donation.index')->with('error', 'Gagal menghapus donasi');
     }
 }

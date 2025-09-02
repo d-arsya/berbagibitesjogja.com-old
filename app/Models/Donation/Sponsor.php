@@ -11,12 +11,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Sponsor extends Model
 {
     use LogsActivity;
-    protected $guarded = ['id','created_at','updated_at'];
+    protected $guarded = ['id', 'created_at', 'updated_at'];
 
     public function getActivitylogOptions(): LogOptions
     {
         return LogOptions::defaults()
-        ->logUnguarded();
+            ->logUnguarded();
     }
 
     public function donation()

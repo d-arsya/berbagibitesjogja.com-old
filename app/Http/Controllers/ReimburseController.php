@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\AppConfiguration;
 use App\Models\Volunteer\Reimburse;
+use App\Traits\BotVolunteerTrait;
+use App\Traits\SendWhatsapp;
 use Gemini\Data\Blob;
 use Gemini\Enums\MimeType;
 use Gemini\Laravel\Facades\Gemini;
@@ -13,6 +15,7 @@ use Illuminate\Support\Facades\Storage;
 
 class ReimburseController extends Controller
 {
+    use SendWhatsapp, BotVolunteerTrait;
     public function index()
     {
         if (Auth::user()->role != "super") {
@@ -45,7 +48,7 @@ class ReimburseController extends Controller
         if ($result != "0") {
             $path = $file->store('reimburse', 'public');
             $reimburse = Reimburse::create(["amount" => (int) $result, "user_id" => Auth::id(), "file" => $path, "method" => $request->method, "target" => $request->target]);
-            BotController::createReimburse(Auth::user(), $reimburse);
+            $this->createReimburse(Auth::user(), $reimburse);
             return back()->with("success", "Reimbursement submitted!");
         }
         return back()->with("error", "Reimbursement failed!");
@@ -53,7 +56,7 @@ class ReimburseController extends Controller
 
     public function destroy(Reimburse $reimburse)
     {
-        BotController::sendForPublic($reimburse->user->phone, "Reimburse ditolak", AppConfiguration::useWhatsapp());
+        $this->send($reimburse->user->phone, "Reimburse ditolak", AppConfiguration::useWhatsapp());
         Storage::disk('public')->delete($reimburse->file);
         $reimburse->delete();
         return back()->with("success", "Reimbursement canceled!");
@@ -61,7 +64,7 @@ class ReimburseController extends Controller
     public function update(Reimburse $reimburse)
     {
         $am = "Rp " . number_format($reimburse->amount, 0, ',', '.');
-        BotController::sendForPublic($reimburse->user->phone, "Reimburse sebesar {$am} telah diberikan", AppConfiguration::useWhatsapp());
+        $this->send($reimburse->user->phone, "Reimburse sebesar {$am} telah diberikan", AppConfiguration::useWhatsapp());
         $reimburse->update(["done" => true]);
         return back()->with("success", "Reimbursement success!");
     }
