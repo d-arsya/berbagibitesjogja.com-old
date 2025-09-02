@@ -67,10 +67,10 @@
                 <a href="https://berbagibitesjogja.com/gabung/mitra">
                     Menjadi Mitra
                 </a>
-                <a href="https://app.berbagibitesjogja.com/login">
+                <a href="https://berbagibitesjogja.com/login">
                     Login Relawan
                 </a>
-                <a href="https://app.berbagibitesjogja.com/form">
+                <a href="https://berbagibitesjogja.com/form">
                     Form Pendaftaran
                 </a>
 

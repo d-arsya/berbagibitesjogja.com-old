@@ -3,14 +3,12 @@
 use App\Http\Controllers\AvailabilityController;
 use App\Http\Controllers\BeneficiaryController;
 use App\Http\Controllers\BotController;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ContributorController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\LogController;
 use App\Http\Controllers\NotifyController;
-use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PrecenceController;
 use App\Http\Controllers\ReimburseController;
 use App\Http\Controllers\ReportController;
@@ -20,10 +18,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
-Route::get('test', [BotController::class, 'sendWa']);
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
-Route::match(['get', 'post'], 'midtrans-callback', [PaymentController::class, 'callback'])->withoutMiddleware(VerifyCsrfToken::class);
-Route::get('send-wa', [BotController::class, 'sendWa']);
 Route::view('print', 'print');
 
 Route::fallback(function () {
@@ -38,14 +33,6 @@ Route::post('/abcence/distance', [PrecenceController::class, 'userAttendance']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '/');
 
-Route::controller(PaymentController::class)->group(function () {
-    Route::get('kontribusi/biaya-operasional', 'create')->name('payment.create');
-    Route::post('kontribusi/biaya-operasional', 'store')->name('payment.store');
-    Route::get('kontribusi/food-surplus', 'foodCreate')->name('payment.foodCreate');
-    Route::post('kontribusi/food-surplus', 'foodStore')->name('payment.foodStore');
-    Route::redirect('kontribusi', 'https://berbagibitesjogja.site/beri-kontribusi');
-    Route::get('kontribusi/biaya-operasional/{payment:order_id}', 'waiting')->name('payment.waiting');
-});
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
     Route::post('login', 'authenticate')->name('volunteer.authenticate');
@@ -68,11 +55,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/report/download', [ReportController::class, 'download'])->name('report.download');
     Route::get('/report/clean', [ReportController::class, 'clean'])->name('report.clean');
     Route::controller(ContributorController::class)->group(function () {
-        Route::get('contributor/wealth', 'wealth')->name('contributor.wealth');
+        Route::get('kontribusi/food-surplus', 'foodCreate')->name('payment.foodCreate');
+        Route::post('kontribusi/food-surplus', 'foodStore')->name('payment.foodStore');
         Route::get('contributor/foods', 'food')->name('contributor.food');
         Route::delete('contributor/foods/{booking}', 'foodCancel')->name('contributor.food.destroy');
         Route::put('contributor/foods/{booking}', 'foodDone')->name('contributor.food.update');
-        Route::get('contributor/people', 'people')->name('contributor.people');
     });
     Route::controller(LogController::class)->group(function () {
         Route::get('logs/system')->name('logs.system');

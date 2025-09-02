@@ -27,7 +27,7 @@ class NotifyController extends Controller
         $formatted = $date->translatedFormat('l, d F Y');
         foreach ($notif as $hero) {
             $phone = $hero->phone;
-            $message = "*📢 Ada donasi aktif dari BBJ!*\n\nPendonor : {$donation->sponsor->name}\nKuota : {$donation->quota} orang\nTanggal : " . $formatted . "\nJam : " . str_pad($donation->hour, 2, '0', STR_PAD_LEFT) . ":" . str_pad($donation->minute, 2, '0', STR_PAD_LEFT) . " WIB\n\n👉 Untuk ikut serta, silakan daftar melalui form berikut:\n" . "https://berbagibitesjogja.com/form" . "\n\nTerima kasih 🙏\n\n_pesan ini dikirim otomatis oleh bot_";
+            $message = "*📢 Ada donasi aktif BBJ dari {$donation->sponsor->name}!*\n\n🦸‍♂{$donation->quota} orang\n🗓$formatted\n🕧" . "str_pad($donation->hour, 2, '0', STR_PAD_LEFT)" . ":" . str_pad($donation->minute, 2, '0', STR_PAD_LEFT) . "WIB\n📍{$donation->location}\n{$donation->maps}\n\n🦸🏻 Ayo, jadi Food Heroes dan bantu BBJ menyelamatkan bumi dengan daftar di sini https://berbagibitesjogja.com/form" . "\n\nTerima kasih 🙏\n\n_pesan ini dikirim otomatis oleh bot_";
             dispatch(function () use ($phone, $message) {
                 BotController::sendForPublic($phone, $message, AppConfiguration::useWhatsapp());
             })->delay(now()->addSeconds($delay));

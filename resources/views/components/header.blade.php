@@ -169,14 +169,6 @@
                     </button>
                     <ul id="dropdown-contributor" aria-expanded="false" class="hidden py-2 space-y-2">
                         <li>
-                            <a href="{{ route('contributor.wealth') }}"
-                                class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
-                                <span class="w-2 h-2 rounded-full
-                        inline-block ms-1"></span>
-                                <span class="text-sm">Wealth</span>
-                            </a>
-                        </li>
-                        <li>
                             <a href="{{ route('contributor.food') }}"
                                 class="flex items-center space-x-5 p-2 transition duration-75 rounded-lg group">
                                 <span class="w-2 h-2 rounded-full
@@ -472,10 +464,6 @@
                     <div
                         class="absolute transition-all duration-300 ease-in-out transform translate-y-[-10px] opacity-0 group-hover:translate-y-0 group-hover:opacity-100 z-10 bg-white divide-y mt-2 divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                         <ul class="py-2 text-sm text-gray-700 dark:text-gray-200">
-                            <li>
-                                <a href="{{ route('contributor.wealth') }}"
-                                    class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Wealth</a>
-                            </li>
                             <li>
                                 <a href="{{ route('contributor.food') }}"
                                     class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Food</a>
