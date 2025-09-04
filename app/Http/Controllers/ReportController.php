@@ -47,7 +47,7 @@ class ReportController extends Controller
             } else {
                 $heroes = $donation->heroes;
             }
-            $templateProcessor->setValue('totalHeroes', $heroes->count());
+            $templateProcessor->setValue('totalHeroes', $heroes->sum('quantity'));
             $templateProcessor->cloneRow('heroesName', $heroes->count());
             for ($i = 1; $i < $heroes->count() + 1; $i++) {
                 $templateProcessor->setValue("heroesName#$i", $heroes[$i - 1]->name);
