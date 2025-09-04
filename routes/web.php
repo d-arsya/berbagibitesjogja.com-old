@@ -21,7 +21,8 @@ Route::get('/auth/google', function () {
 
 Route::get('/auth/google/callback', [VolunteerController::class, 'authenticate']);
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
-Route::redirect('/home', '/');
+Route::redirect('/home', '');
+Route::redirect('/form', 'login');
 
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
