@@ -29,6 +29,9 @@ class PrecenceController extends Controller
         }
         $precence = $precence[0];
         $distance = $this->calculateDistance($request->precenceLat, $request->precenceLong, $request->userLat, $request->userLong);
+        if ($distance > $precence->max_distance) {
+            return response()->json(["message" => "Presensi tidak ditemukan", "data" => $request->all()], 404);
+        }
         if (Attendance::where('user_id', Auth::user()->id)->where('precence_id', $precence->id)->get()->count() == 1) {
             return response()->json([$request->all(), $precence], 200);
         }

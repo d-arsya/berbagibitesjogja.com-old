@@ -1,0 +1,41 @@
+name: Deploy to VPS
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: BBJVPS
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Deploy over SSH (with password)
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /home/ubuntu/src/bbj-laravel
+            git pull
+            docker build -t disyfa/bbj-laravel .
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment: BBJVPS
+    steps:
+      - name: Deploy on VPS
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            cd /var/www/app
+            docker compose up -d
