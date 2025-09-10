@@ -28,7 +28,10 @@
                     @if (is_array($element))
                         @foreach ($element as $page => $url)
                             @php
-                                $fixedUrl = $baseUrl . parse_url($url, PHP_URL_PATH) . (parse_url($url, PHP_URL_QUERY) ? '?' . parse_url($url, PHP_URL_QUERY) : '');
+                                $fixedUrl =
+                                    $baseUrl .
+                                    parse_url($url, PHP_URL_PATH) .
+                                    (parse_url($url, PHP_URL_QUERY) ? '?' . parse_url($url, PHP_URL_QUERY) : '');
                             @endphp
 
                             @if ($page == $paginator->currentPage())
@@ -49,8 +52,14 @@
 
                 {{-- Next Page Link --}}
                 @if ($paginator->hasMorePages())
-                    <a href="{{ $baseUrl . parse_url($paginator->toArray()['last_page_url'], PHP_URL_PATH) }}"
-                        rel="next"
+                    @php
+                        $url = $paginator->toArray()['last_page_url'];
+                        $fixedUrl =
+                            $baseUrl .
+                            parse_url($url, PHP_URL_PATH) .
+                            (parse_url($url, PHP_URL_QUERY) ? '?' . parse_url($url, PHP_URL_QUERY) : '');
+                    @endphp
+                    <a href="{{ $fixedUrl }}" rel="next"
                         class="relative ml-1 inline-flex items-center px-2 py-2 -ml-px text-sm font-medium text-gray-500 bg-white border border-gray-300 rounded-md leading-5 hover:bg-mainGreen hover:text-white focus:z-10 focus:outline-none focus:ring ring-gray-300 focus:border-blue-300 active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150">
                         ...
                     </a>
