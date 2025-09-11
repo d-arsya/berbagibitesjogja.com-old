@@ -113,7 +113,7 @@ trait BotVolunteerTrait
         $filename = ReportController::createMonthlyReport($sponsor, $hasil[4]);
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
-        $link = route('downloadMonthly', compact('code'));
+        $link = env('APP_URL') . "/monthly-report/" . $code;
         $res = "✅ *Berhasil membuat laporan!*\n\n"
             . "📌 Donatur: *{$sponsor->name}*\n"
             . "📅 Bulan: *{$month}*\n\n"
