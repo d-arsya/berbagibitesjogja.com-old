@@ -1,4 +1,4 @@
-name: Deploy Laravel with Vite
+name: Deploy Laravel
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build-vite:
     runs-on: ubuntu-latest
     environment: BBJVPS
 
@@ -17,10 +17,11 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 22
+          cache: 'npm'
 
       - name: Install NPM dependencies
-        run: npm install
+        run: npm ci
 
       - name: Build assets with Vite
         run: npm run build
@@ -31,16 +32,16 @@ jobs:
           name: vite-build
           path: public/build
 
-  create-image:
+  docker-build:
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-vite
     environment: BBJVPS
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Download build artifacts
+      - name: Download Vite build artifacts
         uses: actions/download-artifact@v4
         with:
           name: vite-build
@@ -64,7 +65,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: create-image
+    needs: docker-build
     environment: BBJVPS
 
     steps:
