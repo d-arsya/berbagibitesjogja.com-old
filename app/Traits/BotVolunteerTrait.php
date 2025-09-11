@@ -106,12 +106,11 @@ trait BotVolunteerTrait
 
     protected function createMontly($sender, $message)
     {
-        $text = str_replace("@BOT laporan bulanan ", "", $message);
-        $hasil = explode(" ", $text);
-        $sponsor = Sponsor::find($hasil[0]);
+        $hasil = explode(" ", $message);
+        $sponsor = Sponsor::find($hasil[3]);
         $month = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        $month = $month[$hasil[1]];
-        $filename = ReportController::createMonthlyReport($sponsor, $hasil[1]);
+        $month = $month[$hasil[4]];
+        $filename = ReportController::createMonthlyReport($sponsor, $hasil[4]);
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
         $link = route('downloadMonthly', compact('code'));
