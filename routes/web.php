@@ -21,7 +21,6 @@ use Laravel\Socialite\Facades\Socialite;
 Route::get('monthly-report/{code}', [ReportController::class, 'downloadMonthly'])->name('downloadMonthly');
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::view('print', 'print');
-
 Route::fallback(function () {
     return view('pages.coming');
 });

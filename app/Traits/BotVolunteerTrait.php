@@ -107,11 +107,11 @@ trait BotVolunteerTrait
     protected function createMontly($sender, $message)
     {
         $text = str_replace("@BOT laporan bulanan ", "", $message);
-        $text = explode(" ", $text);
-        $sponsor = Sponsor::find($text[0]);
+        $hasil = explode(" ", $text);
+        $sponsor = Sponsor::find($hasil[0]);
         $month = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
-        $month = $month[$text[1]];
-        $filename = ReportController::createMonthlyReport($sponsor, $text[1]);
+        $month = $month[$hasil[1]];
+        $filename = ReportController::createMonthlyReport($sponsor, $hasil[1]);
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
         $link = route('downloadMonthly', compact('code'));
@@ -120,7 +120,6 @@ trait BotVolunteerTrait
             . "📅 Bulan: *{$month}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
             . "⚠️ _Link hanya bisa dipakai sekali dan file akan otomatis dihapus setelah diunduh_";
-
         $this->send($sender, $res, AppConfiguration::useWhatsapp());
     }
 }
