@@ -129,4 +129,30 @@ trait BotVolunteerTrait
         })->delay(now()->addMinutes(5));
         $this->send($sender, $res, AppConfiguration::useWhatsapp());
     }
+
+    protected function getRecap()
+    {
+        $volunteers = User::withCount('attendances')
+            ->where('role', 'member')
+            ->having('attendances_count', '>', 0)
+            ->orderBy('attendances_count', 'desc')
+            ->orderBy('name')
+            ->get();
+        $text  = "*📊 Rekap Kontribusi Volunteer*\n";
+        $text .= "_Sejak 7 September 2025 (Batch 4)_\n\n";
+
+        foreach ($volunteers as $item) {
+            $name = $this->shortenName($item->name);
+            $text .= "- {$name} — {$item->attendances_count}\n";
+        }
+
+        $text .= "\n👉 *Nama yang belum tercantum menandakan belum terdapat keikutsertaan dalam kegiatan.*";
+        $text .= "\n\n💪 Tetap semangat berkontribusi, setiap aksi kecil kalian punya dampak besar untuk lingkungan dan sesama 🌱";
+
+        BotController::sendForPublic('120363350581821641@g.us', $text, AppConfiguration::useWhatsapp());
+    }
+    function shortenName(string $name): string
+    {
+        return strlen($name) > 20 ? (count($p = explode(' ', $name, 2)) > 1 ? strtoupper($p[0][0]) . ". " . $p[1] : substr($name, 0, 20)) : $name;
+    }
 }

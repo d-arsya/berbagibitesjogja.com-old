@@ -28,6 +28,8 @@ class BotController extends Controller
                 $this->getAllActiveHero($sender);
             } elseif ($message == '@BOT list donatur') {
                 $this->getSponsorList($sender);
+            } elseif ($message == '@BOT list kontribusi') {
+                $this->getRecap();
             } elseif ($message == '@BOT hero yang belum') {
                 $this->getAllNotYetHero($sender);
             } elseif ($message == '@BOT ingatkan hero hari ini') {
