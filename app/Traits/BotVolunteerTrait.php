@@ -111,13 +111,18 @@ trait BotVolunteerTrait
         $sponsor = Sponsor::find($hasil[3]);
         $month = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $month = $month[$hasil[4]];
-        $filename = ReportController::createMonthlyReport($sponsor, $hasil[4]);
+        try {
+            $year = "20" . $hasil[5];
+        } catch (\Throwable $th) {
+            $year = now()->year;
+        }
+        $filename = ReportController::createMonthlyReport($sponsor, $hasil[4], $year);
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
         $link = route('monthlyReport', compact('code'));
         $res = "✅ *Berhasil membuat laporan bulanan!*\n\n"
             . "📌 Donatur: *{$sponsor->name}*\n"
-            . "📅 Bulan: *{$month}*\n\n"
+            . "📅 Bulan: *{$month} {$year}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
             . "⚠️ _Link hanya bisa dipakai selama 5 menit, setelahnya hangus_";
         dispatch(function () use ($code) {

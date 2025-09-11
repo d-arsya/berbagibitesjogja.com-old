@@ -126,14 +126,15 @@ class ReportController extends Controller
         }
     }
 
-    public static function createMonthlyReport($sponsor, $bulan)
+    public static function createMonthlyReport($sponsor, $bulan, $year = null)
     {
+        $year ??= now()->year;
         $months = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $month = $months[$bulan];
-        $donations = $sponsor->donation()->with(['heroes', 'foods'])->whereMonth('take', $bulan)->whereYear('take', now()->year)->get();
+        $donations = $sponsor->donation()->with(['heroes', 'foods'])->whereMonth('take', $bulan)->whereYear('take', $year)->get();
 
         $templateProcessor = new TemplateProcessor(public_path() . '/templates/monthly.docx');
-        $templateProcessor->setValue('monthYear', $month . " " . \Carbon\Carbon::now()->isoFormat('Y'));
+        $templateProcessor->setValue('monthYear', $month . " " . $year);
         $templateProcessor->setValue('sponsorName', $sponsor->name);
         $templateProcessor->setValue('createdDate', \Carbon\Carbon::now()->isoFormat('D-M-Y'));
 
@@ -182,8 +183,9 @@ class ReportController extends Controller
         }
         $templateProcessor->setValue("foodsTotal", round($foodsTotal / 100) / 10);
         $templateProcessor->setValue("heroesTotal", $heroesTotal);
+        $templateProcessor->setValue("year", now()->year);
         $uniq = substr(bin2hex(random_bytes(2)), 0, 3);
-        $filename = storage_path() . '/app/public/monthly/' . 'Laporan ' . $sponsor->name . ' Bulan ' . $month . " $uniq";
+        $filename = storage_path() . '/app/public/monthly/' . 'Laporan ' . $sponsor->name . ' Bulan ' . $month . " $year $uniq";
         $templateProcessor->saveAs($filename . '.docx');
         $path = storage_path() . '/app/public/monthly';
         return basename($filename . '.docx');;
