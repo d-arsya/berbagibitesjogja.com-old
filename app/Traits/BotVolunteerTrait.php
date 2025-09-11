@@ -11,6 +11,7 @@ use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 trait BotVolunteerTrait
 {
@@ -120,6 +121,13 @@ trait BotVolunteerTrait
             . "📅 Nama File: *{$filename}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
             . "⚠️ _Link hanya bisa dipakai sekali dan file akan otomatis dihapus setelah diunduh_";
+        dispatch(function () use ($code, $message) {
+            $row = DB::table('report_keys')->where('code', $code)->first();
+            if ($row) {
+                Storage::delete('public/monthly/' . $row->filename);
+                DB::table('report_keys')->where('code', $row->code)->delete();
+            }
+        })->delay(now()->addMinutes(5));
         $this->send($sender, $res, AppConfiguration::useWhatsapp());
     }
 }

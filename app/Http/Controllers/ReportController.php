@@ -19,28 +19,12 @@ class ReportController extends Controller
     }
     public function downloadMonthly(string $code)
     {
-        $ua = request()->userAgent();
-
-        $blocked = [
-            'TelegramBot',
-            'WhatsApp',
-            'facebookexternalhit',
-            'Slackbot',
-            'Discordbot',
-        ];
-
-        foreach ($blocked as $bot) {
-            if (stripos($ua, $bot) !== false) {
-                abort(403, 'Crawler not allowed');
-            }
-        }
         $record = DB::table('report_keys')->where('code', $code)->first();
         if (!$record) {
             return redirect('https://berbagibitesjogja.com');
         }
         $filePath = storage_path('app/public/monthly/' . $record->filename);
-        DB::table('report_keys')->where('code', $code)->delete();
-        return response()->download($filePath, $record->filename)->deleteFileAfterSend(true);
+        return response()->download($filePath, $record->filename);
     }
     public function clean()
     {
