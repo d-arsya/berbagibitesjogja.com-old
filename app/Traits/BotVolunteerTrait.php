@@ -115,12 +115,11 @@ trait BotVolunteerTrait
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
         $link = env('APP_URL') . "/monthly-report/" . $code;
-        $res = "✅ *Berhasil membuat laporan!*\n\n"
+        $res = "✅ *Berhasil membuat laporan bulanan!*\n\n"
             . "📌 Donatur: *{$sponsor->name}*\n"
             . "📅 Bulan: *{$month}*\n\n"
-            . "📅 Nama File: *{$filename}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
-            . "⚠️ _Link hanya bisa dipakai sekali dan file akan otomatis dihapus setelah diunduh_";
+            . "⚠️ _Link hanya bisa dipakai selama 5 menit, setelahnya hangus_";
         dispatch(function () use ($code, $message) {
             $row = DB::table('report_keys')->where('code', $code)->first();
             if ($row) {

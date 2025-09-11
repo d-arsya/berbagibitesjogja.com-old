@@ -115,7 +115,7 @@ trait BotHeroTrait
         $formatted = $date->translatedFormat('l, d F Y');
         foreach ($notif as $hero) {
             $phone = $hero->phone;
-            $message = "*📢 Ada donasi aktif BBJ dari {$donation->sponsor->name}!*\n\n🦸‍♂{$donation->quota} orang\n🗓$formatted\n🕧" . "str_pad($donation->hour, 2, '0', STR_PAD_LEFT)" . ":" . str_pad($donation->minute, 2, '0', STR_PAD_LEFT) . "WIB\n📍{$donation->location}\n{$donation->maps}\n\n🦸🏻 Ayo, jadi Food Heroes dan bantu BBJ menyelamatkan bumi dengan daftar di sini https://berbagibitesjogja.com/form" . "\n\nTerima kasih 🙏\n\n_pesan ini dikirim otomatis oleh bot_";
+            $message = "*📢 Ada donasi aktif BBJ dari {$donation->sponsor->name}!*\n\n🦸‍♂{$donation->quota} orang\n🗓$formatted\n🕧" . str_pad($donation->hour, 2, '0', STR_PAD_LEFT) . ":" . str_pad($donation->minute, 2, '0', STR_PAD_LEFT) . "WIB\n📍{$donation->location}\n{$donation->maps}\n\n🦸🏻 Ayo, jadi Food Heroes dan bantu BBJ menyelamatkan bumi dengan daftar di sini https://berbagibitesjogja.com/form" . "\n\nTerima kasih 🙏\n\n_pesan ini dikirim otomatis oleh bot_";
             dispatch(function () use ($phone, $message) {
                 $this->send($phone, $message, AppConfiguration::useWhatsapp());
             })->delay(now()->addSeconds($delay));
