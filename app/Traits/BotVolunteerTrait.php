@@ -104,7 +104,7 @@ trait BotVolunteerTrait
         $this->send($sender, $text, AppConfiguration::useWhatsapp());
     }
 
-    protected function createMontly($sender, $message)
+    protected function createMonthly($sender, $message)
     {
         $hasil = explode(" ", $message);
         $sponsor = Sponsor::find($hasil[3]);
@@ -117,6 +117,7 @@ trait BotVolunteerTrait
         $res = "✅ *Berhasil membuat laporan!*\n\n"
             . "📌 Donatur: *{$sponsor->name}*\n"
             . "📅 Bulan: *{$month}*\n\n"
+            . "📅 Nama File: *{$filename}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
             . "⚠️ _Link hanya bisa dipakai sekali dan file akan otomatis dihapus setelah diunduh_";
         $this->send($sender, $res, AppConfiguration::useWhatsapp());
