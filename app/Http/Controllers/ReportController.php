@@ -120,8 +120,7 @@ class ReportController extends Controller
             $filename = storage_path() . '/app/public/reports/' . 'Laporan ' . $sponsor->name . ' Tanggal ' . \Carbon\Carbon::parse($donation->take)->isoFormat('D MMMM Y') . " $uniq";
             $templateProcessor->saveAs($filename . '.docx');
             $path = storage_path() . '/app/public/reports';
-            $files = File::allFiles($path);
-            return $files[0]->getFilename();
+            return basename($filename . '.docx');;
         } catch (\Throwable $th) {
             BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
         }
@@ -131,7 +130,7 @@ class ReportController extends Controller
     {
         $months = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
         $month = $months[$bulan];
-        $donations = $sponsor->donation()->with(['heroes', 'foods'])->whereMonth('created_at', $bulan)->whereYear('created_at', now()->year)->get();
+        $donations = $sponsor->donation()->with(['heroes', 'foods'])->whereMonth('take', $bulan)->whereYear('take', now()->year)->get();
 
         $templateProcessor = new TemplateProcessor(public_path() . '/templates/monthly.docx');
         $templateProcessor->setValue('monthYear', $month . " " . \Carbon\Carbon::now()->isoFormat('Y'));
@@ -187,8 +186,7 @@ class ReportController extends Controller
         $filename = storage_path() . '/app/public/monthly/' . 'Laporan ' . $sponsor->name . ' Bulan ' . $month . " $uniq";
         $templateProcessor->saveAs($filename . '.docx');
         $path = storage_path() . '/app/public/monthly';
-        $files = File::allFiles($path);
-        return $files[0]->getFilename();
+        return basename($filename . '.docx');;
     }
 
     public function getDonations(Sponsor $sponsor, $start, $end)
