@@ -114,13 +114,13 @@ trait BotVolunteerTrait
         $filename = ReportController::createMonthlyReport($sponsor, $hasil[4]);
         $code = uniqid();
         DB::table('report_keys')->insert(compact('filename', 'code'));
-        $link = env('APP_URL') . "/monthly-report/" . $code;
+        $link = route('monthlyReport', compact('code'));
         $res = "✅ *Berhasil membuat laporan bulanan!*\n\n"
             . "📌 Donatur: *{$sponsor->name}*\n"
             . "📅 Bulan: *{$month}*\n\n"
             . "⬇️ Silakan download di sini:\n{$link}\n\n"
             . "⚠️ _Link hanya bisa dipakai selama 5 menit, setelahnya hangus_";
-        dispatch(function () use ($code, $message) {
+        dispatch(function () use ($code) {
             $row = DB::table('report_keys')->where('code', $code)->first();
             if ($row) {
                 Storage::delete('public/monthly/' . $row->filename);
