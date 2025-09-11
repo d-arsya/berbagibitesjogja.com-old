@@ -26,12 +26,16 @@ class BotController extends Controller
                 $this->getActiveDonation($sender);
             } elseif ($message == '@BOT hero hari ini') {
                 $this->getAllActiveHero($sender);
+            } elseif ($message == '@BOT list donatur') {
+                $this->getSponsorList($sender);
             } elseif ($message == '@BOT hero yang belum') {
                 $this->getAllNotYetHero($sender);
             } elseif ($message == '@BOT ingatkan hero hari ini') {
                 $this->reminderToday($sender);
             } elseif (str_starts_with($message, '@BOT ingatkan hero yang belum')) {
                 $this->reminderLastCall($message, $sender);
+            } elseif (str_starts_with($message, '@BOT laporan bulanan')) {
+                $this->createMontly($sender, $message);
             } elseif (str_starts_with($message, '@BOT balas')) {
                 $this->replyHero($sender, $message);
             } elseif (str_starts_with($message, '@BOT dokumentasi')) {

@@ -2,11 +2,15 @@
 
 namespace App\Traits;
 
+use App\Http\Controllers\BotController;
+use App\Http\Controllers\ReportController;
 use App\Models\AppConfiguration;
 use App\Models\Donation\Donation;
+use App\Models\Donation\Sponsor;
 use App\Models\Heroes\Hero;
 use App\Models\Volunteer\Availability;
 use App\Models\Volunteer\User;
+use Illuminate\Support\Facades\DB;
 
 trait BotVolunteerTrait
 {
@@ -87,5 +91,36 @@ trait BotVolunteerTrait
             $this->send($hero->phone, $message . "\n\n_dikirim menggunakan bot_", AppConfiguration::useWhatsapp());
             $this->send($sender, 'Berhasil mengirimkan balasan kepada ' . $hero->name, 'SECOND');
         }
+    }
+
+    protected function getSponsorList($sender)
+    {
+        $sponsors = Sponsor::all();
+
+        $text = "Daftar Donatur BBJ\n\n";
+        foreach ($sponsors as $sponsor) {
+            $text .= "#{$sponsor->id} - {$sponsor->name}\n";
+        }
+        $this->send($sender, $text, AppConfiguration::useWhatsapp());
+    }
+
+    protected function createMontly($sender, $message)
+    {
+        $text = str_replace("@BOT laporan bulanan ", "", $message);
+        $text = explode(" ", $text);
+        $sponsor = Sponsor::find($text[0]);
+        $month = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+        $month = $month[$text[1]];
+        $filename = ReportController::createMonthlyReport($sponsor, $text[1]);
+        $code = uniqid();
+        DB::table('report_keys')->insert(compact('filename', 'code'));
+        $link = route('downloadMonthly', compact('code'));
+        $res = "✅ *Berhasil membuat laporan!*\n\n"
+            . "📌 Donatur: *{$sponsor->name}*\n"
+            . "📅 Bulan: *{$month}*\n\n"
+            . "⬇️ Silakan download di sini:\n{$link}\n\n"
+            . "⚠️ _Link hanya bisa dipakai sekali dan file akan otomatis dihapus setelah diunduh_";
+
+        $this->send($sender, $res, AppConfiguration::useWhatsapp());
     }
 }
