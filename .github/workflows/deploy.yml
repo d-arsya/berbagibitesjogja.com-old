@@ -79,3 +79,18 @@ jobs:
             cd /var/www/app
             docker pull disyfa/bbj-laravel:latest
             docker compose up -d
+            docker exec bbj-laravel php artisan migrate
+  migrate:
+    runs-on: ubuntu-latest
+    needs: deploy
+    environment: BBJVPS
+
+    steps:
+      - name: Run migration
+        uses: appleboy/ssh-action@v0.1.10
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          password: ${{ secrets.PASSWORD }}
+          script: |
+            docker exec bbj-laravel php artisan migrate

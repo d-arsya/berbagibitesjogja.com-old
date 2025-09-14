@@ -80,7 +80,7 @@ trait BotVolunteerTrait
     {
         $amount = "Rp " . number_format($reimburse->amount, 0, ',', '.');
         $this->send($user->phone, "Reimburse sebesar $amount sedang diajukan", AppConfiguration::useWhatsapp());
-        $this->send('6289636055420', "Reimburse sebesar {$amount} sedang diajukan oleh {$user->name} melalui {$reimburse->method} dengan nomor {$reimburse->target}", 'SECOND');
+        $this->send(AppConfiguration::getReimburseContact(), "Reimburse sebesar {$amount} sedang diajukan oleh {$user->name} melalui {$reimburse->method} dengan nomor {$reimburse->target}", 'SECOND');
     }
 
     protected function replyHero($sender, $message)

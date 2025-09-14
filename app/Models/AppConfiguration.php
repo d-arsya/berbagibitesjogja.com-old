@@ -15,4 +15,14 @@ class AppConfiguration extends Model
         $configuration->update(["value" => $used]);
         return $used % 2 == 1 ? "FIRST" : "SECOND";
     }
+    public static function getReimburseContact()
+    {
+        $phone = AppConfiguration::where('key', 'REIMBURSE_CONTACT')->first();
+        return $phone->value;
+    }
+    public static function getGroupCode()
+    {
+        $code = AppConfiguration::where('key', 'GROUP_WA')->first();
+        return $code->value;
+    }
 }

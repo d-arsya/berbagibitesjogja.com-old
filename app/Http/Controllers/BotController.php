@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
 use App\Models\Heroes\Hero;
@@ -20,7 +21,7 @@ class BotController extends Controller
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
-        $group = explode(',', env('GROUP_WA'));
+        $group = explode(',', AppConfiguration::getGroupCode());
         if (in_array($sender, $group)) {
             if ($message == '@BOT donasi hari ini') {
                 $this->getActiveDonation($sender);
