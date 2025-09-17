@@ -1,16 +1,20 @@
 <?php
 
 use App\Http\Controllers\BeneficiaryController;
+use App\Http\Controllers\BotController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\FoodController;
 use App\Http\Controllers\HeroController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SponsorController;
 use App\Http\Controllers\VolunteerController;
+use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::view('print', 'print');
+
+Route::get('test', [BotController::class, 'coba']);
 
 Route::fallback(function () {
     return view('pages.coming');
@@ -23,6 +27,8 @@ Route::get('/auth/google/callback', [VolunteerController::class, 'authenticate']
 Route::get('/', [VolunteerController::class, 'home'])->name('volunteer.home');
 Route::redirect('/home', '');
 Route::redirect('/form', 'login');
+Route::post('from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
+Route::get('monthly-report/{code}', [ReportController::class, 'downloadMonthly'])->name('monthlyReport');
 
 Route::controller(VolunteerController::class)->group(function () {
     Route::get('login', 'login')->name('login');
