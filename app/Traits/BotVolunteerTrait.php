@@ -134,7 +134,10 @@ trait BotVolunteerTrait
         })->delay(now()->addMinutes(5));
         $this->send($sender, $res, AppConfiguration::useWhatsapp());
     }
-
+    protected function sendToPemkot($payload)
+    {
+        return Http::post("https://pemkot.berbagibitesjogja.com/from-fonnte", $payload);
+    }
     protected function getRecap()
     {
         $volunteers = User::withCount('attendances')

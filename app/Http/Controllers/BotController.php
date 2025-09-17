@@ -35,6 +35,8 @@ class BotController extends Controller
                 $this->getAllNotYetHero($sender);
             } elseif ($message == '@BOT ingatkan hero hari ini') {
                 $this->reminderToday($sender);
+            } elseif (str_starts_with($message, '@BOT pemkot')) {
+                $this->sendToPemkot($data);
             } elseif (str_starts_with($message, '@BOT ingatkan hero yang belum')) {
                 $this->reminderLastCall($message, $sender);
             } elseif (str_starts_with($message, '@BOT laporan bulanan')) {
