@@ -7,6 +7,7 @@ use App\Models\Donation\Sponsor;
 use App\Models\Heroes\University;
 use App\Traits\BotHeroTrait;
 use App\Traits\BotVolunteerTrait;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
@@ -59,8 +60,17 @@ class DonationController extends Controller
         }
 
         $donation = Donation::create($data);
+        if ($request->duration) {
+            $minutes = (int) $request->input('duration');
+            $from = Carbon::createFromTime($donation->hour, $donation->minute);
+            $until = $from->copy()->addMinutes($minutes);
+            $take = $from->format('H:i') . ' - ' . $until->format('H:i');
+        } else {
+            $take = str_pad($donation->hour, 2, '0', STR_PAD_LEFT) . ':' . str_pad($donation->minute, 2, '0', STR_PAD_LEFT);
+        }
+
         if ($request->has('notify')) {
-            $this->sendNotification($donation);
+            $this->sendNotification($donation, $take);
         }
         $this->notificationForDocumentation($donation);
 
