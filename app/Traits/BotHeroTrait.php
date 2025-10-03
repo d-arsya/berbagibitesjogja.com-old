@@ -60,7 +60,16 @@ trait BotHeroTrait
         $allActiveHero = Hero::where('donation_id', $activeDonation->id)->get(['name', 'phone']);
         $delay = 30;
         foreach ($allActiveHero as $hero) {
-            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan bahwa pengambilan surplus food dimulai pada pukul ' . str_pad($activeDonation->hour, 2, '0', STR_PAD_LEFT) . '.' . str_pad($activeDonation->minute, 2, '0', STR_PAD_LEFT) . ' dan bisa diambil di ' . $activeDonation->location . '(' . $activeDonation->maps . ')' . "\n\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
+            $message = "🍽️ Halo {$hero->name}!\n\n"
+                . "Ada kabar baik nih ✨ Surplus food dari *Berbagi Bites Jogja* sudah bisa diambil:\n\n"
+                . "⏰ *Waktu:* " . str_pad($activeDonation->hour, 2, '0', STR_PAD_LEFT) . ":" . str_pad($activeDonation->minute, 2, '0', STR_PAD_LEFT) . "\n"
+                . "📍 *Lokasi:* {$activeDonation->location}\n"
+                . "{$activeDonation->maps}\n\n"
+                . "✅ Jangan lupa datang ya, semoga bermanfaat dan jangan sampai terbuang 🌱💚\n\n"
+                . "⚠️ Catatan:\n"
+                . "- Jika tidak bisa mengambil, mohon konfirmasi 🙏\n"
+                . "- Makanan yang tidak diambil hingga waktu yang ditentukan akan dialihkan ke Food Heroes lain\n\n"
+                . "_Pesan ini dikirim otomatis oleh bot BBJ 🤖_";
             $phone = $hero->phone;
             dispatch(function () use ($phone, $message) {
                 $this->send($phone, $message, AppConfiguration::useWhatsapp());
@@ -82,7 +91,16 @@ trait BotHeroTrait
         $jam = str_replace('@BOT ingatkan hero yang belum ', '', $jam);
         $delay = 10;
         foreach ($notyetHero as $hero) {
-            $message = 'Halo ' . $hero->name . ' kami dari BBJ mengingatkan untuk bisa mengambil makanan di ' . $activeDonation->location . '(' . $activeDonation->maps . '). ' . 'Kami tunggu hingga pukul ' . $jam . " yaaa\nTerimakasih \n\n" . '_pesan ini dikirim dengan bot_';
+            $message = "⏰ Halo {$hero->name}!\n\n"
+                . "Kami dari *Berbagi Bites Jogja* ingin mengingatkan kembali untuk mengambil makanan di:\n"
+                . "📍 {$activeDonation->location}\n"
+                . "{$activeDonation->maps}\n\n"
+                . "Batas pengambilan sampai pukul {$jam} yaa 🙏\n\n"
+                . "Mohon segera hadir agar makanan tidak terbuang dan bisa kamu manfaatkan 🌱💚\n\n"
+                . "⚠️ Catatan:\n"
+                . "- Jika tidak bisa mengambil, mohon konfirmasi 🙏\n"
+                . "- Makanan yang tidak diambil hingga waktu yang ditentukan akan dialihkan ke Food Heroes lain\n\n"
+                . "_Pesan ini dikirim otomatis oleh bot BBJ 🤖_";
             $phone = $hero->phone;
             dispatch(function () use ($phone, $message) {
                 $this->send($phone, $message, AppConfiguration::useWhatsapp());
