@@ -5,12 +5,14 @@ namespace App\Console\Commands;
 use App\Http\Controllers\BotController;
 use App\Http\Controllers\ReportController;
 use App\Models\Donation\Donation;
+use App\Traits\SendWhatsapp;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class DailyReportDocument extends Command
 {
+    use SendWhatsapp;
     /**
      * The name and signature of the console command.
      *
@@ -42,9 +44,9 @@ class DailyReportDocument extends Command
             Storage::disk('public')->delete('reports/' . $fileName);
             $donation->reported = "sudah";
             $donation->save();
-            BotController::sendForPublic('120363315008311976@g.us', "Berhasil membuat laporan\n\n" . "Nama File : " . $fileName . "\nUkuran file : " . round($fileSize / 1024) . " kb", 'SECOND');
+            $this->send('120363315008311976@g.us', "Berhasil membuat laporan\n\n" . "Nama File : " . $fileName . "\nUkuran file : " . round($fileSize / 1024) . " kb", 'SECOND');
         } catch (\Throwable $th) {
-            BotController::sendForPublic('120363399651067268@g.us', $th->getMessage(), 'SECOND');
+            $this->send('120363399651067268@g.us', $th->getMessage(), 'SECOND');
         }
     }
 }
