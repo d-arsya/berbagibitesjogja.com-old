@@ -9,7 +9,7 @@ trait SendWhatsapp
         $curl = curl_init();
 
         curl_setopt_array($curl, [
-            CURLOPT_URL => 'https://api.fonnte.com/send',
+            CURLOPT_URL => env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com/send'),
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,
@@ -20,14 +20,7 @@ trait SendWhatsapp
             CURLOPT_POSTFIELDS => [
                 'target' => $target,
                 'message' => $message,
-                'schedule' => 0,
-                'typing' => false,
-                'delay' => '2',
-                'countryCode' => '62',
-            ],
-            CURLOPT_HTTPHEADER => [
-                'Authorization: ' . env("WHATSAPP_FONNTE_" . $from),
-            ],
+            ]
         ]);
 
         curl_exec($curl);
