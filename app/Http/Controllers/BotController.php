@@ -19,7 +19,7 @@ class BotController extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
         $json = file_get_contents('php://input');
-        $this->send('6289636055420', $json);
+        // $this->send('6289636055420', $json);
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
