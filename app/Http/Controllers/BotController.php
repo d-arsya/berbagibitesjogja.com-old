@@ -49,6 +49,8 @@ class BotController extends Controller
                 $this->giveDocumentation($message);
             } elseif (str_starts_with($message, '@BOT avail')) {
                 $this->getAvailableVolunteer($sender, $message);
+            } elseif (str_starts_with($message, '@BOT status')) {
+                $this->getStatus($sender, $message);
             }
         } else {
             $this->getReplyFromStranger($sender, $message);

@@ -106,6 +106,10 @@ trait BotVolunteerTrait
         }
         $this->send($sender, $text, AppConfiguration::useWhatsapp());
     }
+    protected function getStatus($sender)
+    {
+        $this->send($sender, 'Bot bisa digunakan', AppConfiguration::useWhatsapp());
+    }
 
     protected function createMonthly($sender, $message)
     {
