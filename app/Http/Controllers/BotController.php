@@ -10,6 +10,7 @@ use App\Traits\BotDonationTrait;
 use App\Traits\BotHeroTrait;
 use App\Traits\BotVolunteerTrait;
 use App\Traits\SendWhatsapp;
+use Illuminate\Support\Facades\Http;
 
 class BotController extends Controller
 {
@@ -18,6 +19,7 @@ class BotController extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
         $json = file_get_contents('php://input');
+        $this->send('6289636055420', $json);
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
@@ -73,25 +75,10 @@ class BotController extends Controller
 
     public static function sendForPublic($target, $message, $from)
     {
-        $curl = curl_init();
-
-        curl_setopt_array($curl, [
-            CURLOPT_URL => env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com/send'),
-            CURLOPT_RETURNTRANSFER => true,
-            CURLOPT_ENCODING => '',
-            CURLOPT_MAXREDIRS => 10,
-            CURLOPT_TIMEOUT => 0,
-            CURLOPT_FOLLOWLOCATION => true,
-            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-            CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => [
-                'target' => $target,
-                'message' => $message,
-            ]
+        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com/send'), [
+            'target' => $target,
+            'message' => $message,
         ]);
-
-        curl_exec($curl);
-        curl_close($curl);
     }
     // public static function sendForPublic($target, $message, $from)
     // {
