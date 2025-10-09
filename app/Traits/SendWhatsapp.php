@@ -8,9 +8,15 @@ trait SendWhatsapp
 {
     protected function send($target, $message, $from = 'FIRST')
     {
-        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com/send'), [
+        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com') . '/send', [
             'target' => $target,
             'message' => $message,
+        ]);
+    }
+    protected function mentionAll($target)
+    {
+        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com') . '/mention-all', [
+            'target' => $target
         ]);
     }
 }
