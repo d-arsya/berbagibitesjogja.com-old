@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Donation\Donation;
 use App\Models\Donation\Food;
+use App\Models\FormJob;
 use App\Models\Heroes\Hero;
 use App\Models\Heroes\University;
 use App\Models\Volunteer\Availability;
@@ -201,9 +202,65 @@ class VolunteerController extends Controller
                 return redirect()->route('volunteer.home')->with('error', 'Anda sudah terdaftar');
             }
         }
+
         if (! $volunteer) {
             return redirect()->route('volunteer.home')->with('error', 'Anda tidak terdaftar');
         }
+        if (session('job')) {
+            $entry = session('entry');
+            $jobId = session('job');
+
+            $apply = FormJob::whereId($entry)->first();
+
+            if (!$apply) {
+                return redirect()->back()->with('error', 'Form job not found.');
+            }
+
+            $data = collect($apply['data']);
+            $jobs = collect($data->get('jobs'));
+            $jobItemIndex = $jobs->search(fn($j) => $j['id'] == $jobId);
+
+            if ($jobItemIndex === false) {
+                return redirect()->back()->with('error', 'Job not found.');
+            }
+
+            $jobItem = $jobs[$jobItemIndex];
+
+            // Check division restriction
+            if (!empty($jobItem['division']) && $jobItem['division'] != $volunteer->division->name) {
+                return redirect()->away('https://war.berbagibitesjogja.com');
+            }
+
+            // Work with persons
+            $persons = collect($jobItem['persons']);
+
+            // ✅ Check if this phone already exists
+            $alreadyExists = $persons->contains(fn($person) => $person['phone'] == $volunteer->phone);
+
+            if (!$alreadyExists && $persons->count() < $jobItem['need']) {
+                // Add the volunteer
+                $persons->push([
+                    'name' => $volunteer->name,
+                    'phone' => $volunteer->phone,
+                ]);
+
+                // Update persons in jobItem
+                $jobItem['persons'] = $persons;
+
+                // Update job in jobs list
+                $jobs[$jobItemIndex] = $jobItem;
+
+                // Save back to data
+                $data['jobs'] = $jobs;
+
+                // Save to DB
+                $apply->data = $data;
+                $apply->save();
+            }
+            return redirect()->away('https://war.berbagibitesjogja.com');
+        }
+
+
         $volunteer->name = $user->name;
         $volunteer->photo = $user->avatar;
         $volunteer->save();
@@ -216,5 +273,12 @@ class VolunteerController extends Controller
             ->log('Login');
 
         return redirect()->intended('/')->with('success', 'Berhasil login');
+    }
+
+    public function applyJob(Request $request, string $entry, string $job)
+    {
+        session()->put('job', $job);
+        session()->put('entry', $entry);
+        return redirect()->route('auth.google');
     }
 }
