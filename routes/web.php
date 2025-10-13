@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 
 Route::get('apply/{entry}/{job}', [VolunteerController::class, 'applyJob']);
+Route::get('un-apply/{entry}/{job}', [VolunteerController::class, 'unapplyJob']);
 Route::get('monthly-report/{code}', [ReportController::class, 'downloadMonthly'])->name('monthlyReport');
 Route::match(['get', 'post'], 'from-fonnte', [BotController::class, 'fromFonnte'])->withoutMiddleware(VerifyCsrfToken::class);
 Route::view('print', 'print');

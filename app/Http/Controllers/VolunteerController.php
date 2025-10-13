@@ -215,7 +215,7 @@ class VolunteerController extends Controller
             $apply = FormJob::whereId($entry)->first();
 
             if (!$apply) {
-                return redirect()->away('https://war.berbagibitesjogja.com');
+                return redirect()->away('localhost:5173');
             }
 
             $data = collect($apply['data']);
@@ -223,14 +223,14 @@ class VolunteerController extends Controller
             $jobItemIndex = $jobs->search(fn($j) => $j['id'] == $jobId);
 
             if ($jobItemIndex === false) {
-                return redirect()->away('https://war.berbagibitesjogja.com');
+                return redirect()->away('localhost:5173');
             }
 
             $jobItem = $jobs[$jobItemIndex];
 
             // Check division restriction
             if (!empty($jobItem['division']) && $jobItem['division'] != $volunteer->division->name) {
-                return redirect()->away('https://war.berbagibitesjogja.com');
+                return redirect()->away('localhost:5173');
             }
 
             // Work with persons
@@ -257,8 +257,55 @@ class VolunteerController extends Controller
                 $apply->data = $data;
                 $apply->save();
             }
+            return redirect()->away('localhost:5173');
+        }
+        if (session('unjob')) {
+            $entry = session('entry');
+            $jobId = session('unjob');
+            session()->forget('unjob');
+            session()->forget('entry');
+
+            $apply = FormJob::whereId($entry)->first();
+
+            if (!$apply) {
+                return redirect()->away('https://war.berbagibitesjogja.com');
+            }
+
+            $data = collect($apply['data']);
+            $jobs = collect($data->get('jobs'));
+            $jobItemIndex = $jobs->search(fn($j) => $j['id'] == $jobId);
+
+            if ($jobItemIndex === false) {
+                return redirect()->away('https://war.berbagibitesjogja.com');
+            }
+
+            $jobItem = $jobs[$jobItemIndex];
+
+            // Check division restriction
+            if (!empty($jobItem['division']) && $jobItem['division'] != $volunteer->division->name) {
+                return redirect()->away('https://war.berbagibitesjogja.com');
+            }
+
+            // Work with persons
+            $persons = collect($jobItem['persons']);
+
+            // Remove the person (unapply)
+            $updatedPersons = $persons->reject(function ($person) use ($volunteer) {
+                return $person['phone'] === $volunteer->phone;
+            })->values(); // reindex the array
+
+            // Save only if there's a change
+            if ($updatedPersons->count() !== $persons->count()) {
+                $jobItem['persons'] = $updatedPersons;
+                $jobs[$jobItemIndex] = $jobItem;
+                $data['jobs'] = $jobs;
+                $apply->data = $data;
+                $apply->save();
+            }
+
             return redirect()->away('https://war.berbagibitesjogja.com');
         }
+
 
 
         $volunteer->name = $user->name;
@@ -278,6 +325,12 @@ class VolunteerController extends Controller
     public function applyJob(Request $request, string $entry, string $job)
     {
         session()->put('job', $job);
+        session()->put('entry', $entry);
+        return redirect()->route('auth.google');
+    }
+    public function unapplyJob(Request $request, string $entry, string $job)
+    {
+        session()->put('unjob', $job);
         session()->put('entry', $entry);
         return redirect()->route('auth.google');
     }
