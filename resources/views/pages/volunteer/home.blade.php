@@ -22,7 +22,7 @@
     </div>
     <div class="flex justify-start flex-row gap-y-3 my-4 gap-x-4 flex-wrap">
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('reimburse.create') }}">Ajukan Reimburse</a>
-        @if ($user->role=='super' || $user->division->name=='PSDM')
+        @if ($user->role=='super' || $user->division->name=='Friend')
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('reimburse.index') }}">Reimburse</a>
         <a class="bg-navy hover:shadow-xl hover:bg-navy-600 py-1 px-6 text-white rounded-md" href="{{ route('precence.index') }}">Presensi</a>
         @endif
