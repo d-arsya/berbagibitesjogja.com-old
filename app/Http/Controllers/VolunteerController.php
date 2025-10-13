@@ -205,12 +205,9 @@ class VolunteerController extends Controller
             } catch (\Throwable $th) {
                 return redirect()->route('volunteer.home')->with('error', 'Anda sudah terdaftar');
             }
-        }
-
-        if (! $volunteer) {
+        } else if (! $volunteer) {
             return redirect()->route('volunteer.home')->with('error', 'Anda tidak terdaftar');
-        }
-        if (session('job')) {
+        } else if (session('job')) {
             $entry = session('entry');
             $jobId = session('job');
             session()->forget(['entry', 'job']);
@@ -265,8 +262,7 @@ class VolunteerController extends Controller
                 $apply->save();
             }
             return redirect()->away('localhost:5173');
-        }
-        if (session('unjob')) {
+        } else if (session('unjob')) {
             $entry = session('entry');
             $jobId = session('unjob');
             session()->forget(['unjob', 'entry']);
