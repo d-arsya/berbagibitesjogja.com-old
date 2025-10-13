@@ -281,11 +281,6 @@ class VolunteerController extends Controller
 
             $jobItem = $jobs[$jobItemIndex];
 
-            // Check division restriction
-            if (!empty($jobItem['division']) && $jobItem['division'] != $volunteer->division->name) {
-                return redirect()->away('https://war.berbagibitesjogja.com');
-            }
-
             // Work with persons
             $persons = collect($jobItem['persons']);
 
