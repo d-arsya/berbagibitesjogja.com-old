@@ -188,7 +188,10 @@ class VolunteerController extends Controller
         if (session('phone')) {
             $phone = session('phone');
             session()->forget('phone');
+            session()->invalidate(); // clears and regenerates
+            session()->regenerateToken();
             session()->save();
+
             if (! str_ends_with($user->email, 'mail.ugm.ac.id')) {
                 return redirect()->route('volunteer.home')->with('error', 'Email tidak valid');
             }
@@ -211,7 +214,10 @@ class VolunteerController extends Controller
             $entry = session('entry');
             $jobId = session('job');
             session()->forget(['entry', 'job']);
+            session()->invalidate(); // clears and regenerates
+            session()->regenerateToken();
             session()->save();
+
 
             $apply = FormJob::whereId($entry)->first();
 
@@ -264,7 +270,10 @@ class VolunteerController extends Controller
             $entry = session('entry');
             $jobId = session('unjob');
             session()->forget(['unjob', 'entry']);
+            session()->invalidate(); // clears and regenerates
+            session()->regenerateToken();
             session()->save();
+
 
             $apply = FormJob::whereId($entry)->first();
 
