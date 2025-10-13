@@ -209,6 +209,8 @@ class VolunteerController extends Controller
         if (session('job')) {
             $entry = session('entry');
             $jobId = session('job');
+            session()->forget('job');
+            session()->forget('entry');
 
             $apply = FormJob::whereId($entry)->first();
 
