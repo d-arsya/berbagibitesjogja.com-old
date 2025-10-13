@@ -213,7 +213,7 @@ class VolunteerController extends Controller
             $apply = FormJob::whereId($entry)->first();
 
             if (!$apply) {
-                return redirect()->back()->with('error', 'Form job not found.');
+                return redirect()->away('https://war.berbagibitesjogja.com');
             }
 
             $data = collect($apply['data']);
@@ -221,7 +221,7 @@ class VolunteerController extends Controller
             $jobItemIndex = $jobs->search(fn($j) => $j['id'] == $jobId);
 
             if ($jobItemIndex === false) {
-                return redirect()->back()->with('error', 'Job not found.');
+                return redirect()->away('https://war.berbagibitesjogja.com');
             }
 
             $jobItem = $jobs[$jobItemIndex];
@@ -233,9 +233,7 @@ class VolunteerController extends Controller
 
             // Work with persons
             $persons = collect($jobItem['persons']);
-
-            // ✅ Check if this phone already exists
-            $alreadyExists = $persons->contains(fn($person) => $person['phone'] == $volunteer->phone);
+            $alreadyExists = str_contains(json_encode($jobs), $volunteer->phone);
 
             if (!$alreadyExists && $persons->count() < $jobItem['need']) {
                 // Add the volunteer
