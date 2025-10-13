@@ -188,9 +188,6 @@ class VolunteerController extends Controller
         if (session('phone')) {
             $phone = session('phone');
             session()->forget('phone');
-            session()->invalidate(); // clears and regenerates
-            session()->regenerateToken();
-            session()->save();
 
             if (! str_ends_with($user->email, 'mail.ugm.ac.id')) {
                 return redirect()->route('volunteer.home')->with('error', 'Email tidak valid');
@@ -205,21 +202,20 @@ class VolunteerController extends Controller
             } catch (\Throwable $th) {
                 return redirect()->route('volunteer.home')->with('error', 'Anda sudah terdaftar');
             }
-        } else if (! $volunteer) {
+        }
+        if (! $volunteer) {
             return redirect()->route('volunteer.home')->with('error', 'Anda tidak terdaftar');
-        } else if (session('job')) {
+        }
+        if (session('job')) {
             $entry = session('entry');
             $jobId = session('job');
             session()->forget(['entry', 'job']);
-            session()->invalidate(); // clears and regenerates
-            session()->regenerateToken();
-            session()->save();
 
 
             $apply = FormJob::whereId($entry)->first();
 
             if (!$apply) {
-                return redirect()->away('localhost:5173');
+                return redirect()->away('https://war.berbagibitesjogja.com');
             }
 
             $data = collect($apply['data']);
@@ -227,14 +223,14 @@ class VolunteerController extends Controller
             $jobItemIndex = $jobs->search(fn($j) => $j['id'] == $jobId);
 
             if ($jobItemIndex === false) {
-                return redirect()->away('localhost:5173');
+                return redirect()->away('https://war.berbagibitesjogja.com');
             }
 
             $jobItem = $jobs[$jobItemIndex];
 
             // Check division restriction
             if (!empty($jobItem['division']) && $jobItem['division'] != $volunteer->division->name) {
-                return redirect()->away('localhost:5173');
+                return redirect()->away('https://war.berbagibitesjogja.com');
             }
 
             // Work with persons
@@ -261,14 +257,12 @@ class VolunteerController extends Controller
                 $apply->data = $data;
                 $apply->save();
             }
-            return redirect()->away('localhost:5173');
-        } else if (session('unjob')) {
+            return redirect()->away('https://war.berbagibitesjogja.com');
+        }
+        if (session('unjob')) {
             $entry = session('entry');
             $jobId = session('unjob');
             session()->forget(['unjob', 'entry']);
-            session()->invalidate(); // clears and regenerates
-            session()->regenerateToken();
-            session()->save();
 
 
             $apply = FormJob::whereId($entry)->first();
