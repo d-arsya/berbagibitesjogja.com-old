@@ -20,4 +20,5 @@ RUN install-php-extensions \
 COPY --from=composer:2.2 /usr/bin/composer /usr/bin/composer
 
 RUN composer install
+RUN composer update
 RUN php artisan storage:link || true

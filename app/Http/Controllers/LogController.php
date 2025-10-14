@@ -7,7 +7,8 @@ use Spatie\Activitylog\Models\Activity;
 
 class LogController extends Controller
 {
-    public function activityLogs(Request $request){
+    public function activityLogs(Request $request)
+    {
         $models = Activity::select('subject_type')
             ->distinct()
             ->pluck('subject_type')
@@ -31,8 +32,8 @@ class LogController extends Controller
                 $query->where('event', $event);
             })
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate(10)->withQueryString();
 
-        return view('pages.logs.activity',compact('logs', 'models', 'events'));
+        return view('pages.logs.activity', compact('logs', 'models', 'events'));
     }
 }
