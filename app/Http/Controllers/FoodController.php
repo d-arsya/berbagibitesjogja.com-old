@@ -20,7 +20,9 @@ class FoodController extends Controller
     public function store(Request $request)
     {
         try {
-            Food::create($request->all());
+            $data = $request->all();
+            $data['expired'] = $request->expired == 'on';
+            Food::create($data);
 
             return redirect()->back()->with('success', 'Berhasil menambahkan makanan');
         } catch (\Throwable $th) {
@@ -39,7 +41,9 @@ class FoodController extends Controller
     public function update(Request $request, Food $food)
     {
         try {
-            $food->update($request->all());
+            $data = $request->all();
+            $data['expired'] = $request->expired == 'on';
+            $food->update($data);
 
             return redirect()->route('food.index')->with('success', 'Berhasil menambahkan makanan');
         } catch (\Throwable $th) {

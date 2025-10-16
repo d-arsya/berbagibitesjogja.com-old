@@ -48,6 +48,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="flex gap-3">
+                        <div class="flex align-middle gap-2 my-2">
+                            <input type="checkbox" name="expired" id="expired" {{ $food->expired ? 'checked' : '' }}>
+                            <label for="expired" class="text-xs ">Basi</label>
+                        </div>
+
+                    </div>
                     <label for="notes" class="block mb-2 text-sm font-medium text-gray-900">Keterangan</label>
                     <textarea name="notes" id="notes" rows="4"
                         class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"

@@ -26,6 +26,6 @@ class Food extends Model
 
     public static function totalGram()
     {
-        return self::where('unit', 'gr')->sum('weight');
+        return self::where('unit', 'gr')->where('expired', '0')->sum('weight');
     }
 }

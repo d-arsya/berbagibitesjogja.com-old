@@ -40,7 +40,7 @@ class VolunteerController extends Controller
 
             foreach ($item as $data) {
                 $hero_count += $data->heroes->sum('quantity');
-                $food_count += $data->foods->sum('weight') / 1000;
+                $food_count += $data->foods->where('expired', '0')->sum('weight') / 1000;
             }
             $lastData[] = [
                 'bulan' => Carbon::parse($key)->format('F'),
@@ -48,31 +48,10 @@ class VolunteerController extends Controller
                 'foods' => $food_count,
             ];
         }
-        // $donations = Donation::where('charity', 1)->whereBetween('take', [$fourMonthsAgo, $currentDate])->with(['foods', 'heroes'])->get();
-        // $groupedData = $donations->groupBy(function ($donation) {
-        //     return Carbon::parse($donation->take)->format('Y-m');
-        // });
-        // $lastDataCharity = [];
-        // foreach ($groupedData as $key => $item) {
-        //     $hero_count = 0;
-        //     $food_count = 0;
-
-        //     foreach ($item as $data) {
-        //         $hero_count += $data->heroes->sum('quantity');
-        //         $food_count += $data->foods->sum('weight') / 1000;
-        //     }
-        //     $lastDataCharity[] = [
-        //         'bulan' => Carbon::parse($key)->format('F'),
-        //         'heroes' => $hero_count,
-        //         'foods' => $food_count,
-        //     ];
-        // }
         $user = Auth::user();
         $donations = Donation::where('charity', 0)->get();
-        // $donationsCharity = Donation::where('charity', 1)->get();
         $precence = Precence::where('status', 'active')->count();
-        $foods = Food::whereIn('donation_id', $donations->pluck('id'))->get();
-        // $foodsCharity = Food::whereIn('donation_id', $donationsCharity->pluck('id'))->get();
+        $foods = Food::whereIn('donation_id', $donations->pluck('id'))->where('expired', '0')->get();
         $heroes = Hero::all();
         return view('pages.volunteer.home', compact('user', 'donations', 'foods', 'heroes', 'lastData', 'precence'));
     }
