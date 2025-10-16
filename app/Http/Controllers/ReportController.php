@@ -113,7 +113,7 @@ class ReportController extends Controller
             $foods = $donation->foods;
             $templateProcessor->cloneRow('foodName', $foods->count());
             for ($i = 1; $i < $foods->count() + 1; $i++) {
-                $templateProcessor->setValue("foodName#$i", $foods[$i - 1]->name . $foods[$i - 1]->expired ? '(basi)' : '');
+                $templateProcessor->setValue("foodName#$i", $foods[$i - 1]->name . ($foods[$i - 1]->expired ? '(basi)' : ''));
                 $templateProcessor->setValue("foodWeight#$i", round($foods[$i - 1]->weight / 100) / 10);
             }
             $uniq = substr(bin2hex(random_bytes(2)), 0, 3);
@@ -177,7 +177,7 @@ class ReportController extends Controller
             $templateProcessor->cloneRow("foodName#{$i}", $foods->count());
             foreach ($foods as $fIndex => $food) {
                 $f = $fIndex + 1;
-                $templateProcessor->setValue("foodName#{$i}#{$f}", $food->name . $food->expired ? '(basi)' : '');
+                $templateProcessor->setValue("foodName#{$i}#{$f}", $food->name . ($food->expired ? '(basi)' : ''));
                 $templateProcessor->setValue("foodWeight#{$i}#{$f}", round($food->weight / 100) / 10);
             }
         }
