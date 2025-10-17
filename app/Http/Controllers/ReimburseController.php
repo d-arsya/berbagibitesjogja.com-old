@@ -21,7 +21,7 @@ class ReimburseController extends Controller
         if (Auth::user()->role != "super") {
             return back();
         }
-        $reimburse = Reimburse::with('user')->get();
+        $reimburse = Reimburse::with('user')->latest()->get();
         return view('pages.reimburse.index', compact('reimburse'));
     }
     public function create()
