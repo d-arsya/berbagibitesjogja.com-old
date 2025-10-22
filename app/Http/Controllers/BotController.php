@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\AppConfiguration;
 use App\Models\Donation\Booking;
 use App\Models\Donation\Donation;
+use App\Models\FormJob;
 use App\Models\Heroes\Hero;
 use App\Traits\BotDonationTrait;
 use App\Traits\BotHeroTrait;
@@ -19,7 +20,6 @@ class BotController extends Controller
     {
         header('Content-Type: application/json; charset=utf-8');
         $json = file_get_contents('php://input');
-        // $this->send('6289636055420', $json);
         $data = json_decode($json, true);
         $sender = $data['sender'];
         $message = $data['message'];
