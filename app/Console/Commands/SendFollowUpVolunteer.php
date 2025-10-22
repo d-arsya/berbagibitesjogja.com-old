@@ -16,24 +16,27 @@ class SendFollowUpVolunteer extends Command
         $data = collect($datas);
         $tomorrow = now()->addDay()->toDateString();
         $act = $data->firstWhere('date', $tomorrow);
-        $jobs = $act['jobs'];
+        if ($act) {
+            $jobs = $act['jobs'];
 
-        $date = date('d F Y', strtotime($act['date']));
-        $sponsor = $act['sponsor'];
-        $receiver = $act['receiver'];
+            $date = date('d F Y', strtotime($act['date']));
+            $sponsor = $act['sponsor'];
+            $receiver = $act['receiver'];
 
-        foreach ($jobs as $job) {
-            foreach ($job['persons'] as $person) {
+            foreach ($jobs as $job) {
+                foreach ($job['persons'] as $person) {
 
-                $message = "🌱 Halo {$person['name']}!\n\n"
-                    . "Ini pengingat untuk kegiatan *Berbagi Bites Jogja* besok, *{$date}*.\n"
-                    . "Kamu bertugas sebagai *{$job['name']}* untuk *{$sponsor}* dengan tujuan *{$receiver}*.\n\n"
-                    . "🕒 Waktu: {$job['place']}\n"
-                    . "Terima kasih sudah berkontribusi dalam gerakan mengurangi food waste 💚\n\n"
-                    . "📞 Contact Person:\n082310547392 (Hasya)\n085175490728 (Tania)";
+                    $message = "🌱 Halo {$person['name']}!\n\n"
+                        . "Ini pengingat untuk kegiatan *Berbagi Bites Jogja* besok, *{$date}*.\n"
+                        . "Kamu bertugas sebagai *{$job['name']}* untuk *{$sponsor}* dengan tujuan *{$receiver}*.\n\n"
+                        . "🕒 Waktu: {$job['place']}\n"
+                        . "Terima kasih sudah berkontribusi dalam gerakan mengurangi food waste 💚\n\n"
+                        . "📞 Contact Person:\n082310547392 (Hasya)\n085175490728 (Tania)";
 
-                $this->send($person['phone'], $message);
+                    $this->send($person['phone'], $message);
+                }
             }
         }
+        return 0;
     }
 }
