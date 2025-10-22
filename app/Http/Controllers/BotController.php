@@ -79,7 +79,7 @@ class BotController extends Controller
 
     public static function sendForPublic($target, $message, $from)
     {
-        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com/send'), [
+        Http::post(env('WHATSAPP_ENDPOINT', 'https://api.fonnte.com').'/send', [
             'target' => $target,
             'message' => $message,
         ]);
