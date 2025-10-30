@@ -19,7 +19,7 @@ class SendFollowUpAll extends Command
         $d = $data->firstWhere('date', $tomorrow);
         if ($d) {
             $output = '';
-            $output .= "📢 *Pemberitahuan Tugas Volunteer Besok*\n\n";
+            $output .= "📢 *Pemberitahuan Tugas Volunteer*\n\n";
             $output .= "📍 Donor: *{$d['sponsor']}*\n";
             $output .= "🎯 Tujuan: *{$d['receiver']}*\n\n";
             $output .= "Berikut kebutuhan tim dan jumlah orang yang dibutuhkan:\n";
