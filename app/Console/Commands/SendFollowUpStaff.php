@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use App\Models\FormJob;
 use App\Traits\SendWhatsapp;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 
 class SendFollowUpStaff extends Command
@@ -15,7 +16,13 @@ class SendFollowUpStaff extends Command
     {
         $datas = FormJob::all()->pluck('data');
         $data = collect($datas);
-        $tomorrow = now()->addDay()->toDateString();
+        $now = Carbon::now();
+
+        if ($now->hour < 12) {
+            $tomorrow = $now->toDateString(); // hari ini
+        } else {
+            $tomorrow = $now->addDay()->toDateString(); // besok
+        }
         $d = $data->firstWhere('date', $tomorrow);
         if ($d) {
             $output = '';
