@@ -37,6 +37,10 @@
                     class="bg-navy-500 hover:bg-navy-600 p-2 text-white rounded-md shadow-md">
                     Lihat QR Code
                 </a>
+                <a href="{{ route('precence.qr', 'download') }}"
+                        class="bg-navy-500 hover:bg-navy-600 p-2 text-white rounded-md shadow-md">
+                        Download QR Code
+                </a>
             
         @endif
     </div>
